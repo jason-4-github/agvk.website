@@ -7,7 +7,7 @@ import { styles } from '../styles';
 class GreneralInfo extends React.Component {
   render() {
     return (
-      <Grid >
+      <Grid>
         <Row style={styles.Row}>
           <Col xs={6} sm={6} md={4}>
             <div style={styles.tablestyle.Circle} />
@@ -20,13 +20,14 @@ class GreneralInfo extends React.Component {
           </Col>
         </Row>
         <Row style={styles.Row}>
-          <Col >
+          <Col>
             <Table bordered>
               <tbody>
                 <tr>
                   <td style={styles.tablestyle.tabletd}>
                     <b>Product Type:</b>
                   </td>
+                  <td />
                 </tr>
                 <tr>
                   <td style={styles.tablestyle.tabletd}>

@@ -14,6 +14,10 @@ import {
   LIST_WMS_STATUS_REQUEST,
   LIST_WMS_STATUS_SUCCESS,
   LIST_WMS_STATUS_FAILURE,
+  LIST_ALLITEMS_SELECT_REQUEST,
+  LIST_ALLITEMS_SELECT_SUCCESS,
+  LIST_ALLITEMS_SELECT_FAILURE,
+  LIST_ALLITEMS_DETAILDATA_SUCCESS,
   DOWNLOAD_INVENTORY_REPORT_REQUEST,
   DOWNLOAD_INVENTORY_REPORT_SUCCESS,
   DOWNLOAD_INVENTORY_REPORT_FAILURE,
@@ -41,6 +45,19 @@ const admin = (state = initialState, action) => {
     case LIST_RACK_DETAIL_REQUEST:
     case LIST_RACK_DETAIL_SUCCESS:
     case LIST_RACK_DETAIL_FAILURE:
+      return {
+        ...state,
+        ...action,
+      };
+    case LIST_ALLITEMS_SELECT_REQUEST:
+    case LIST_ALLITEMS_SELECT_SUCCESS:
+    case LIST_ALLITEMS_SELECT_FAILURE:
+      return {
+        ...state,
+        ...action,
+      };
+    case LIST_ALLITEMS_DETAILDATA_SUCCESS:
+    // console.log('enter reducer')
       return {
         ...state,
         ...action,
