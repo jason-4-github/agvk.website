@@ -1,0 +1,122 @@
+[
+  {
+    "root": {
+      "primaryText": "Dashboard",
+      "children": [
+        {
+          "primaryText": "WMS Status",
+          "url": "/admin/dashboard/wms-status",
+          "component": "WMSStatusContainer"
+        }
+      ]
+    }
+  },
+  {
+    "root": {
+      "primaryText": "Summary",
+      "children": [
+        {
+          "primaryText": "Handling Item",
+          "url": "/admin/summary/handling-item",
+          "component": "HandlingItemContainer"
+        },
+        {
+          "primaryText": "Schedule",
+          "url": "/admin/summary/schedule",
+          "component": "ScheduleContainer"
+        },
+        {
+          "primaryText": "Inbound",
+          "url": "/admin/summary/inbound",
+          "component": "InboundContainer"
+        },
+        {
+          "primaryText": "Outbound",
+          "url": "/admin/summary/outbound",
+          "component": "OutboundContainer"
+        }
+      ]
+    }
+  },
+  {
+    "root": {
+      "primaryText": "Inventory",
+      "children": [
+        {
+          "primaryText": "By Location",
+          "url": "/admin/inventory/by-location",
+          "component": "ByLocationContainer"
+        },
+        {
+          "primaryText": "By Item",
+          "url": "/admin/inventory/by-item",
+          "component": "ByItemContainer"
+        },
+        {
+          "primaryText": "By Date",
+          "url": "/admin/inventory/by-date",
+          "component": "ByDateContainer"
+        },
+        {
+          "primaryText": "All Items",
+          "url": "/admin/inventory/all-items",
+          "component": "AllItemsContainer"
+        }
+      ]
+    }
+  },
+  {
+    "root": {
+      "primaryText": "Operation",
+      "children": [
+        {
+          "primaryText": "Receive",
+          "url": "/admin/operation/receive",
+          "component": "ReceiveContainer"
+        },
+        {
+          "primaryText": "Issue",
+          "url": "/admin/operation/issue",
+          "component": "IssueContainer"
+        },
+        {
+          "primaryText": "Return",
+          "url": "/admin/operation/return",
+          "component": "ReturnContainer"
+        }
+      ]
+    }
+  },
+  {
+    "root": {
+      "primaryText": "Setting",
+      "children": [
+        {
+          "primaryText": "Warehouse",
+          "url": "/admin/setting/warehouse",
+          "component": "WarehouseContainer"
+        },
+        {
+          "primaryText": "Rack",
+          "url": "/admin/setting/rack",
+          "component": "RackContainer"
+        },
+        {
+          "primaryText": "Material",
+          "url": "/admin/setting/material",
+          "component": "MaterialContainer"
+        },
+        {
+          "primaryText": "Vendor",
+          "url": "/admin/setting/vendor",
+          "component": "VendorContainer"
+        },
+        {
+          "primaryText": "User",
+          "url": "/admin/setting/user",
+          "component": "UserContainer"
+        }
+      ]
+    }
+  }
+]
