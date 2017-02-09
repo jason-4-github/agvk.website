@@ -1,16 +1,16 @@
 import React, { PropTypes } from 'react';
-import { Grid,Row, Col,Table } from 'react-bootstrap';
+import { Grid, Row, Col, Table } from 'react-bootstrap';
 import Checkbox from 'material-ui/Checkbox';
 
 import { styles } from '../styles';
 
-class GreneralInfo extends React.Component {
+class AllItemsGreneralInfo extends React.Component {
   render() {
     return (
       <Grid>
         <Row style={styles.Row}>
           <Col xs={6} sm={6} md={4}>
-            <div style={styles.tablestyle.Circle} />
+            <div style={styles.AllItemsGreneralInfo.Circle} />
           </Col>
           <Col xs={6} sm={6} md={8}>
             <Checkbox label="Available for Issue" />
@@ -24,24 +24,24 @@ class GreneralInfo extends React.Component {
             <Table bordered>
               <tbody>
                 <tr>
-                  <td style={styles.tablestyle.tabletd}>
+                  <td style={styles.AllItemsGreneralInfo.tabletd}>
                     <b>Product Type:</b>
                   </td>
                   <td />
                 </tr>
                 <tr>
-                  <td style={styles.tablestyle.tabletd}>
+                  <td style={styles.AllItemsGreneralInfo.tabletd}>
                     <b>Barcode:</b>
                   </td>
                   <td />
                 </tr>
                 <tr>
-                  <td style={styles.tablestyle.tabletd}>
+                  <td style={styles.AllItemsGreneralInfo.tabletd}>
                     <b>Unit Price: </b>
                   </td>
                 </tr>
                 <tr>
-                  <td style={styles.tablestyle.tabletd}>
+                  <td style={styles.AllItemsGreneralInfo.tabletd}>
                     <b>Dimension:</b>
                   </td>
                   <td />
@@ -54,7 +54,7 @@ class GreneralInfo extends React.Component {
     );
   }
 }
-GreneralInfo.propTypes = {
-  Greneraldata: PropTypes.object
+AllItemsGreneralInfo.propTypes = {
+  Greneraldata: PropTypes.object,
 };
-export default GreneralInfo;
+export default AllItemsGreneralInfo;

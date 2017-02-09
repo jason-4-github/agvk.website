@@ -7,6 +7,32 @@ import _ from 'lodash';
 import { styles } from '../styles';
 
 class PageNavigator extends React.Component {
+  showDom() {
+    const { pages } = this.props;
+    const rootDom = [];
+    _.map(pages, (p, k) => {
+      if (k === 0) {
+        rootDom.push(
+          <div key={k}>
+            <Chip>{p}</Chip>
+          </div>,
+        );
+      } else {
+        rootDom.push(
+          <div key={k} style={styles.wrapper}>
+            <FontIcon
+              className="material-icons"
+              style={styles.arrow}
+            >
+              navigate_next
+            </FontIcon>
+            <Chip>{p}</Chip>
+          </div>,
+        );
+      }
+    });
+    return rootDom;
+  }
   render() {
     return (
       <div>
@@ -17,35 +43,10 @@ class PageNavigator extends React.Component {
       </div>
     );
   }
-  showDom() {
-    const { pages } = this.props;
-    const rootDom = [];
-    _.map(pages, function(p, k) {
-      if (k === 0) {
-        rootDom.push(
-          <div key={k}>
-            <Chip>{p}</Chip>
-          </div>
-        );
-      } else {
-        rootDom.push(
-          <div key={k} style={styles.wrapper}>
-            <FontIcon
-              className="material-icons"
-              style={styles.arrow}>
-              navigate_next
-            </FontIcon>
-            <Chip>{p}</Chip>
-          </div>
-        );
-      }
-    });
-    return rootDom;
-  }
-};
+}
 
 PageNavigator.propTypes = {
-  pages: PropTypes.array
+  pages: PropTypes.array,
 };
 
 export default PageNavigator;

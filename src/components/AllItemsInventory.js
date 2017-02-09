@@ -20,20 +20,20 @@ import {
   doHighlightLocations,
 } from '../actions';
 
-class Inventory extends React.Component {
+class AllItemsInventory extends React.Component {
   static showData(data) {
     const rootDom = [];
     _.map(data, (i, k) => {
       rootDom.push(
         <TableRow key={k} selected={false}>
           <TableRowColumn>{ i.ItemName }</TableRowColumn>
-          <TableRowColumn>尚無資料</TableRowColumn>
+          <TableRowColumn />
           <TableRowColumn>{ i.ItemExternalID }</TableRowColumn>
           <TableRowColumn>{ i.ItemCount }</TableRowColumn>
           <TableRowColumn>{ i.Vendor }</TableRowColumn>
           <TableRowColumn>{ i.DateCode }</TableRowColumn>
           <TableRowColumn>{ `${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}` }</TableRowColumn>
-          <TableRowColumn>尚無資料</TableRowColumn>
+          <TableRowColumn />
         </TableRow>);
     });
     return (rootDom);
@@ -117,7 +117,7 @@ class Inventory extends React.Component {
                   showRowHover
                   stripedRows={false}
                 >
-                  { showRacksLocationInMapData ? Inventory.showData(showRacksLocationInMapData) : '' }
+                  { showRacksLocationInMapData ? AllItemsInventory.showData(showRacksLocationInMapData) : '' }
                 </TableBody>
               </Table>
             </CardText>
@@ -133,7 +133,7 @@ const mapStateToProps = (state) => {
     ...state.admin,
   };
 };
-Inventory.propTypes = {
+AllItemsInventory.propTypes = {
   doListRacksLocation: PropTypes.func,
   doShowRacksLocation: PropTypes.func,
   Inventorydata: PropTypes.object,
@@ -143,7 +143,7 @@ Inventory.propTypes = {
   showRacksLocationInMapData: PropTypes.array,
   listRacksLocationData: PropTypes.array,
 };
-Inventory.defaultProps = {
+AllItemsInventory.defaultProps = {
   doListRacksLocation: null,
   doShowRacksLocation: null,
   Inventorydata: null,
@@ -160,4 +160,4 @@ export default connect(
     doShowRacksLocation,
     doHighlightLocations,
   },
-)(Inventory);
+)(AllItemsInventory);

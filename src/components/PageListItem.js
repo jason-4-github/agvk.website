@@ -17,16 +17,16 @@ class PageListItem extends React.Component {
       rootDom.push(
         <Col style={styles.Col} key={k} xs={12} sm={6} md={6} lg={6} >
           <Card
-            style={styles.rectangle}
+            style={styles.PageListItem.rectangle}
             onClick={() => {
               return (
-              browserHistory.push(`/admin/inventory/all-items/ ,${i.ItemName}`),
-              doAllItemsDetailData({ detaildata: data[k] }));
+              browserHistory.push(`/admin/inventory/all-items/${i.ItemName}`),
+              doAllItemsDetailData({ DetailData: data[k] }));
             }}
           >
             <CardText>
               <Col xs={6} sm={6} md={4}>
-                <div style={styles.Circle} />
+                <div style={styles.PageListItem.Circle} />
               </Col>
               <Col xs={6} sm={6} md={8}>
                 <b>Item Name:</b><u>{i.ItemName}</u>
@@ -59,9 +59,10 @@ class PageListItem extends React.Component {
       );
     }
     return (
-      <Row style={styles.RowPageSize} >
+      <Row style={styles.PageListItem.RowPageSize}>
         {data ? this.showData(data) : '' };
-        </Row>
+      </Row>
+
     );
   }
 }

@@ -1,33 +1,9 @@
-const pageheight = document.documentElement.clientHeight * 0.65;
 export const styles = {
   Row: {
     marginBottom: 0,
   },
-  RowPageSize: {
-    marginBottom: 0,
-    height: pageheight,
-    overflow: 'auto',
-  },
   Col: {
     marginBottom: 10,
-  },
-  Colrightbutton: {
-    marginBottom: 10,
-    bottom: 0,
-    right: -300,
-    position: 'fixed',
-  },
-  Circle: {
-    height: 70,
-    width: 70,
-    backgroundColor: '#66B3FF',
-    borderRadius: 70,
-    border: '5px #d0d0d0 solid',
-  },
-  rectangle: {
-    height: 100,
-    width: '100%',
-    cursor: 'pointer',
   },
   Divider: {
     marginBottom: 10,
@@ -58,23 +34,6 @@ export const styles = {
   topBarWithoutSideMenu: {
     paddingLeft: 10,
     backgroundColor: '#417378',
-  },
-  tablestyle: {
-    width: '50%',
-    position: 'absolute',
-    left: '30%',
-    textalign: 'center',
-
-    Circle: {
-      height: 100,
-      width: 100,
-      backgroundColor: '#66B3FF',
-      borderRadius: 100,
-      border: '5px #d0d0d0 solid',
-    },
-    tabletd: {
-      width: '30%',
-    },
   },
   TopBar: {
     logged: {
@@ -170,6 +129,51 @@ export const styles = {
         position: 'absolute',
         bottom: '10px',
       },
+    },
+  },
+  AllItemsContainer: {
+    ColRightButton: {
+      marginBottom: 10,
+      bottom: 0,
+      right: -300,
+      position: 'fixed',
+    },
+  },
+  PageListItem: {
+    rectangle: {
+      height: 100,
+      width: '100%',
+      cursor: 'pointer',
+    },
+    Circle: {
+      height: 70,
+      width: 70,
+      backgroundColor: '#66B3FF',
+      borderRadius: 70,
+      border: '5px #d0d0d0 solid',
+    },
+    RowPageSize: {
+      marginBottom: 0,
+      height: '66vh',
+      overflow: 'auto',
+    },
+  },
+  AllItemsGreneralInfo: {
+    tablestyle: {
+      width: '50%',
+      position: 'absolute',
+      left: '30%',
+      textalign: 'center',
+    },
+    Circle: {
+      height: 100,
+      width: 100,
+      backgroundColor: '#66B3FF',
+      borderRadius: 100,
+      border: '5px #d0d0d0 solid',
+    },
+    tabletd: {
+      width: '30%',
     },
   },
 };

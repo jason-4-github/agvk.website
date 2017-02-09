@@ -1,54 +1,55 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
-import _ from 'lodash';
 
 import { styles } from '../../../styles';
 import PageNavigator from '../../../components/PageNavigator';
-import GreneralInfo from '../../../components/GreneralInfo';
-import Inventory from '../../../components/Inventory';
-import Salesrecord from '../../../components/Salesrecord';
+import AllItemsGreneralInfo from '../../../components/AllItemsGreneralInfo';
+import AllItemsInventory from '../../../components/AllItemsInventory';
+import AllItemsSalesRecord from '../../../components/AllItemsSalesRecord';
+
 class AllItemsDetailContainer extends React.Component {
-    render() {
-      const {
+
+  render() {
+    const {
         isSideMenuOpen,
-        detaildata,
+        DetailData,
       } = this.props;
-      const toggleStyle = isSideMenuOpen === true ? styles.contentWithSideMenu : styles.contentWithoutSideMenu;
-        return (
-          <div style={toggleStyle}>
-            <PageNavigator pages={ ['Inventory', 'All Items'] } />
-                <h4>
-                  <b>
-                    { detaildata.ItemName }
-                  </b>
-                </h4>
-              <Tabs>
-                <Tab label="GENERAL INFO">
-                  <GreneralInfo  Greneraldata={ detaildata }/>
-                </Tab>
-                <Tab label="INVENTORY">
-                  <Inventory  Inventorydata={ detaildata }/>
-                </Tab>
-                <Tab label="SALES RECORD">
-                  <Salesrecord  Salesrecorddata={ detaildata }/>
-                </Tab>
-              </Tabs>
-          </div>
-        );
-    }
-};
+    const toggleStyle = isSideMenuOpen === true
+      ? styles.contentWithSideMenu
+      : styles.contentWithoutSideMenu;
+    return (
+      <div style={toggleStyle}>
+        <PageNavigator pages={['Inventory', 'All Items']} />
+        <h4>
+          <b>{DetailData.ItemName}</b>
+        </h4>
+        <Tabs>
+          <Tab label="GENERAL INFO">
+            <AllItemsGreneralInfo Greneraldata={DetailData} />
+          </Tab>
+          <Tab label="INVENTORY">
+            <AllItemsInventory Inventorydata={DetailData} />
+          </Tab>
+          <Tab label="SALES RECORD">
+            <AllItemsSalesRecord Salesrecorddata={DetailData} />
+          </Tab>
+        </Tabs>
+      </div>
+    );
+  }
+}
 AllItemsDetailContainer.propTypes = {
-   detaildata: PropTypes.object
+  DetailData: PropTypes.object,
+  isSideMenuOpen: PropTypes.bool,
 };
 
 const mapStateToProps = (state) => {
   return {
-    ...state.admin
+    ...state.admin,
   };
 };
 
 export default connect(
   mapStateToProps,
-  {  }
 )(AllItemsDetailContainer);

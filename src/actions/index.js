@@ -125,7 +125,7 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
   if (!passProps) {
     dispatch({
       type: types.LIST_RACK_DETAIL_SUCCESS,
-      rackDetailData: [],
+      rackdetailData: [],
     });
     return;
   }
@@ -136,43 +136,43 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
     .then((data) => {
       dispatch({
         type: types.LIST_RACK_DETAIL_SUCCESS,
-        rackDetailData: data,
+        rackdetailData: data,
       });
     })
     .catch(() => {
       dispatch({
         type: types.LIST_RACK_DETAIL_FAILURE,
-        rackDetailData: [],
+        rackdetailData: [],
       });
     });
 };
 
 
-export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
+export const doListAllItemsData= (passProps) => (dispatch, getState) => {
   dispatch({
-    type: types.LIST_ALLITEMS_SELECT_REQUEST,
-    selectrackdetaildata: [],
+    type: types.LIST_ALLITEMS_REQUEST,
+    selectRackDetailData: [],
   });
   fetch(`${serverConfig.url}/listAllItems`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
       dispatch({
-        type: types.LIST_ALLITEMS_SELECT_SUCCESS,
-        selectrackdetaildata: data,
+        type: types.LIST_ALLITEMS_SUCCESS,
+        selectRackDetailData: data,
       });
     })
     .catch(() => {
       dispatch({
-        type: types.LIST_ALLITEMS_SELECT_FAILURE,
-        selectrackdetaildata: [],
+        type: types.LIST_ALLITEMS_FAILURE,
+        selectRackDetailData: [],
       });
     });
 };
 export const doAllItemsDetailData = (passProps) => (dispatch) => {
   dispatch({
-    type: types.LIST_ALLITEMS_DETAILDATA_SUCCESS,
-    detaildata: passProps.detaildata,
+    type: types.LIST_ALLITEMS_DETAILDATA,
+    DetailData: passProps.DetailData,
   });
 };
 

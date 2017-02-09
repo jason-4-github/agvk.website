@@ -6,13 +6,11 @@ import RaisedButton from 'material-ui/RaisedButton';
 import { styles } from '../../../styles';
 import PageNavigator from '../../../components/PageNavigator';
 import PageListItem from '../../../components/PageListItem';
-import { doDownloadInventoryReport, doAllItemsSelectData } from '../../../actions';
-
+import { doDownloadInventoryReport, doListAllItemsData } from '../../../actions';
 class AllItemsContainer extends React.Component {
-
   componentDidMount() {
-    const { doAllItemsSelectData } = this.props;
-    doAllItemsSelectData();
+    const { doListAllItemsData } = this.props;
+    doListAllItemsData();
   }
   handleClickDownload() {
     const { doDownloadInventoryReport } = this.props;
@@ -21,7 +19,7 @@ class AllItemsContainer extends React.Component {
   render() {
     const {
       isSideMenuOpen,
-      selectrackdetaildata,
+      selectRackDetailData,
     } = this.props;
     const toggleStyle = isSideMenuOpen === true
       ? styles.contentWithSideMenu
@@ -29,12 +27,12 @@ class AllItemsContainer extends React.Component {
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
-        <PageListItem data={selectrackdetaildata} />
+        <PageListItem data={selectRackDetailData} />
         <br />
         <Row style={styles.Row}>
           <Col
             xs={12} sm={6} md={6} lg={6}
-            style={styles.Colrightbutton}
+            style={styles.AllItemsContainer.ColRightButton}
           >
             <RaisedButton
               label="Download Inventory Report"
@@ -50,8 +48,8 @@ class AllItemsContainer extends React.Component {
 }
 
 AllItemsContainer.propTypes = {
-  selectrackdetaildata: PropTypes.array,
-  doAllItemsSelectData: PropTypes.func,
+  SelectRackDetailData: PropTypes.array,
+  doListAllItemsData: PropTypes.func,
   doDownloadInventoryReport: PropTypes.func,
 };
 
@@ -65,6 +63,6 @@ export default connect(
   mapStateToProps,
   {
     doDownloadInventoryReport,
-    doAllItemsSelectData,
+    doListAllItemsData,
   },
 )(AllItemsContainer);
