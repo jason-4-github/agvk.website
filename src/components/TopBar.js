@@ -19,7 +19,6 @@ class TopBar extends React.Component {
     const { isSideMenuOpen } = this.props;
     const toggleStyle = isSideMenuOpen === true ?
     styles.topBarWithSideMenu : styles.topBarWithoutSideMenu;
-
     return (
       <AppBar
         title="AGVK"
@@ -30,7 +29,6 @@ class TopBar extends React.Component {
     );
   }
 }
-
 const Logged = () => {
   return (
     <IconMenu
@@ -44,10 +42,8 @@ const Logged = () => {
     </IconMenu>
   );
 };
-
 TopBar.propTypes = {
   isSideMenuOpen: PropTypes.bool,
   doToggleSideMenu: PropTypes.func,
 };
-
 export default TopBar;

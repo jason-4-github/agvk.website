@@ -7,7 +7,6 @@ import { connect } from 'react-redux';
 import { doHighlightLocations } from '../actions';
 
 class RackLocationTableCard extends React.Component {
-
   static showData(data) {
     const rootDom = [];
     _.map(data, (i, k) => {

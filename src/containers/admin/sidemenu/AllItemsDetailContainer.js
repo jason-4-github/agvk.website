@@ -4,16 +4,15 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 
 import { styles } from '../../../styles';
 import PageNavigator from '../../../components/PageNavigator';
-import AllItemsGreneralInfo from '../../../components/AllItemsGreneralInfo';
-import AllItemsInventory from '../../../components/AllItemsInventory';
-import AllItemsSalesRecord from '../../../components/AllItemsSalesRecord';
+import ItemsGreneralInfo from '../../../components/ItemsGreneralInfo';
+import ItemInventory from '../../../components/ItemInventory';
+import ItemSalesRecord from '../../../components/ItemSalesRecord';
 
 class AllItemsDetailContainer extends React.Component {
-
   render() {
     const {
         isSideMenuOpen,
-        DetailData,
+        detailData,
       } = this.props;
     const toggleStyle = isSideMenuOpen === true
       ? styles.contentWithSideMenu
@@ -22,17 +21,17 @@ class AllItemsDetailContainer extends React.Component {
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
         <h4>
-          <b>{DetailData.ItemName}</b>
+          <b>{detailData.ItemName}</b>
         </h4>
         <Tabs>
           <Tab label="GENERAL INFO">
-            <AllItemsGreneralInfo Greneraldata={DetailData} />
+            <ItemsGreneralInfo Greneraldata={detailData} />
           </Tab>
           <Tab label="INVENTORY">
-            <AllItemsInventory Inventorydata={DetailData} />
+            <ItemInventory Inventorydata={detailData} />
           </Tab>
           <Tab label="SALES RECORD">
-            <AllItemsSalesRecord Salesrecorddata={DetailData} />
+            <ItemSalesRecord Salesrecorddata={detailData} />
           </Tab>
         </Tabs>
       </div>
@@ -40,16 +39,14 @@ class AllItemsDetailContainer extends React.Component {
   }
 }
 AllItemsDetailContainer.propTypes = {
-  DetailData: PropTypes.object,
+  detailData: PropTypes.object,
   isSideMenuOpen: PropTypes.bool,
 };
-
 const mapStateToProps = (state) => {
   return {
     ...state.admin,
   };
 };
-
 export default connect(
   mapStateToProps,
 )(AllItemsDetailContainer);

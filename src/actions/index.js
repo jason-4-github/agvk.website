@@ -39,7 +39,6 @@ export const doLogin = (passProps) => (dispatch, getState) => {
       localStorage.isAuth = false;
       return;
     }
-
     dispatch({
       type: types.LOGIN_SUCCESS,
       isLoginLoading: false,
@@ -121,34 +120,31 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LIST_RACK_DETAIL_REQUEST,
   });
-
   if (!passProps) {
     dispatch({
       type: types.LIST_RACK_DETAIL_SUCCESS,
-      rackdetailData: [],
+      rackDetailData: [],
     });
     return;
   }
-
   fetch(`${serverConfig.url}/listRackDetail/${passProps}`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
       dispatch({
         type: types.LIST_RACK_DETAIL_SUCCESS,
-        rackdetailData: data,
+        rackDetailData: data,
       });
     })
     .catch(() => {
       dispatch({
         type: types.LIST_RACK_DETAIL_FAILURE,
-        rackdetailData: [],
+        rackDetailData: [],
       });
     });
 };
 
-
-export const doListAllItemsData= (passProps) => (dispatch, getState) => {
+export const doListAllItems= (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LIST_ALLITEMS_REQUEST,
     selectRackDetailData: [],
@@ -169,10 +165,11 @@ export const doListAllItemsData= (passProps) => (dispatch, getState) => {
       });
     });
 };
-export const doAllItemsDetailData = (passProps) => (dispatch) => {
+
+export const doTransferItemDetailData = (passProps) => (dispatch) => {
   dispatch({
-    type: types.LIST_ALLITEMS_DETAILDATA,
-    DetailData: passProps.DetailData,
+    type: types.TRANSFER_ITEM_DETAILDATA,
+    detailData: passProps.detailData,
   });
 };
 

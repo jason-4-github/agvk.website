@@ -7,26 +7,26 @@ import LinearProgress from 'material-ui/LinearProgress';
 import _ from 'lodash';
 
 import { styles } from '../styles';
-import { doAllItemsDetailData } from '../actions';
+import { doTransferItemDetailData } from '../actions';
 
-class PageListItem extends React.Component {
+class ItemCube extends React.Component {
   showData(data) {
-    const { doAllItemsDetailData } = this.props;
+    const { doTransferItemDetailData } = this.props;
     const rootDom = [];
     _.map(data, (i, k) => {
       rootDom.push(
         <Col style={styles.Col} key={k} xs={12} sm={6} md={6} lg={6} >
           <Card
-            style={styles.PageListItem.rectangle}
+            style={styles.ItemCube.rectangle}
             onClick={() => {
               return (
               browserHistory.push(`/admin/inventory/all-items/${i.ItemName}`),
-              doAllItemsDetailData({ DetailData: data[k] }));
+              doTransferItemDetailData({ detailData: data[k] }));
             }}
           >
             <CardText>
               <Col xs={6} sm={6} md={4}>
-                <div style={styles.PageListItem.Circle} />
+                <div style={styles.ItemCube.Circle} />
               </Col>
               <Col xs={6} sm={6} md={8}>
                 <b>Item Name:</b><u>{i.ItemName}</u>
@@ -59,18 +59,17 @@ class PageListItem extends React.Component {
       );
     }
     return (
-      <Row style={styles.PageListItem.RowPageSize}>
+      <Row style={styles.ItemCube.RowPageSize}>
         {data ? this.showData(data) : '' };
       </Row>
-
     );
   }
 }
 
-PageListItem.propTypes = {
+ItemCube.propTypes = {
   data: PropTypes.array,
 };
-PageListItem.defaultProps = {
+ItemCube.defaultProps = {
   data: [],
 };
 const mapStateToProps = (state) => {
@@ -78,10 +77,9 @@ const mapStateToProps = (state) => {
     ...state.admin,
   };
 };
-
 export default connect(
   mapStateToProps,
   {
-    doAllItemsDetailData,
+    doTransferItemDetailData,
   },
-)(PageListItem);
+)(ItemCube);

@@ -26,7 +26,6 @@ class PieChartCard extends React.Component {
         </text>
       );
     };
-
     const { title, subtitle } = this.props;
     return (
       <Card style={{ minHeight: '100px', minWidth: '100px' }}>
@@ -62,10 +61,8 @@ class PieChartCard extends React.Component {
     );
   }
 }
-
 PieChartCard.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
 };
-
 export default PieChartCard;

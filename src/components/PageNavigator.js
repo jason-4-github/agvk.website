@@ -44,9 +44,7 @@ class PageNavigator extends React.Component {
     );
   }
 }
-
 PageNavigator.propTypes = {
   pages: PropTypes.array,
 };
-
 export default PageNavigator;

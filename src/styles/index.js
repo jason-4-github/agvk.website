@@ -139,7 +139,7 @@ export const styles = {
       position: 'fixed',
     },
   },
-  PageListItem: {
+  ItemCube: {
     rectangle: {
       height: 100,
       width: '100%',
@@ -158,7 +158,7 @@ export const styles = {
       overflow: 'auto',
     },
   },
-  AllItemsGreneralInfo: {
+  ItemsGreneralInfo: {
     tablestyle: {
       width: '50%',
       position: 'absolute',
@@ -172,7 +172,7 @@ export const styles = {
       borderRadius: 100,
       border: '5px #d0d0d0 solid',
     },
-    tabletd: {
+    tableTd: {
       width: '30%',
     },
   },

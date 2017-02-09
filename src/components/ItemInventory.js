@@ -20,7 +20,7 @@ import {
   doHighlightLocations,
 } from '../actions';
 
-class AllItemsInventory extends React.Component {
+class ItemInventory extends React.Component {
   static showData(data) {
     const rootDom = [];
     _.map(data, (i, k) => {
@@ -117,7 +117,7 @@ class AllItemsInventory extends React.Component {
                   showRowHover
                   stripedRows={false}
                 >
-                  { showRacksLocationInMapData ? AllItemsInventory.showData(showRacksLocationInMapData) : '' }
+                  { showRacksLocationInMapData ? ItemInventory.showData(showRacksLocationInMapData) : '' }
                 </TableBody>
               </Table>
             </CardText>
@@ -126,14 +126,13 @@ class AllItemsInventory extends React.Component {
       </Row>
     );
   }
-
 }
 const mapStateToProps = (state) => {
   return {
     ...state.admin,
   };
 };
-AllItemsInventory.propTypes = {
+ItemInventory.propTypes = {
   doListRacksLocation: PropTypes.func,
   doShowRacksLocation: PropTypes.func,
   Inventorydata: PropTypes.object,
@@ -143,7 +142,7 @@ AllItemsInventory.propTypes = {
   showRacksLocationInMapData: PropTypes.array,
   listRacksLocationData: PropTypes.array,
 };
-AllItemsInventory.defaultProps = {
+ItemInventory.defaultProps = {
   doListRacksLocation: null,
   doShowRacksLocation: null,
   Inventorydata: null,
@@ -160,4 +159,4 @@ export default connect(
     doShowRacksLocation,
     doHighlightLocations,
   },
-)(AllItemsInventory);
+)(ItemInventory);

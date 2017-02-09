@@ -8,8 +8,6 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { styles } from '../styles';
 
 class LoginForm extends React.Component {
-
-
   static showSnackbar() {
     return (
       <Snackbar
@@ -100,12 +98,10 @@ class LoginForm extends React.Component {
     );
   }
 }
-
 LoginForm.propTypes = {
   isLoginLoading: PropTypes.bool,
   isLoginPass: PropTypes.bool,
   isLoginFormOpen: PropTypes.bool,
   doLogin: PropTypes.func,
 };
-
 export default LoginForm;

@@ -21,7 +21,6 @@ class SideMenu extends React.Component {
     );
   }
 }
-
 const Options = (props) => {
   const rootDom = [];
   _.map(items, (i, k) => {
@@ -88,7 +87,6 @@ const Options = (props) => {
       );
     }
   });
-
   return (
     <Drawer
       open={props.isOpen}
@@ -100,12 +98,10 @@ const Options = (props) => {
     </Drawer>
   );
 };
-
 SideMenu.propTypes = {
   isSideMenuOpen: PropTypes.bool,
 };
 SideMenu.defaultProps = {
   isSideMenuOpen: false,
-
 };
 export default SideMenu;

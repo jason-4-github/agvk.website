@@ -5,12 +5,13 @@ import RaisedButton from 'material-ui/RaisedButton';
 
 import { styles } from '../../../styles';
 import PageNavigator from '../../../components/PageNavigator';
-import PageListItem from '../../../components/PageListItem';
-import { doDownloadInventoryReport, doListAllItemsData } from '../../../actions';
+import ItemCube from '../../../components/ItemCube';
+import { doDownloadInventoryReport, doListAllItems } from '../../../actions';
+
 class AllItemsContainer extends React.Component {
   componentDidMount() {
-    const { doListAllItemsData } = this.props;
-    doListAllItemsData();
+    const { doListAllItems } = this.props;
+    doListAllItems();
   }
   handleClickDownload() {
     const { doDownloadInventoryReport } = this.props;
@@ -27,7 +28,7 @@ class AllItemsContainer extends React.Component {
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
-        <PageListItem data={selectRackDetailData} />
+        <ItemCube data={selectRackDetailData} />
         <br />
         <Row style={styles.Row}>
           <Col
@@ -48,21 +49,19 @@ class AllItemsContainer extends React.Component {
 }
 
 AllItemsContainer.propTypes = {
-  SelectRackDetailData: PropTypes.array,
-  doListAllItemsData: PropTypes.func,
+  selectRackDetailData: PropTypes.array,
+  doListAllItems: PropTypes.func,
   doDownloadInventoryReport: PropTypes.func,
 };
-
 const mapStateToProps = (state) => {
   return {
     ...state.admin,
   };
 };
-
 export default connect(
   mapStateToProps,
   {
     doDownloadInventoryReport,
-    doListAllItemsData,
+    doListAllItems,
   },
 )(AllItemsContainer);

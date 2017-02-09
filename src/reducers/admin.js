@@ -17,7 +17,7 @@ import {
   LIST_ALLITEMS_REQUEST,
   LIST_ALLITEMS_SUCCESS,
   LIST_ALLITEMS_FAILURE,
-  LIST_ALLITEMS_DETAILDATA,
+  TRANSFER_ITEM_DETAILDATA,
   DOWNLOAD_INVENTORY_REPORT_REQUEST,
   DOWNLOAD_INVENTORY_REPORT_SUCCESS,
   DOWNLOAD_INVENTORY_REPORT_FAILURE,
@@ -56,8 +56,7 @@ const admin = (state = initialState, action) => {
         ...state,
         ...action,
       };
-    case LIST_ALLITEMS_DETAILDATA:
-    // console.log('enter reducer')
+    case TRANSFER_ITEM_DETAILDATA:
       return {
         ...state,
         ...action,

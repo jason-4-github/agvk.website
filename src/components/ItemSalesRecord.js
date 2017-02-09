@@ -1,7 +1,7 @@
 import React from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-class AllItemsSalesRecord extends React.Component {
+class ItemSalesRecord extends React.Component {
   render() {
     return (
       <Row>
@@ -11,5 +11,4 @@ class AllItemsSalesRecord extends React.Component {
     );
   }
 }
-
-export default AllItemsSalesRecord;
+export default ItemSalesRecord;
