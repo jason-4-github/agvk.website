@@ -117,7 +117,10 @@ class ItemInventory extends React.Component {
                   showRowHover
                   stripedRows={false}
                 >
-                  { showRacksLocationInMapData ? ItemInventory.showData(showRacksLocationInMapData) : '' }
+                  { showRacksLocationInMapData
+                              ? ItemInventory.showData(showRacksLocationInMapData)
+                              : ''
+                  }
                 </TableBody>
               </Table>
             </CardText>

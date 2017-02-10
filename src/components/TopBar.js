@@ -17,8 +17,8 @@ class TopBar extends React.Component {
   render() {
     const { isSideMenuOpen } = this.props;
     const toggleStyle = isSideMenuOpen === true
-                ? styles.topBarWithSideMenu
-                : styles.topBarWithoutSideMenu;
+                        ? styles.topBarWithSideMenu
+                        : styles.topBarWithoutSideMenu;
     return (
       <AppBar
         title="AGVK"
