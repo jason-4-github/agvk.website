@@ -7,7 +7,7 @@ import { localStorage } from '../index';
 
 // TODO(S.C.) => url need to be changed as production
 const serverConfig = {
-  url: 'http://10.5.100.66:4001/apis',
+  url: 'http://172.21.37.5:4001/apis',
 };
 
 function checkStatus(response) {
@@ -194,4 +194,26 @@ export const doDownloadInventoryReport = (passProps) => (dispatch, getState) => 
         type: types.DOWNLOAD_INVENTORY_REPORT_FAILURE,
       });
     });
+};
+
+export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
+  dispatch({
+    type: types.LIST_ALLITEMS_SELECT_REQUEST,
+    selectrackdetaildata: []
+  });
+  fetch(serverConfig.url + '/listAllItems')
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(function(data) {
+      dispatch({
+        type: types.LIST_ALLITEMS_SELECT_SUCCESS,
+        detailData: data,
+      });
+    })
+    .catch(function(error) {
+      dispatch({
+        type: types.LIST_ALLITEMS_SELECT_FAILURE,
+        datailData: []
+      });
+    })
 };

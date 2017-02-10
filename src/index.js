@@ -12,6 +12,7 @@ import WMSStatusContainer from './containers/admin/sidemenu/WMSStatusContainer';
 import HandlingItemContainer from './containers/admin/sidemenu/HandlingItemContainer';
 import ByLocationContainer from './containers/admin/sidemenu/ByLocationContainer';
 import ByItemContainer from './containers/admin/sidemenu/ByItemContainer';
+import ByDateContainer from './containers/admin/sidemenu/ByDateContainer';
 import AllItemsContainer from './containers/admin/sidemenu/AllItemsContainer';
 import configureStore from './store/configureStore';
 
@@ -32,6 +33,7 @@ const RouterDom = () => {
         <Route path="/admin/summary/handling-item" component={HandlingItemContainer} />
         <Route path="/admin/inventory/by-location" component={ByLocationContainer} />
         <Route path="/admin/inventory/by-item" component={ByItemContainer} />
+        <Route path="/admin/inventory/by-date" component={ByDateContainer} />
         <Route path="/admin/inventory/all-items" component={AllItemsContainer} />
       </Route>
     </Router>
