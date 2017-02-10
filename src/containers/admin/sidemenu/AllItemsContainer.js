@@ -20,20 +20,20 @@ class AllItemsContainer extends React.Component {
   render() {
     const {
       isSideMenuOpen,
-      selectRackDetailData,
+      listAllItemData,
     } = this.props;
     const toggleStyle = isSideMenuOpen === true
-      ? styles.contentWithSideMenu
-      : styles.contentWithoutSideMenu;
+                        ? styles.contentWithSideMenu
+                        : styles.contentWithoutSideMenu;
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
-        <ItemCube data={selectRackDetailData} />
+        <ItemCube data={listAllItemData} />
         <br />
         <Row style={styles.Row}>
           <Col
             xs={12} sm={6} md={6} lg={6}
-            style={styles.AllItemsContainer.ColRightButton}
+            style={styles.AllItemsContainer.colRightButton}
           >
             <RaisedButton
               label="Download Inventory Report"
@@ -49,7 +49,7 @@ class AllItemsContainer extends React.Component {
 }
 
 AllItemsContainer.propTypes = {
-  selectRackDetailData: PropTypes.array,
+  listAllItemData: PropTypes.array,
   doListAllItems: PropTypes.func,
   doDownloadInventoryReport: PropTypes.func,
 };

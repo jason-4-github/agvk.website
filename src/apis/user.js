@@ -9,7 +9,6 @@ export default {
       }, timeout || TIMEOUT);
       return;
     }
-
     setTimeout(() => {
       cb('ok');
     }, timeout || TIMEOUT);

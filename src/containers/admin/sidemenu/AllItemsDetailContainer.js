@@ -4,7 +4,7 @@ import { Tabs, Tab } from 'material-ui/Tabs';
 
 import { styles } from '../../../styles';
 import PageNavigator from '../../../components/PageNavigator';
-import ItemsGreneralInfo from '../../../components/ItemsGreneralInfo';
+import ItemGreneralInfo from '../../../components/ItemGreneralInfo';
 import ItemInventory from '../../../components/ItemInventory';
 import ItemSalesRecord from '../../../components/ItemSalesRecord';
 
@@ -12,26 +12,26 @@ class AllItemsDetailContainer extends React.Component {
   render() {
     const {
         isSideMenuOpen,
-        detailData,
+        itemDetailData,
       } = this.props;
     const toggleStyle = isSideMenuOpen === true
-      ? styles.contentWithSideMenu
-      : styles.contentWithoutSideMenu;
+                        ? styles.contentWithSideMenu
+                        : styles.contentWithoutSideMenu;
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
         <h4>
-          <b>{detailData.ItemName}</b>
+          <b>{itemDetailData.ItemName}</b>
         </h4>
         <Tabs>
           <Tab label="GENERAL INFO">
-            <ItemsGreneralInfo Greneraldata={detailData} />
+            <ItemGreneralInfo Greneraldata={itemDetailData} />
           </Tab>
           <Tab label="INVENTORY">
-            <ItemInventory Inventorydata={detailData} />
+            <ItemInventory Inventorydata={itemDetailData} />
           </Tab>
           <Tab label="SALES RECORD">
-            <ItemSalesRecord Salesrecorddata={detailData} />
+            <ItemSalesRecord Salesrecorddata={itemDetailData} />
           </Tab>
         </Tabs>
       </div>
@@ -39,7 +39,7 @@ class AllItemsDetailContainer extends React.Component {
   }
 }
 AllItemsDetailContainer.propTypes = {
-  detailData: PropTypes.object,
+  itemDetailData: PropTypes.object,
   isSideMenuOpen: PropTypes.bool,
 };
 const mapStateToProps = (state) => {

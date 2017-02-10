@@ -29,7 +29,6 @@ class LoginForm extends React.Component {
   }
   handleClickLogin() {
     const { doLogin } = this.props;
-
     doLogin({
       username: this.state.username,
       password: this.state.password,
@@ -79,8 +78,9 @@ class LoginForm extends React.Component {
           </div>
           <div style={styles.LoginForm.form.loginButton}>
             { isLoginLoading
-              ? <CircularProgress size={20} style={styles.LoginForm.form.spinner} />
-              : '' }
+                ? <CircularProgress size={20} style={styles.LoginForm.form.spinner} />
+                : ''
+            }
             <RaisedButton
               label="Login"
               className="border-color-button"
@@ -91,8 +91,9 @@ class LoginForm extends React.Component {
           </div>
           <p style={styles.LoginForm.form.footer}>© 2016 New Kinpo Group</p>
           {(isLoginPass === false && (isLoginPass === false && this.state.isTyping === false))
-            ? this.showSnackbar()
-            : '' }
+                            ? this.showSnackbar()
+                            : ''
+          }
         </div>
       </Drawer>
     );

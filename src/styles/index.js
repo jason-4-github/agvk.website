@@ -132,7 +132,7 @@ export const styles = {
     },
   },
   AllItemsContainer: {
-    ColRightButton: {
+    colRightButton: {
       marginBottom: 10,
       bottom: 0,
       right: -300,
@@ -145,27 +145,27 @@ export const styles = {
       width: '100%',
       cursor: 'pointer',
     },
-    Circle: {
+    circle: {
       height: 70,
       width: 70,
       backgroundColor: '#66B3FF',
       borderRadius: 70,
       border: '5px #d0d0d0 solid',
     },
-    RowPageSize: {
+    rowPageSize: {
       marginBottom: 0,
       height: '66vh',
       overflow: 'auto',
     },
   },
-  ItemsGreneralInfo: {
+  ItemGreneralInfo: {
     tablestyle: {
       width: '50%',
       position: 'absolute',
       left: '30%',
       textalign: 'center',
     },
-    Circle: {
+    circle: {
       height: 100,
       width: 100,
       backgroundColor: '#66B3FF',

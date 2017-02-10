@@ -4,13 +4,13 @@ import Checkbox from 'material-ui/Checkbox';
 
 import { styles } from '../styles';
 
-class ItemsGreneralInfo extends React.Component {
+class ItemGreneralInfo extends React.Component {
   render() {
     return (
       <Grid>
         <Row style={styles.Row}>
           <Col xs={6} sm={6} md={4}>
-            <div style={styles.ItemsGreneralInfo.Circle} />
+            <div style={styles.ItemGreneralInfo.circle} />
           </Col>
           <Col xs={6} sm={6} md={8}>
             <Checkbox label="Available for Issue" />
@@ -24,24 +24,24 @@ class ItemsGreneralInfo extends React.Component {
             <Table bordered>
               <tbody>
                 <tr>
-                  <td style={styles.ItemsGreneralInfo.tableTd}>
+                  <td style={styles.ItemGreneralInfo.tableTd}>
                     <b>Product Type:</b>
                   </td>
                   <td />
                 </tr>
                 <tr>
-                  <td style={styles.ItemsGreneralInfo.tableTd}>
+                  <td style={styles.ItemGreneralInfo.tableTd}>
                     <b>Barcode:</b>
                   </td>
                   <td />
                 </tr>
                 <tr>
-                  <td style={styles.ItemsGreneralInfo.tableTd}>
+                  <td style={styles.ItemGreneralInfo.tableTd}>
                     <b>Unit Price: </b>
                   </td>
                 </tr>
                 <tr>
-                  <td style={styles.ItemsGreneralInfo.tableTd}>
+                  <td style={styles.ItemGreneralInfo.tableTd}>
                     <b>Dimension:</b>
                   </td>
                   <td />
@@ -54,7 +54,7 @@ class ItemsGreneralInfo extends React.Component {
     );
   }
 }
-ItemsGreneralInfo.propTypes = {
+ItemGreneralInfo.propTypes = {
   Greneraldata: PropTypes.object,
 };
-export default ItemsGreneralInfo;
+export default ItemGreneralInfo;

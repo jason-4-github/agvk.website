@@ -20,7 +20,6 @@ class RackLocationTableCard extends React.Component {
   }
   render() {
     const { data } = this.props;
-
     return (
       <Card>
         <CardText>
@@ -54,8 +53,9 @@ class RackLocationTableCard extends React.Component {
               stripedRows={false}
             >
               { data
-                ? RackLocationTableCard.showData(data)
-                : '' }
+                  ? RackLocationTableCard.showData(data)
+                  : ''
+              }
             </TableBody>
           </Table>
         </CardText>

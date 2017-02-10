@@ -21,12 +21,12 @@ class ItemCube extends React.Component {
             onClick={() => {
               return (
               browserHistory.push(`/admin/inventory/all-items/${i.ItemName}`),
-              doTransferItemDetailData({ detailData: data[k] }));
+              doTransferItemDetailData({ itemDetailData: data[k] }));
             }}
           >
             <CardText>
               <Col xs={6} sm={6} md={4}>
-                <div style={styles.ItemCube.Circle} />
+                <div style={styles.ItemCube.circle} />
               </Col>
               <Col xs={6} sm={6} md={8}>
                 <b>Item Name:</b><u>{i.ItemName}</u>
@@ -59,7 +59,7 @@ class ItemCube extends React.Component {
       );
     }
     return (
-      <Row style={styles.ItemCube.RowPageSize}>
+      <Row style={styles.ItemCube.rowPageSize}>
         {data ? this.showData(data) : '' };
       </Row>
     );

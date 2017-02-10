@@ -166,7 +166,8 @@ class ByItemContainer extends React.Component {
             >
               { data
                 ? this.showData(data)
-                : ''}
+                : ''
+              }
             </TableBody>
           </Table>
         </CardText>
@@ -218,8 +219,8 @@ class ByItemContainer extends React.Component {
       focusHighLightLocation,
     } = this.props;
     const toggleStyle = isSideMenuOpen === true
-      ? styles.contentWithSideMenu
-      : styles.contentWithoutSideMenu;
+                        ? styles.contentWithSideMenu
+                        : styles.contentWithoutSideMenu;
 
     return (
       <div style={toggleStyle}>

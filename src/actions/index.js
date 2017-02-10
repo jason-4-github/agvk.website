@@ -147,7 +147,7 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
 export const doListAllItems= (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LIST_ALLITEMS_REQUEST,
-    selectRackDetailData: [],
+    listAllItemData: [],
   });
   fetch(`${serverConfig.url}/listAllItems`)
     .then(checkStatus)
@@ -155,13 +155,13 @@ export const doListAllItems= (passProps) => (dispatch, getState) => {
     .then((data) => {
       dispatch({
         type: types.LIST_ALLITEMS_SUCCESS,
-        selectRackDetailData: data,
+        listAllItemData: data,
       });
     })
     .catch(() => {
       dispatch({
         type: types.LIST_ALLITEMS_FAILURE,
-        selectRackDetailData: [],
+        listAllItemData: [],
       });
     });
 };
@@ -169,7 +169,7 @@ export const doListAllItems= (passProps) => (dispatch, getState) => {
 export const doTransferItemDetailData = (passProps) => (dispatch) => {
   dispatch({
     type: types.TRANSFER_ITEM_DETAILDATA,
-    detailData: passProps.detailData,
+    itemDetailData: passProps.itemDetailData,
   });
 };
 

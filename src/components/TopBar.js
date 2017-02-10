@@ -10,15 +10,15 @@ import { styles } from '../styles';
 class TopBar extends React.Component {
   handleToggleSideMenu(isSideMenuOpen) {
     const { doToggleSideMenu } = this.props;
-
     doToggleSideMenu({
       isSideMenuOpen: !isSideMenuOpen,
     });
   }
   render() {
     const { isSideMenuOpen } = this.props;
-    const toggleStyle = isSideMenuOpen === true ?
-    styles.topBarWithSideMenu : styles.topBarWithoutSideMenu;
+    const toggleStyle = isSideMenuOpen === true
+                ? styles.topBarWithSideMenu
+                : styles.topBarWithoutSideMenu;
     return (
       <AppBar
         title="AGVK"
