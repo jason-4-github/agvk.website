@@ -20,6 +20,7 @@ import {
   LIST_ALLITEMS_SELECT_REQUEST,
   LIST_ALLITEMS_SELECT_SUCCESS,
   LIST_ALLITEMS_SELECT_FAILURE,
+  LISTENING_CHANGED_OPTIONS,
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -81,6 +82,11 @@ const admin = (state = initialState, action) => {
           ...state,
           ...action,
         };
+    case LISTENING_CHANGED_OPTIONS:
+      return {
+        ...state,
+        ...action,
+      };
     default:
       return {
         ...state,

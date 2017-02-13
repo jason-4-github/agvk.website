@@ -4,9 +4,9 @@ import { Row, Col } from 'react-bootstrap';
 import { Card, CardText } from 'material-ui/Card';
 import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
 import RaisedButton from 'material-ui/RaisedButton';
-import CircularProgress from 'material-ui/CircularProgress';
 import DatePicker from 'material-ui/DatePicker';
 import _ from 'lodash';
+import moment from 'moment';
 
 import {
   Table,
@@ -19,15 +19,16 @@ import {
 
 import { styles } from '../../../styles';
 import PageNavigator from '../../../components/PageNavigator';
-import { doAllItemsSelectData } from '../../../actions';
+import { doAllItemsSelectData, listeningChangedOptions } from '../../../actions';
 
 class ByDateContainer extends React.Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      minDate: {},
-      maxDate: {},
+      fromDate: '',
+      toDate: '',
+      filter: '',
       autoOk: true,
       disableYearSelection: false,
     };
@@ -35,6 +36,18 @@ class ByDateContainer extends React.Component {
   componentDidMount() {
     const { doAllItemsSelectData } = this.props;
     doAllItemsSelectData();
+  }
+  handleChangeFilter = (event, value) => {
+    this.setState({
+      filter: value,
+    });
+    const { listeningChangedOptions } = this.props;
+    const { fromDate, toDate } = this.state;
+    listeningChangedOptions({
+      fromDate,
+      toDate,
+      filter: value,
+    });
   }
   showFilterCard() {
     return (
@@ -44,10 +57,13 @@ class ByDateContainer extends React.Component {
             <Col xs={4} sm={4} md={3} lg={3} />
             <Col
               xs={4} sm={4} md={6} lg={6}
-              style={{ ...styles.Col, ...{ height: '20vh', paddingTop: '30px' } }}
+              style={{
+                ...styles.Col,
+                ...{ height: '18vh', paddingTop: '25px' } }}
             >
               <RadioButtonGroup
                 name="filter"
+                onChange={this.handleChangeFilter}
               >
                 <RadioButton
                   value="Receive"
@@ -72,21 +88,44 @@ class ByDateContainer extends React.Component {
     );
   }
   handleChangeMinDate = (event, date) => {
+    const { toDate } = this.state;
+    const tmpDate = moment(date).format('YYYY-MM-DD');
     this.setState({
-      minDate: date,
+      fromDate: tmpDate,
     });
-    console.log(date);
+    const { listeningChangedOptions } = this.props;
+    const { fromDate, filter } = this.state;
+    listeningChangedOptions({
+      fromDate,
+      toDate,
+      filter,
+    });
   };
   handleChangeMaxDate = (event, date) => {
+    const tmpDate = moment(date).format('YYYY-MM-DD');
     this.setState({
-      maxDate: date,
+      toDate: tmpDate,
+    });
+    const { listeningChangedOptions } = this.props;
+    const { fromDate, toDate, filter } = this.state;
+    listeningChangedOptions({
+      fromDate,
+      toDate,
+      filter,
     });
   };
-  // TODO(JasonHsu): fix or delete.
   minDisableDate = (date) => {
-    const disableDate = new Date();
-    return date > disableDate;
+    const disableDate = moment().format('YYYY-MM-DD');
+    const tmpDate = moment(date).format('YYYY-MM-DD');
+    return (tmpDate < this.state.fromDate || tmpDate > disableDate);
   };
+  maxDisableDate = (date) => {
+    const disableDate = moment().format('YYYY-MM-DD');
+    const tmpDate = moment(date).format('YYYY-MM-DD');
+    return (this.state.toDate === ''
+      ? tmpDate > disableDate
+      : (tmpDate > disableDate || tmpDate > this.state.toDate));
+  }
   showDatePickerCard() {
     return (
       <Card>
@@ -95,14 +134,14 @@ class ByDateContainer extends React.Component {
             <Col xs={3} sm={3} md={3} lg={3} />
             <Col
               xs={6} sm={6} md={6} lg={6}
-              style={{ ...styles.Col, ...{ height: '20vh' } }}
+              style={{ ...styles.Col, ...{ height: '18vh' } }}
             >
               <DatePicker
                 onChange={this.handleChangeMinDate}
                 autoOk={this.state.autoOk}
                 floatingLabelText="From"
                 disableYearSelection={this.state.disableYearSelection}
-                shouldDisableDate={this.minDisableDate}
+                shouldDisableDate={this.maxDisableDate}
               />
               <DatePicker
                 onChange={this.handleChangeMaxDate}
@@ -127,7 +166,9 @@ class ByDateContainer extends React.Component {
           <TableRowColumn>{i.ItemCount}</TableRowColumn>
           <TableRowColumn>{i.Vendor}</TableRowColumn>
           <TableRowColumn>{i.DateCode}</TableRowColumn>
-          <TableRowColumn>{`${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`}</TableRowColumn>
+          <TableRowColumn>
+            {`${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`}
+          </TableRowColumn>
         </TableRow>);
     });
     return (rootDom);
@@ -221,5 +262,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { doAllItemsSelectData },
+  { doAllItemsSelectData, listeningChangedOptions },
 )(ByDateContainer);

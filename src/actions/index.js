@@ -217,3 +217,10 @@ export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
       });
     })
 };
+
+export const listeningChangedOptions = (passProps) => (dispatch, getState) => {
+  dispatch({
+    type: types.LISTENING_CHANGED_OPTIONS,
+    changedOptions: passProps,
+  });
+};
