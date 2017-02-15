@@ -4,6 +4,7 @@ import 'whatwg-fetch';
 import * as types from '../constants/ActionTypes';
 import user from '../apis/user';
 import { localStorage } from '../index';
+import _ from 'lodash';
 
 // TODO(S.C.) => url need to be changed as production
 const serverConfig = {
@@ -205,9 +206,20 @@ export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
     .then(checkStatus)
     .then(parseJSON)
     .then(function(data) {
+      const newData = [];
+      _.map(data, (i,k) => {
+        const newObj = {};
+        newObj.ItemName = i.ItemName;
+        newObj.ItemExternalID =  i.ItemExternalID;
+        newObj.ItemCount = i.ItemCount;
+        newObj.Vendor = i.Vendor;
+        newObj.DateCode = i.DateCode;
+        newObj.Location = i.RackName + ` ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
+        newData.push(newObj);
+      });
       dispatch({
         type: types.LIST_ALLITEMS_SELECT_SUCCESS,
-        detailData: data,
+        detailData: newData,
       });
     })
     .catch(function(error) {

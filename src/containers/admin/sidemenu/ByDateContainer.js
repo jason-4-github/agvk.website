@@ -7,16 +7,10 @@ import RaisedButton from 'material-ui/RaisedButton';
 import DatePicker from 'material-ui/DatePicker';
 import _ from 'lodash';
 import moment from 'moment';
+import { Table, Column, Cell } from 'fixed-data-table-2';
+import dimensions from 'react-dimensions';
 
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-
+import '../../../../public/stylesheets/tableStyle.css';
 import { styles } from '../../../styles';
 import PageNavigator from '../../../components/PageNavigator';
 import { doAllItemsSelectData, listeningChangedOptions } from '../../../actions';
@@ -58,8 +52,7 @@ class ByDateContainer extends React.Component {
             <Col
               xs={4} sm={4} md={6} lg={6}
               style={{
-                ...styles.Col,
-                ...{ height: '18vh', paddingTop: '25px' } }}
+                ...styles.Col, ...styles.ByDatePage.filterStyle }}
             >
               <RadioButtonGroup
                 name="filter"
@@ -131,10 +124,15 @@ class ByDateContainer extends React.Component {
       <Card>
         <CardText>
           <Row style={styles.Row}>
-            <Col xs={3} sm={3} md={3} lg={3} />
+            <Col style={styles.ByDatePage.textCenter}>
+              Date:
+            </Col>
+          </Row>
+          <Row style={styles.Row}>
+            <Col xs={2} sm={2} md={2} lg={2} />
             <Col
-              xs={6} sm={6} md={6} lg={6}
-              style={{ ...styles.Col, ...{ height: '18vh' } }}
+              xs={8} sm={8} md={8} lg={8}
+              style={{ ...styles.Col, ...styles.ByDatePage.datePickerDiv }}
             >
               <DatePicker
                 onChange={this.handleChangeMinDate}
@@ -142,6 +140,8 @@ class ByDateContainer extends React.Component {
                 floatingLabelText="From"
                 disableYearSelection={this.state.disableYearSelection}
                 shouldDisableDate={this.maxDisableDate}
+                textFieldStyle={styles.ByDatePage.datePickerText}
+                style={styles.ByDatePage.dateInput}
               />
               <DatePicker
                 onChange={this.handleChangeMaxDate}
@@ -149,6 +149,7 @@ class ByDateContainer extends React.Component {
                 floatingLabelText="To"
                 disableYearSelection={this.state.disableYearSelection}
                 shouldDisableDate={this.minDisableDate}
+                textFieldStyle={styles.ByDatePage.datePickerText}
               />
             </Col>
           </Row>
@@ -156,58 +157,62 @@ class ByDateContainer extends React.Component {
       </Card>
     );
   }
-  showData(data) {
+  showData(data, tableWidth) {
     const rootDom = [];
-    _.map(data, (i, k) => {
-      rootDom.push(
-        <TableRow key={k} selected={false}>
-          <TableRowColumn>{i.ItemName}</TableRowColumn>
-          <TableRowColumn>{i.ItemExternalID}</TableRowColumn>
-          <TableRowColumn>{i.ItemCount}</TableRowColumn>
-          <TableRowColumn>{i.Vendor}</TableRowColumn>
-          <TableRowColumn>{i.DateCode}</TableRowColumn>
-          <TableRowColumn>
-            {`${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`}
-          </TableRowColumn>
-        </TableRow>);
+    const tmpA = ['Part. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location'];
+    const tmpB = ['ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location'];
+    _.map(tmpB, (d, i) => {
+      if (d === 'ItemName' || d === 'ItemExternalID') {
+        rootDom.push(
+          <Column
+            header={<Cell>{tmpA[i]}</Cell>}
+            cell={({ rowIndex, ...props }) => (
+              <Cell {...props} >
+                {data[rowIndex][d]}
+              </Cell>
+            )}
+            width={tableWidth / 5.5}
+            key={d + i}
+            fixed
+          />,
+        );
+      } else {
+        rootDom.push(
+          <Column
+            header={<Cell>{tmpA[i]}</Cell>}
+            cell={({ rowIndex, ...props }) => (
+              <Cell {...props}>
+                {data[rowIndex][d]}
+              </Cell>
+            )}
+            width={tableWidth / 5.5}
+            key={d + i}
+          />,
+        );
+      }
     });
     return (rootDom);
   }
-  showResultTableCard(data) {
+  showResultTableCard(data, isSideMenuOpen) {
+    let tableWidth = (isSideMenuOpen
+      ? window.innerWidth - 356
+      : window.innerWidth - 100);
     return (
       <Card>
-        <CardText>
-          <Table
-            height="270px"
-            fixedHeader
-            selectable={false}
-            multiSelectable={false}
-          >
-            <TableHeader
-              displaySelectAll={false}
-              adjustForCheckbox={false}
-              enableSelectAll={false}
-            >
-              <TableRow>
-                <TableHeaderColumn tooltip="Part. No.">Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Cust. Part. No.">Cust. Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="QTY">QTY</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Vendor">Vendor</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Date">Date</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Location">Location</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              displayRowCheckbox={false}
-              deselectOnClickaway
-              showRowHover
-              stripedRows={false}
-            >
-              { data
-                ? this.showData(data)
-                : ''}
-            </TableBody>
-          </Table>
+        <CardText style={styles.ByDatePage.textCenter}>
+          {data
+            ? (
+              <Table
+                rowsCount={data.length}
+                rowHeight={50}
+                headerHeight={50}
+                width={tableWidth}
+                height={500}
+              >
+                {this.showData(data, tableWidth)}
+              </Table>)
+            : ''
+          }
         </CardText>
       </Card>
     );
@@ -223,7 +228,7 @@ class ByDateContainer extends React.Component {
         <Row style={styles.Row}>
           <Col
             xs={12} sm={5} md={5} lg={5}
-            style={{ ...styles.Col, ...{ textAlign: 'center' } }}
+            style={{ ...styles.Col, ...styles.ByDatePage.textCenter }}
           >
             {this.showFilterCard()}
           </Col>
@@ -235,7 +240,7 @@ class ByDateContainer extends React.Component {
           </Col>
           <Col
             xs={12} sm={2} md={2} lg={2}
-            style={{ ...styles.Col, ...{ textAlign: 'center' } }}
+            style={{ ...styles.Col, ...styles.ByDatePage.textCenter }}
           >
             <RaisedButton
               label="Search"
@@ -247,7 +252,7 @@ class ByDateContainer extends React.Component {
             xs={12} sm={12} md={12} lg={12}
             style={styles.Col}
           >
-            {this.showResultTableCard(detailData)}
+            {this.showResultTableCard(detailData, isSideMenuOpen)}
           </Col>
         </Row>
       </div>

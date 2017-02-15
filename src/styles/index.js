@@ -1,9 +1,10 @@
 export const styles = {
   Row: {
-    marginBottom: 0
+    marginBottom: 0,
+    marginRight: -10,
   },
   Col: {
-    marginBottom: 10
+    marginBottom: 10,
   },
   Divider: {
     marginBottom: 10,
@@ -130,5 +131,23 @@ export const styles = {
         bottom: '10px'
       }
     }
-  }
+  },
+  ByDatePage: {
+    datePickerText: {
+      width: '100%',
+    },
+    datePickerDiv: {
+      height: '15vh',
+    },
+    dateInput: {
+      marginTop: '-25px',
+    },
+    textCenter: {
+      textAlign: 'center',
+    },
+    filterStyle: {
+      height: '18vh',
+      paddingTop: '25px',
+    },
+  },
 };
