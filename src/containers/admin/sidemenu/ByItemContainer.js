@@ -7,17 +7,11 @@ import TextField from 'material-ui/TextField';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import { Table, Column, Cell } from 'fixed-data-table-2';
 
 
 import { styles } from '../../../styles';
+import '../../../../public/stylesheets/tableStyle.css';
 import Phase1 from '../map/Phase1';
 import PageNavigator from '../../../components/PageNavigator';
 import {
@@ -110,82 +104,74 @@ class ByItemContainer extends React.Component {
       );
     }
     if (!data) { return ''; }
-    const { listRacksLocationData, showRacksLocationInMapData } = this.props;
-    _.map(showRacksLocationInMapData, (d) => {
-      _.filter(listRacksLocationData, (dd) => {
-        if (d.RackName === dd.rackName) {
-          d.location = dd.rackLocation.trim();
-        }
-      });
-    });
+    const { isSideMenuOpen } = this.props;
+    let tableWidth = (isSideMenuOpen
+      ? (window.innerWidth * 0.75) - 256
+      : window.innerWidth * 0.7);
+    if (window.innerWidth < 767) {
+      tableWidth = (isSideMenuOpen
+        ? window.innerWidth - 336
+        : window.innerWidth - 80);
+    }
     return (
       <Card>
         <CardText>
-          <Table
-            height="270px"
-            fixedHeader
-            selectable={false}
-            multiSelectable={false}
-            onRowHover={(i) => {
-              const { listRacksLocationData, showRacksLocationInMapData } = this.props;
-              const locations = [];
-              _.map(showRacksLocationInMapData, (d) => {
-                _.filter(listRacksLocationData, (dd) => {
-                  if (d.RackName === dd.rackName) {
-                    locations.push(dd.rackLocation.trim());
-                    d.location = dd.rackLocation.trim();
-                  }
-                });
-              });
-              const { doHighlightLocations } = this.props;
-              doHighlightLocations({
-                highlightLocations: _.uniq(locations),
-                focusHighLightLocation: locations[i],
-              });
-            }}
-          >
-            <TableHeader
-              displaySelectAll={false}
-              adjustForCheckbox={false}
-              enableSelectAll={false}
-            >
-              <TableRow>
-                <TableHeaderColumn tooltip="Part. No.">Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Cust. Part. No.">Cust. Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="QTY">QTY</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Vendor">Vendor</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Date">Date</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Location">Location</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              displayRowCheckbox={false}
-              deselectOnClickaway
-              showRowHover
-              stripedRows={false}
-            >
-              { data
-                ? this.showData(data)
-                : ''}
-            </TableBody>
-          </Table>
+          {data
+            ? (
+              <Table
+                rowsCount={data.length}
+                rowHeight={50}
+                headerHeight={50}
+                width={tableWidth}
+                height={500}
+                onRowMouseEnter={(i,k) => {
+                  const { listRacksLocationData, showRacksLocationInMapData } = this.props;
+                  const locations = [];
+                  _.map(showRacksLocationInMapData, (d) => {
+                    _.filter(listRacksLocationData, (dd) => {
+                      if (d.RackName === dd.rackName) {
+                        locations.push(dd.rackLocation.trim());
+                      }
+                    });
+                  });
+                  const { doHighlightLocations } = this.props;
+                  doHighlightLocations({
+                    highlightLocations: _.uniq(locations),
+                    focusHighLightLocation: locations[k],
+                  });
+                }}
+              >
+                {this.showData(data, tableWidth)}
+              </Table>)
+            : ''
+          }
         </CardText>
       </Card>
     );
   }
-  showData(data) {
-    console.log(data);
+  showData(data, tableWidth) {
     const rootDom = [];
-    _.map(data, (i, k) => {
+    const tmpA = ['Part. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location'];
+    const tmpB = ['ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location'];
+    _.map(tmpB, (d, i) => {
       rootDom.push(
-        <TableRow key={k} selected={false}>
-          <TableRowColumn>{i.ItemName}</TableRowColumn>
-          <TableRowColumn>{i.ItemExternalID}</TableRowColumn>
-          <TableRowColumn>{i.ItemCount}</TableRowColumn>
-          <TableRowColumn>{i.Vendor}</TableRowColumn>
-          <TableRowColumn>{i.DateCode}</TableRowColumn>
-          <TableRowColumn>{`${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`}</TableRowColumn>
-        </TableRow>);
+        <Column
+          header={<Cell>{tmpA[i]}</Cell>}
+          cell={({ rowIndex, ...props }) => (
+            <Cell {...props}>
+              {d === 'Location'
+                ? `${data[rowIndex].RackName} ${data[rowIndex][d]}`
+                : data[rowIndex][d]}
+            </Cell>
+          )}
+          width={tableWidth / 5.5}
+          key={d + i}
+          fixed={d === 'ItemName' || d === 'ItemExternalID'
+            ? true
+            : false
+          }
+        />,
+      );
     });
     return (rootDom);
   }
