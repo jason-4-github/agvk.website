@@ -130,5 +130,23 @@ export const styles = {
         bottom: '10px'
       }
     }
-  }
+  },
+  byItemStyle: {
+    emptyCol: {
+      paddingRight: '0px',
+      paddingTop: '5px',
+      textAlign: 'right',
+    },
+    dropDownCricleBorder: {
+      borderTopLeftRadius: '20px',
+      borderBottomLeftRadius: '20px',
+    },
+    textInputCircleBorder: {
+      borderTopRightRadius: '20px',
+      borderBottomRightRadius: '20px',
+    },
+    tableContainer: {
+      paddingLeft: '20px',
+    },
+  },
 };
