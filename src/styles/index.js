@@ -149,5 +149,8 @@ export const styles = {
       height: '18vh',
       paddingTop: '25px',
     },
+    tableLeftPadding: {
+      paddingLeft: '20px',
+    },
   },
 };
