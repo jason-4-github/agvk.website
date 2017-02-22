@@ -1,11 +1,13 @@
 import React, { PropTypes } from 'react';
 import { Row, Col } from 'react-bootstrap';
 import { connect } from 'react-redux';
+import { Card, CardHeader, CardText } from 'material-ui/Card';
+import Divider from 'material-ui/Divider';
 import LinearProgress from 'material-ui/LinearProgress';
 
 import { styles } from '../../../styles';
 import Cube from '../../../components/Cube';
-import PieChartCard from '../../../components/PieChartCard';
+import PieChartModel from '../../../components/PieChartModel';
 import BarChartCard from '../../../components/BarChartCard';
 import PageNavigator from '../../../components/PageNavigator';
 import { doListWMSStatus } from '../../../actions';
@@ -74,19 +76,35 @@ class WMSStatusContainer extends React.Component {
             xs={12} sm={6} md={6} lg={6}
             style={styles.Col}
           >
-            <PieChartCard
-              title="Remaining Space"
-              subtitle=""
-            />
+            <Card style={{ minHeight: '100px', minWidth: '100px' }}>
+              <CardHeader
+                title="Remaining Space"
+                subtitle=""
+                style={styles.Cube.card.header}
+                titleStyle={styles.Cube.card.titleStyle}
+              />
+              <CardText style={{ height: '300px', width: '100%' }}>
+                <Divider />
+                <PieChartModel />
+              </CardText>
+            </Card>
           </Col>
           <Col
             xs={12} sm={6} md={6} lg={6}
             style={styles.Col}
           >
-            <PieChartCard
-              title="Latest Time of Issuing the Materials"
-              subtitle=""
-            />
+            <Card style={{ minHeight: '100px', minWidth: '100px' }}>
+              <CardHeader
+                title="Latest Time of Issuing the Materials"
+                subtitle=""
+                style={styles.Cube.card.header}
+                titleStyle={styles.Cube.card.titleStyle}
+              />
+              <CardText style={{ height: '300px', width: '100%' }}>
+                <Divider />
+                <PieChartModel />
+              </CardText>
+            </Card>
           </Col>
         </Row>
         <Row style={styles.Row}>
