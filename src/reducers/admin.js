@@ -17,6 +17,9 @@ import {
   DOWNLOAD_INVENTORY_REPORT_REQUEST,
   DOWNLOAD_INVENTORY_REPORT_SUCCESS,
   DOWNLOAD_INVENTORY_REPORT_FAILURE,
+  LIST_ALLITEMS_SELECT_REQUEST,
+  LIST_ALLITEMS_SELECT_SUCCESS,
+  LIST_ALLITEMS_SELECT_FAILURE,
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -67,6 +70,13 @@ const admin = (state = initialState, action) => {
     case DOWNLOAD_INVENTORY_REPORT_REQUEST:
     case DOWNLOAD_INVENTORY_REPORT_SUCCESS:
     case DOWNLOAD_INVENTORY_REPORT_FAILURE:
+      return {
+        ...state,
+        ...action,
+      };
+      case LIST_ALLITEMS_SELECT_REQUEST:
+      case LIST_ALLITEMS_SELECT_SUCCESS:
+      case LIST_ALLITEMS_SELECT_FAILURE:
       return {
         ...state,
         ...action,

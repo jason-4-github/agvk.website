@@ -1,5 +1,6 @@
 import { browserHistory } from 'react-router';
 import 'whatwg-fetch';
+import _ from 'lodash';
 
 import * as types from '../constants/ActionTypes';
 import user from '../apis/user';
@@ -7,7 +8,7 @@ import { localStorage } from '../index';
 
 // TODO(S.C.) => url need to be changed as production
 const serverConfig = {
-  url: 'http://10.5.100.66:4001/apis',
+  url: 'http://172.21.37.5:4001/apis',
 };
 
 function checkStatus(response) {
@@ -195,3 +196,36 @@ export const doDownloadInventoryReport = (passProps) => (dispatch, getState) => 
       });
     });
 };
+export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
+  dispatch({
+    type: types.LIST_ALLITEMS_SELECT_REQUEST,
+    selectrackdetaildata: []
+  });
+  fetch(serverConfig.url + '/listAllItems')
+    .then(checkStatus)
+    .then(parseJSON)
+    .then(function(data) {
+      const newData = [];
+      _.map(data, (i,k) => {
+        const newObj = {};
+        newObj.ItemName = i.ItemName;
+        newObj.ItemExternalID =  i.ItemExternalID;
+        newObj.ItemCount = i.ItemCount;
+        newObj.Vendor = i.Vendor;
+        newObj.DateCode = i.DateCode;
+        newObj.Location = i.RackName + ` ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
+        newData.push(newObj);
+      });
+      dispatch({
+        type: types.LIST_ALLITEMS_SELECT_SUCCESS,
+        detailData: newData,
+      });
+    })
+    .catch(function(error) {
+      dispatch({
+        type: types.LIST_ALLITEMS_SELECT_FAILURE,
+        datailData: []
+      });
+    })
+};
+

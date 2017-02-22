@@ -130,5 +130,16 @@ export const styles = {
         bottom: '10px'
       }
     }
-  }
+  },
+  Inbound: {
+    tableLeftPadding: {
+      paddingLeft: '20px',
+    },
+    tableTopMargin: {
+      marginTop: '75px',
+    },
+    tabStyle: {
+      backgroundColor: 'rgba(170, 184, 185, 1)',
+    },
+  },
 };
