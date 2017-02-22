@@ -103,9 +103,21 @@ export const doShowRacksLocation = (passProps) => (dispatch, getState) => {
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
+      const newData = [];
+      _.map(data, (i, k) => {
+        const newObj = {};
+        newObj.RackName = i.RackName;
+        newObj.ItemName = i.ItemName;
+        newObj.ItemExternalID = i.ItemExternalID;
+        newObj.ItemCount = i.ItemCount;
+        newObj.Vendor = i.Vendor;
+        newObj.DateCode = i.DateCode;
+        newObj.Location = `${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
+        newData.push(newObj);
+      });
       dispatch({
         type: types.SHOW_RACK_LOCATION_SUCCESS,
-        showRacksLocationInMapData: data,
+        showRacksLocationInMapData: newData,
       });
     })
     .catch((error) => {

@@ -1,23 +1,13 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
-import { Card, CardText } from 'material-ui/Card';
-import { RadioButton, RadioButtonGroup } from 'material-ui/RadioButton';
-import TextField from 'material-ui/TextField';
+import { Row, Col, FormControl, FormGroup, InputGroup, DropdownButton, MenuItem } from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
-
+import { Table, Column, Cell } from 'fixed-data-table-2';
 
 import { styles } from '../../../styles';
+import '../../../../public/stylesheets/tableStyle.css';
 import Phase1 from '../map/Phase1';
 import PageNavigator from '../../../components/PageNavigator';
 import {
@@ -31,67 +21,59 @@ class ByItemContainer extends React.Component {
     super(props);
     this.state = {
       queryStr: '',
-      filterStr: '',
+      filterStr: 'Options',
     };
-    this.handleRadioButtonChange = this.handleRadioButtonChange.bind(this);
+    this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
   }
   componentDidMount() {
     const { doListRacksLocation } = this.props;
     doListRacksLocation();
   }
-  showFilterCard() {
+  showFilter() {
     return (
-      <Card>
-        <CardText>
-          <Row style={styles.Row}>
-            <Col
-              xs={12} sm={6} md={6} lg={6}
-              style={styles.Col}
-            >
-              <RadioButtonGroup
-                name="filter"
-                onChange={this.handleRadioButtonChange}
+      <Row style={styles.Row}>
+        <Col
+          xs={2} sm={5} md={5} lg={5}
+          style={styles.Col}
+        />
+        <Col
+          xs={1} sm={1} md={1} lg={1}
+          style={styles.byItemStyle.emptyCol}
+        >
+          <i className="material-icons">search</i>
+        </Col>
+        <Col xs={4} sm={4} md={4} lg={4} >
+          <FormGroup>
+            <InputGroup>
+              <DropdownButton
+                componentClass={InputGroup.Button}
+                id="input-dropdown-addon"
+                title={this.state.filterStr}
+                onSelect={this.handleFilterChange}
+                style={styles.byItemStyle.dropDownCricleBorder}
               >
-                <RadioButton
-                  value="PartNo"
-                  label="Part. No."
-                  style={styles.radioButton}
-                />
-                <RadioButton
-                  value="CustPartNo"
-                  label="Cust. Part. No."
-                  style={styles.radioButton}
-                />
-                <RadioButton
-                  value="Vendor"
-                  label="Vendor"
-                  style={styles.radioButton}
-                />
-                <RadioButton
-                  value="LotNo"
-                  label="Lot No"
-                  style={styles.radioButton}
-                />
-              </RadioButtonGroup>
-            </Col>
-            <Col
-              xs={12} sm={6} md={6} lg={6}
-              style={styles.Col}
-            >
-              <TextField
-                hintText="Search"
+                <MenuItem key="1" eventKey="PartNo">Part. No.</MenuItem>
+                <MenuItem key="2" eventKey="CustPartNo">Cust. Part. No.</MenuItem>
+                <MenuItem key="3" eventKey="Vendor">Vendor</MenuItem>
+                <MenuItem key="4" eventKey="LotNo">Lot No</MenuItem>
+              </DropdownButton>
+              <FormControl
+                type="text"
+                style={styles.byItemStyle.textInputCircleBorder}
                 onChange={this.handleQueryStrChange}
               />
-              <RaisedButton
-                label="Search"
-                primary
-                onClick={() => { this.handleClickSearch(); }}
-              />
-            </Col>
-          </Row>
-        </CardText>
-      </Card>
+            </InputGroup>
+          </FormGroup>
+        </Col>
+        <Col xs={2} sm={2} md={2} lg={2} >
+          <RaisedButton
+            label="Search"
+            primary
+            onClick={() => { this.handleClickSearch(); }}
+          />
+        </Col>
+      </Row>
     );
   }
   showResultTable(data, type) {
@@ -110,82 +92,73 @@ class ByItemContainer extends React.Component {
       );
     }
     if (!data) { return ''; }
-    const { listRacksLocationData, showRacksLocationInMapData } = this.props;
-    _.map(showRacksLocationInMapData, (d) => {
-      _.filter(listRacksLocationData, (dd) => {
-        if (d.RackName === dd.rackName) {
-          d.location = dd.rackLocation.trim();
-        }
-      });
-    });
+    const { isSideMenuOpen } = this.props;
+    let tableWidth = (isSideMenuOpen
+      ? (window.innerWidth * 0.75) - 256
+      : window.innerWidth * 0.7);
+    if (window.innerWidth < 767) {
+      tableWidth = (isSideMenuOpen
+        ? window.innerWidth - 336
+        : window.innerWidth - 80);
+    }
     return (
-      <Card>
-        <CardText>
-          <Table
-            height="270px"
-            fixedHeader
-            selectable={false}
-            multiSelectable={false}
-            onRowHover={(i) => {
-              const { listRacksLocationData, showRacksLocationInMapData } = this.props;
-              const locations = [];
-              _.map(showRacksLocationInMapData, (d) => {
-                _.filter(listRacksLocationData, (dd) => {
-                  if (d.RackName === dd.rackName) {
-                    locations.push(dd.rackLocation.trim());
-                    d.location = dd.rackLocation.trim();
-                  }
+      <div style={styles.byItemStyle.tableContainer}>
+        {data
+          ? (
+            <Table
+              rowsCount={data.length}
+              rowHeight={50}
+              headerHeight={50}
+              width={tableWidth}
+              height={500}
+              onRowMouseEnter={(i, k) => {
+                const { listRacksLocationData, showRacksLocationInMapData } = this.props;
+                const locations = [];
+                _.map(showRacksLocationInMapData, (d) => {
+                  _.filter(listRacksLocationData, (dd) => {
+                    if (d.RackName === dd.rackName) {
+                      locations.push(dd.rackLocation.trim());
+                    }
+                  });
                 });
-              });
-              const { doHighlightLocations } = this.props;
-              doHighlightLocations({
-                highlightLocations: _.uniq(locations),
-                focusHighLightLocation: locations[i],
-              });
-            }}
-          >
-            <TableHeader
-              displaySelectAll={false}
-              adjustForCheckbox={false}
-              enableSelectAll={false}
+                const { doHighlightLocations } = this.props;
+                doHighlightLocations({
+                  highlightLocations: _.uniq(locations),
+                  focusHighLightLocation: locations[k],
+                });
+              }}
             >
-              <TableRow>
-                <TableHeaderColumn tooltip="Part. No.">Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Cust. Part. No.">Cust. Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="QTY">QTY</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Vendor">Vendor</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Date">Date</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Location">Location</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              displayRowCheckbox={false}
-              deselectOnClickaway
-              showRowHover
-              stripedRows={false}
-            >
-              { data
-                ? this.showData(data)
-                : ''}
-            </TableBody>
-          </Table>
-        </CardText>
-      </Card>
+              {this.showData(data, tableWidth)}
+            </Table>)
+          : ''
+        }
+      </div>
     );
   }
-  showData(data) {
-    console.log(data);
+  showData(data, tableWidth) {
     const rootDom = [];
-    _.map(data, (i, k) => {
+    const tmpA = ['Part. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location'];
+    const tmpB = ['ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location'];
+    _.map(tmpB, (d, i) => {
       rootDom.push(
-        <TableRow key={k} selected={false}>
-          <TableRowColumn>{i.ItemName}</TableRowColumn>
-          <TableRowColumn>{i.ItemExternalID}</TableRowColumn>
-          <TableRowColumn>{i.ItemCount}</TableRowColumn>
-          <TableRowColumn>{i.Vendor}</TableRowColumn>
-          <TableRowColumn>{i.DateCode}</TableRowColumn>
-          <TableRowColumn>{`${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`}</TableRowColumn>
-        </TableRow>);
+        <Column
+          header={<Cell>{tmpA[i]}</Cell>}
+          cell={({ rowIndex, ...props }) => (
+            <Cell {...props}>
+              {d === 'Location'
+                ? `${data[rowIndex].RackName} ${data[rowIndex][d]}`
+                : data[rowIndex][d]}
+            </Cell>
+          )}
+          width={tableWidth / 5.5}
+          key={d + i}
+          fixed={d === 'ItemName' || d === 'ItemExternalID'
+            ? true
+            : false
+          }
+          align="center"
+        />,
+      );
     });
     return (rootDom);
   }
@@ -204,9 +177,9 @@ class ByItemContainer extends React.Component {
       queryStr: e.target.value,
     });
   }
-  handleRadioButtonChange(e) {
+  handleFilterChange(event) {
     this.setState({
-      filterStr: e.currentTarget.value,
+      filterStr: event,
     });
   }
   render() {
@@ -244,7 +217,7 @@ class ByItemContainer extends React.Component {
                 xs={12} sm={12} md={12} lg={12}
                 style={styles.Col}
               >
-                {this.showFilterCard()}
+                {this.showFilter()}
               </Col>
             </Row>
             <Row style={styles.Row}>

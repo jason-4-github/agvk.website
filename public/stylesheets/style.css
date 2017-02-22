@@ -4,3 +4,5 @@ body {
     font-family: 'Ubuntu', sans-serif !important; }
   body .login-root-view .content {
     font-family: 'Special Elite', cursive; }
+  body #app {
+    margin-right: 5px; }
