@@ -13,6 +13,7 @@ import HandlingItemContainer from './containers/admin/sidemenu/HandlingItemConta
 import InboundContainer from './containers/admin/sidemenu/InboundContainer';
 import ByLocationContainer from './containers/admin/sidemenu/ByLocationContainer';
 import ByItemContainer from './containers/admin/sidemenu/ByItemContainer';
+import ByDateContainer from './containers/admin/sidemenu/ByDateContainer';
 import AllItemsContainer from './containers/admin/sidemenu/AllItemsContainer';
 import configureStore from './store/configureStore';
 
@@ -34,6 +35,7 @@ const RouterDom = () => {
         <Route path="/admin/summary/inbound" component={InboundContainer} />
         <Route path="/admin/inventory/by-location" component={ByLocationContainer} />
         <Route path="/admin/inventory/by-item" component={ByItemContainer} />
+        <Route path="/admin/inventory/by-date" component={ByDateContainer} />
         <Route path="/admin/inventory/all-items" component={AllItemsContainer} />
       </Route>
     </Router>

@@ -196,24 +196,25 @@ export const doDownloadInventoryReport = (passProps) => (dispatch, getState) => 
       });
     });
 };
+
 export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LIST_ALLITEMS_SELECT_REQUEST,
-    selectrackdetaildata: []
+    selectrackdetaildata: [],
   });
-  fetch(serverConfig.url + '/listAllItems')
+  fetch(`${serverConfig.url}/listAllItems`)
     .then(checkStatus)
     .then(parseJSON)
-    .then(function(data) {
+    .then((data) => {
       const newData = [];
-      _.map(data, (i,k) => {
+      _.map(data, (i) => {
         const newObj = {};
         newObj.ItemName = i.ItemName;
-        newObj.ItemExternalID =  i.ItemExternalID;
+        newObj.ItemExternalID = i.ItemExternalID;
         newObj.ItemCount = i.ItemCount;
         newObj.Vendor = i.Vendor;
         newObj.DateCode = i.DateCode;
-        newObj.Location = i.RackName + ` ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
+        newObj.Location = `${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
         newData.push(newObj);
       });
       dispatch({
@@ -221,11 +222,17 @@ export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
         detailData: newData,
       });
     })
-    .catch(function(error) {
+    .catch(() => {
       dispatch({
         type: types.LIST_ALLITEMS_SELECT_FAILURE,
-        datailData: []
+        datailData: [],
       });
-    })
+    });
 };
 
+export const listeningChangedOptions = (passProps) => (dispatch, getState) => {
+  dispatch({
+    type: types.LISTENING_CHANGED_OPTIONS,
+    changedOptions: passProps,
+  });
+};
