@@ -1,52 +1,93 @@
 import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
-import { Row, Col } from 'react-bootstrap';
 import { browserHistory } from 'react-router';
-import { Card, CardText } from 'material-ui/Card';
+import { Table, Column, Cell } from 'fixed-data-table-2';
+import {
+  Row,
+  Col,
+  FormControl,
+  FormGroup,
+  InputGroup,
+  DropdownButton,
+  MenuItem }
+  from 'react-bootstrap';
 import LinearProgress from 'material-ui/LinearProgress';
 import _ from 'lodash';
 
 import { styles } from '../styles';
 import { doTransferItemDetailData } from '../actions';
 
+const fixDataTableHeight = document.documentElement.clientHeight * 0.635;
+const fixDataTableWidth = document.documentElement.clientWidth * 0.79;
+const fixDataTableImageColumnWidth = ((fixDataTableWidth / 5) * 0.4);
+const fixDataTableColumnWidth = ((fixDataTableWidth - fixDataTableImageColumnWidth) / 4);
+
 class ItemCube extends React.Component {
-  showData(data) {
-    const { doTransferItemDetailData } = this.props;
-    const rootDom = [];
-    _.map(data, (i, k) => {
-      rootDom.push(
-        <Col style={styles.Col} key={k} xs={12} sm={6} md={6} lg={6} >
-          <Card
-            style={styles.ItemCube.rectangle}
-            onClick={() => {
-              return (
-              browserHistory.push(`/admin/inventory/all-items/${i.ItemName}`),
-              doTransferItemDetailData({ itemDetailData: data[k] }));
-            }}
-          >
-            <CardText>
-              <Col xs={6} sm={6} md={4}>
-                <div style={styles.ItemCube.circle} />
-              </Col>
-              <Col xs={6} sm={6} md={8}>
-                <b>Item Name:</b><u>{i.ItemName}</u>
-                <br />
-                <b>Part_No:</b><u>&emsp;&nbsp;{i.ItemName}</u>
-                <br />
-                <b>Qty:</b><u>&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;{i.ItemCount}</u>
-                <br />
-                <b>Status:</b>
-                <br />
-              </Col>
-            </CardText>
-          </Card>
-        </Col>,
-      );
-    });
-    return (rootDom);
-  }
-  render() {
+  constructor(props) {
+    super(props);
     const { data } = this.props;
+    this.state = {
+      filterStr: '',
+      DropdownTitle: <span><i className="material-icons" style={{ fontSize:'16px' }}>search</i><span>Filters</span></span>,
+      filteredDataList: data,
+    };
+    this.handleFilterChange = this.handleFilterChange.bind(this);
+    this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
+  }
+
+  handleQueryStrChange(e) {
+    const { data } = this.props;
+    const { filterStr } = this.state;
+    const size = data.length;
+    const filterBy = e.target.value;
+    const filteredIndexes = [];
+    for (var index = 0; index < size; index++) {
+      if (_.isMatch(data[index][filterStr].toString(), filterBy)) {
+        filteredIndexes.push(data[index]);
+      }
+    }
+    {e.target.value
+      ? this.setState({
+        filteredDataList: filteredIndexes,
+      })
+      : this.setState({
+        filteredDataList: data,
+      })
+    }
+  }
+  handleFilterChange(value) {
+      switch (value) {
+        case 'Item Name':
+            this.setState({
+              filterStr: 'ItemName',
+              DropdownTitle: value,
+            });
+          break;
+        case 'Part.No.':
+            this.setState({
+              filterStr: "ItemName",
+              DropdownTitle: value,
+            });
+          break;
+        case 'Qty':
+          this.setState({
+            filterStr: 'ItemCount',
+            DropdownTitle: value,
+          });
+          break;
+        case 'Status':
+          this.setState({
+            filterStr: 'Status',
+            DropdownTitle: value,
+          });
+          break;
+        default:
+          break;
+      }
+  }
+
+  render() {
+    const { filteredDataList } = this.state;
     if (document.readyState !== 'complete') {
       return (
         <Row style={styles.Row}>
@@ -59,9 +100,97 @@ class ItemCube extends React.Component {
       );
     }
     return (
-      <Row style={styles.ItemCube.rowPageSize}>
-        {data ? this.showData(data) : '' };
-      </Row>
+      <div>
+        <Row>
+          <Col xs={4} sm={4} md={4} lg={4}>
+            <FormGroup>
+              <InputGroup>
+                <DropdownButton
+                  id="input-dropdown-addon"
+                  title={this.state.DropdownTitle}
+                  onSelect={this.handleFilterChange}
+                  componentClass={InputGroup.Button}
+                  style={styles.ItemCube.dropDownCricleBorder}
+                >
+                  <MenuItem eventKey="Item Name" >Item Name</MenuItem>
+                  <MenuItem eventKey="Part.No.">Part.No.</MenuItem>
+                  <MenuItem eventKey="Qty">Qty</MenuItem>
+                  <MenuItem eventKey="Status">Status</MenuItem>
+                </DropdownButton>
+                <FormControl
+                  type="text"
+                  placeholder="Keyword"
+                  height="43px"
+                  style={styles.ItemCube.textInputCircleBorder}
+                  onChange={this.handleQueryStrChange}
+                />
+              </InputGroup>
+            </FormGroup>
+          </Col>
+          <Col xs={8} sm={8} md={8} lg={8} />
+        </Row>
+        <Table
+          rowHeight={50}
+          headerHeight={50}
+          rowsCount={filteredDataList.length}
+          width={fixDataTableWidth}
+          height={fixDataTableHeight}
+          onRowClick={(i, j) => {
+            browserHistory.push(`/admin/inventory/all-items/${this.state.filteredDataList[j].ItemName}`);
+          }}
+        >
+          <Column
+            header={<Cell>Picture</Cell>}
+            cell={({ rowIndex, ...props }) => (
+             <Cell {...props} style={{ cursor: 'pointer' }}>
+               { null }
+             </Cell>
+            )}
+            width={fixDataTableImageColumnWidth}
+            align="center"
+          />
+          <Column
+            header={<Cell>Item Name</Cell>}
+            cell={({ rowIndex, ...props }) => (
+             <Cell {...props} style={{ cursor: 'pointer' }}>
+               { this.state.filteredDataList[rowIndex].ItemName }
+             </Cell>
+            )}
+            width={fixDataTableColumnWidth}
+            align="center"
+          />
+          <Column
+            header={<Cell>Part .No.</Cell>}
+            cell={({ rowIndex, ...props }) => (
+             <Cell {...props} style={{ cursor: 'pointer' }}>
+               { this.state.filteredDataList[rowIndex].ItemName }
+             </Cell>
+              )}
+            width={fixDataTableColumnWidth}
+            align="center"
+          />
+          <Column
+            header={<Cell>Qty</Cell>}
+            cell={({ rowIndex, ...props }) => (
+              <Cell {...props} style={{ cursor: 'pointer' }}>
+                { this.state.filteredDataList[rowIndex].ItemCount }
+              </Cell>
+              )}
+            width={fixDataTableColumnWidth}
+            align="center"
+          />
+          <Column
+            header={<Cell>Status</Cell>}
+            cell={({ rowIndex, ...props }) => (
+            <Cell {...props} style={{ cursor: 'pointer' }}>
+              {null}
+            </Cell>
+            )}
+            width={fixDataTableColumnWidth}
+            align="center"
+          />
+        </Table>
+      </div>
     );
   }
 }
@@ -69,9 +198,7 @@ class ItemCube extends React.Component {
 ItemCube.propTypes = {
   data: PropTypes.array,
 };
-ItemCube.defaultProps = {
-  data: [],
-};
+
 const mapStateToProps = (state) => {
   return {
     ...state.admin,

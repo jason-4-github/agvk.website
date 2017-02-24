@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import SideMenu from '../../components/SideMenu';
 import TopBar from '../../components/TopBar';
 import { doToggleSideMenu } from '../../actions';
+import '../../../node_modules/fixed-data-table-2/dist/fixed-data-table.css';
+import '../../../public/stylesheets/tableStyle.css';
 
 const responsiveInnerWidth = 992;
 

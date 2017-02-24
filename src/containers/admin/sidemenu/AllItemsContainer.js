@@ -25,10 +25,13 @@ class AllItemsContainer extends React.Component {
     const toggleStyle = isSideMenuOpen === true
                         ? styles.contentWithSideMenu
                         : styles.contentWithoutSideMenu;
+
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
-        <ItemCube data={listAllItemData} />
+        {(listAllItemData !== undefined) && (listAllItemData.length !== 0)
+        ? <ItemCube data={listAllItemData} />
+        : ''}
         <br />
         <Row style={styles.Row}>
           <Col

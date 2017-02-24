@@ -2,14 +2,7 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import { Card, CardText } from 'material-ui/Card';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import { Table, Column, Cell } from 'fixed-data-table-2';
 import _ from 'lodash';
 
 import { styles } from '../styles';
@@ -20,33 +13,19 @@ import {
   doHighlightLocations,
 } from '../actions';
 
+const fixDataTableHeight = document.documentElement.clientHeight * 0.65;
+const fixDataTableWidth = document.documentElement.clientWidth * 0.635;
+const fixDataTableColumnWidth = (fixDataTableWidth / 7);
 class ItemInventory extends React.Component {
-  static showData(data) {
-    const rootDom = [];
-    _.map(data, (i, k) => {
-      rootDom.push(
-        <TableRow key={k} selected={false}>
-          <TableRowColumn>{ i.ItemName }</TableRowColumn>
-          <TableRowColumn />
-          <TableRowColumn>{ i.ItemExternalID }</TableRowColumn>
-          <TableRowColumn>{ i.ItemCount }</TableRowColumn>
-          <TableRowColumn>{ i.Vendor }</TableRowColumn>
-          <TableRowColumn>{ i.DateCode }</TableRowColumn>
-          <TableRowColumn>{ `${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}` }</TableRowColumn>
-          <TableRowColumn />
-        </TableRow>);
-    });
-    return (rootDom);
-  }
   componentDidMount() {
     const { doListRacksLocation,
             doShowRacksLocation,
-              Inventorydata,
+            transferData,
       } = this.props;
     doListRacksLocation();
     doShowRacksLocation({
       token: 'PartNo',
-      queryStr: Inventorydata.ItemName,
+      queryStr: transferData,
     });
   }
   render() {
@@ -58,9 +37,11 @@ class ItemInventory extends React.Component {
         listRacksLocationData,
       } = this.props;
     return (
+      <Card>
+        <CardText>
       <Row style={styles.Row}>
         <Col
-          xs={12} sm={3} md={3} lg={3}
+          xs={2} sm={2} md={2} lg={2}
           style={{ ...styles.Col, ...{ textAlign: 'center' } }}
         >
           <Phase1
@@ -69,18 +50,17 @@ class ItemInventory extends React.Component {
             focusHighLightLocation={focusHighLightLocation}
           />
         </Col>
-        <Col xs={12} sm={9} md={9} lg={9} style={styles.Col}>
-          <Card>
-            <CardText>
-              <Table
-                height="300px"
-                width="100%"
-                fixedHeader
-                selectable={false}
-                multiSelectable={false}
-                onRowHover={(i) => {
-                  const locations = [];
-                  _.map(showRacksLocationInMapData, (d) => {
+        <Col xs={10} sm={10} md={10} lg={10} style={styles.Col}>
+          { showRacksLocationInMapData
+            ? <Table
+              rowHeight={50}
+              rowsCount={showRacksLocationInMapData.length}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
+              headerHeight={50}
+              onRowMouseEnter={(i, j) => {
+                const locations = [];
+                 _.map(showRacksLocationInMapData, (d) => {
                     _.filter(listRacksLocationData, (dd) => {
                       if (d.RackName === dd.rackName) {
                         locations.push(dd.rackLocation.trim());
@@ -91,42 +71,88 @@ class ItemInventory extends React.Component {
                   const { doHighlightLocations } = this.props;
                   doHighlightLocations({
                     highlightLocations: _.uniq(locations),
-                    focusHighLightLocation: locations[i],
+                    focusHighLightLocation: locations[j],
                   });
-                }}
-              >
-                <TableHeader
-                  displaySelectAll={false}
-                  adjustForCheckbox={false}
-                  enableSelectAll={false}
-                >
-                  <TableRow >
-                    <TableHeaderColumn tooltip="Part.No.">Part.No.</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Pic">Pic</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Cust.Part.No.">Cust.Part.No.</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="QTY">QTY</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Vendor">Vendor</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Date">Date</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Location">Location</TableHeaderColumn>
-                    <TableHeaderColumn tooltip="Status">Status</TableHeaderColumn>
-                  </TableRow>
-                </TableHeader>
-                <TableBody
-                  displayRowCheckbox={false}
-                  deselectOnClickaway
-                  showRowHover
-                  stripedRows={false}
-                >
-                  { showRacksLocationInMapData
-                              ? ItemInventory.showData(showRacksLocationInMapData)
-                              : ''
-                  }
-                </TableBody>
-              </Table>
-            </CardText>
-          </Card>
+              }}
+            >
+              <Column
+                header={<Cell>Part. No.</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { showRacksLocationInMapData[rowIndex].ItemName }
+                  </Cell>
+                     )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Cust. Part. No.</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                <Cell {...props}>
+                  { showRacksLocationInMapData[rowIndex].ItemExternalID }
+                </Cell>
+                     )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>QTY</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { showRacksLocationInMapData[rowIndex].ItemCount }
+                  </Cell>
+                    )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Vendor</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { showRacksLocationInMapData[rowIndex].Vendor }
+                  </Cell>
+                    )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Date</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                <Cell {...props}>
+                  { showRacksLocationInMapData[rowIndex].DateCode }
+                </Cell>
+                 )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Location</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                <Cell {...props}>
+                  {`${showRacksLocationInMapData[rowIndex].RackSide} -
+                   ${showRacksLocationInMapData[rowIndex].RackLayer}-
+                   ${showRacksLocationInMapData[rowIndex].RackBlock}`}
+                </Cell>
+                 )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Status</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                <Cell {...props}>
+                  { null }
+                </Cell>
+                 )}
+                 width={fixDataTableColumnWidth}
+                 align="center"
+               />
+          </Table>
+          : '' }
         </Col>
       </Row>
+      </CardText>
+      </Card>
     );
   }
 }
@@ -138,7 +164,7 @@ const mapStateToProps = (state) => {
 ItemInventory.propTypes = {
   doListRacksLocation: PropTypes.func,
   doShowRacksLocation: PropTypes.func,
-  Inventorydata: PropTypes.object,
+  transferData: PropTypes.string,
   type: PropTypes.string,
   highlightLocations: PropTypes.array,
   focusHighLightLocation: PropTypes.string,
@@ -148,7 +174,7 @@ ItemInventory.propTypes = {
 ItemInventory.defaultProps = {
   doListRacksLocation: null,
   doShowRacksLocation: null,
-  Inventorydata: null,
+  transferData: null,
   type: null,
   highlightLocations: [],
   focusHighLightLocation: null,

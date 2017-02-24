@@ -14,24 +14,22 @@ class AllItemsDetailContainer extends React.Component {
         isSideMenuOpen,
         itemDetailData,
       } = this.props;
+    const transferItemName = this.props.params.itemName;
     const toggleStyle = isSideMenuOpen === true
                         ? styles.contentWithSideMenu
                         : styles.contentWithoutSideMenu;
     return (
       <div style={toggleStyle}>
-        <PageNavigator pages={['Inventory', 'All Items']} />
-        <h4>
-          <b>{itemDetailData.ItemName}</b>
-        </h4>
+        <PageNavigator pages={['Inventory', 'All Items',transferItemName]} />
         <Tabs>
-          <Tab label="GENERAL INFO">
-            <ItemGreneralInfo Greneraldata={itemDetailData} />
+          <Tab label="GENERAL INFO" >
+            <ItemGreneralInfo />
           </Tab>
           <Tab label="INVENTORY">
-            <ItemInventory Inventorydata={itemDetailData} />
+            <ItemInventory transferData={transferItemName} />
           </Tab>
           <Tab label="SALES RECORD">
-            <ItemSalesRecord Salesrecorddata={itemDetailData} />
+            <ItemSalesRecord />
           </Tab>
         </Tabs>
       </div>

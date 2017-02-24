@@ -134,8 +134,8 @@ export const styles = {
   AllItemsContainer: {
     colRightButton: {
       marginBottom: 10,
-      bottom: 0,
-      right: -300,
+      bottom: -9,
+      right: -380,
       position: 'fixed',
     },
   },
@@ -157,8 +157,24 @@ export const styles = {
       height: '66vh',
       overflow: 'auto',
     },
+    cellMouse: {
+      cursor: 'pointer',
+    },
+    dropDownCricleBorder: {
+      borderTopLeftRadius: '20px',
+      borderBottomLeftRadius: '20px',
+      height: '34px',
+      width: '100px',
+    },
+    textInputCircleBorder: {
+      borderTopRightRadius: '20px',
+      borderBottomRightRadius: '20px',
+    },
   },
   ItemGreneralInfo: {
+    rowStyle: {
+      padding: '60px',
+    },
     tablestyle: {
       width: '50%',
       position: 'absolute',
