@@ -6,16 +6,16 @@ import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 
-import { styles } from '../../../styles';
-import '../../../../public/stylesheets/tableStyle.css';
-import Phase1 from '../map/Phase1';
-import SearchBar from '../../../components/SearchBar';
-import PageNavigator from '../../../components/PageNavigator';
+import { styles } from '../../../../styles';
+import '../../../../../public/stylesheets/tableStyle.css';
+import Phase1 from '../../map/Phase1';
+import SearchBar from '../../../../components/SearchBar';
+import PageNavigator from '../../../../components/PageNavigator';
 import {
   doListRacksLocation,
   doShowRacksLocation,
   doHighlightLocations,
-} from '../../../actions';
+} from '../../../../actions';
 
 class ByItemContainer extends React.Component {
   componentDidMount() {

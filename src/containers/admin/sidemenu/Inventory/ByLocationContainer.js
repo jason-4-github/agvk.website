@@ -2,11 +2,11 @@ import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 
-import { styles } from '../../../styles';
-import Phase1 from '../map/Phase1';
-import RackLocationTableCard from '../../../components/RackLocationTableCard';
-import PageNavigator from '../../../components/PageNavigator';
-import { doListRacksLocation, doQueryRackDetail } from '../../../actions';
+import { styles } from '../../../../styles';
+import Phase1 from '../../map/Phase1';
+import RackLocationTableCard from '../../../../components/RackLocationTableCard';
+import PageNavigator from '../../../../components/PageNavigator';
+import { doListRacksLocation, doQueryRackDetail } from '../../../../actions';
 
 class ByLocationContainer extends React.Component {
   componentDidMount() {

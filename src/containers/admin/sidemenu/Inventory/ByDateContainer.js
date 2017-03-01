@@ -8,10 +8,10 @@ import { Table, Column, Cell } from 'fixed-data-table-2';
 import { DateRangePicker, isInclusivelyBeforeDay } from 'react-dates';
 
 import 'react-dates/lib/css/_datepicker.css';
-import '../../../../public/stylesheets/tableStyle.css';
-import { styles } from '../../../styles';
-import PageNavigator from '../../../components/PageNavigator';
-import { doAllItemsSelectData, listeningChangedOptions } from '../../../actions';
+import '../../../../../public/stylesheets/tableStyle.css';
+import { styles } from '../../../../styles';
+import PageNavigator from '../../../../components/PageNavigator';
+import { doAllItemsSelectData, listeningChangedOptions } from '../../../../actions';
 
 class ByDateContainer extends React.Component {
   constructor(props) {

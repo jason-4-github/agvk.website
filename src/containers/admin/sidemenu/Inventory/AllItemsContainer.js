@@ -1,11 +1,11 @@
-import React, { PropTypes } from 'react';
+import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 
-import { styles } from '../../../styles';
-import PageNavigator from '../../../components/PageNavigator';
-import { doDownloadInventoryReport } from '../../../actions';
+import { styles } from '../../../../styles';
+import PageNavigator from '../../../../components/PageNavigator';
+import { doDownloadInventoryReport } from '../../../../actions';
 
 class AllItemsContainer extends React.Component {
   componentDidMount() {

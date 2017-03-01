@@ -5,12 +5,12 @@ import { Card, CardHeader, CardText } from 'material-ui/Card';
 import Divider from 'material-ui/Divider';
 import LinearProgress from 'material-ui/LinearProgress';
 
-import { styles } from '../../../styles';
-import Cube from '../../../components/Cube';
-import PieChartModel from '../../../components/PieChartModel';
-import BarChartCard from '../../../components/BarChartCard';
-import PageNavigator from '../../../components/PageNavigator';
-import { doListWMSStatus } from '../../../actions';
+import { styles } from '../../../../styles';
+import Cube from '../../../../components/Cube';
+import PieChartModel from '../../../../components/PieChartModel';
+import BarChartCard from '../../../../components/BarChartCard';
+import PageNavigator from '../../../../components/PageNavigator';
+import { doListWMSStatus } from '../../../../actions';
 
 class WMSStatusContainer extends React.Component {
   componentDidMount() {

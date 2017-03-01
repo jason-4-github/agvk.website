@@ -1,10 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
 
-import PageNavigator from '../../../components/PageNavigator';
-import { styles } from '../../../styles';
-import InOutBoundTable from '../../../components/InOutBoundTab';
-import { doAllItemsSelectData } from '../../../actions';
+import PageNavigator from '../../../../components/PageNavigator';
+import { styles } from '../../../../styles';
+import InOutBoundTable from '../../../../components/InOutBoundTab';
+import { doAllItemsSelectData } from '../../../../actions';
 
 class OutboundContainer extends React.Component {
   componentDidMount() {
