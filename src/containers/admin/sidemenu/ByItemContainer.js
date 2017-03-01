@@ -1,6 +1,6 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col, FormControl, FormGroup, InputGroup, DropdownButton, MenuItem } from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
@@ -9,6 +9,7 @@ import { Table, Column, Cell } from 'fixed-data-table-2';
 import { styles } from '../../../styles';
 import '../../../../public/stylesheets/tableStyle.css';
 import Phase1 from '../map/Phase1';
+import SearchBar from '../../../components/SearchBar';
 import PageNavigator from '../../../components/PageNavigator';
 import {
   doListRacksLocation,
@@ -17,20 +18,17 @@ import {
 } from '../../../actions';
 
 class ByItemContainer extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      queryStr: '',
-      filterStr: 'Options',
-    };
-    this.handleFilterChange = this.handleFilterChange.bind(this);
-    this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
-  }
   componentDidMount() {
     const { doListRacksLocation } = this.props;
     doListRacksLocation();
   }
   showFilter() {
+    const searchBarObj = {
+      PartNo: 'Part. No.',
+      CustPartNo: 'Cust. Part. No.',
+      Vendor: 'Vendor',
+      LotNo: 'Lot No',
+    };
     return (
       <Row style={styles.Row}>
         <Col
@@ -44,27 +42,7 @@ class ByItemContainer extends React.Component {
           <i className="material-icons">search</i>
         </Col>
         <Col xs={4} sm={4} md={4} lg={4} >
-          <FormGroup>
-            <InputGroup>
-              <DropdownButton
-                componentClass={InputGroup.Button}
-                id="input-dropdown-addon"
-                title={this.state.filterStr}
-                onSelect={this.handleFilterChange}
-                style={styles.byItemStyle.dropDownCricleBorder}
-              >
-                <MenuItem key="1" eventKey="PartNo">Part. No.</MenuItem>
-                <MenuItem key="2" eventKey="CustPartNo">Cust. Part. No.</MenuItem>
-                <MenuItem key="3" eventKey="Vendor">Vendor</MenuItem>
-                <MenuItem key="4" eventKey="LotNo">Lot No</MenuItem>
-              </DropdownButton>
-              <FormControl
-                type="text"
-                style={styles.byItemStyle.textInputCircleBorder}
-                onChange={this.handleQueryStrChange}
-              />
-            </InputGroup>
-          </FormGroup>
+          <SearchBar filters={searchBarObj} />
         </Col>
         <Col xs={2} sm={2} md={2} lg={2} >
           <RaisedButton
@@ -163,23 +141,13 @@ class ByItemContainer extends React.Component {
     return (rootDom);
   }
   handleClickSearch() {
-    if (!this.state.queryStr) { return; }
-    if (!this.state.filterStr) { return; }
-
-    const { doShowRacksLocation } = this.props;
+    const { doShowRacksLocation, queryStr, filterStr } = this.props;
+    if (!queryStr) { return; }
+    if (!filterStr) { return; }
+    
     doShowRacksLocation({
-      token: this.state.filterStr,
-      queryStr: this.state.queryStr,
-    });
-  }
-  handleQueryStrChange(e) {
-    this.setState({
-      queryStr: e.target.value,
-    });
-  }
-  handleFilterChange(event) {
-    this.setState({
-      filterStr: event,
+      token: filterStr,
+      queryStr,
     });
   }
   render() {

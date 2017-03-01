@@ -248,3 +248,11 @@ export const listeningChangedOptions = (passProps) => (dispatch, getState) => {
     changedOptions: passProps,
   });
 };
+
+export const searchBarOptions = (passProps) => (dispatch, getState) => {
+  dispatch({
+    type: types.LISTENING_CHANGED_OPTIONS,
+    filterStr: passProps.filterStr,
+    queryStr: passProps.queryStr,
+  });
+};
