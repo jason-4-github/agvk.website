@@ -8,14 +8,14 @@ import injectTapEventPlugin from 'react-tap-event-plugin';
 
 import App from './containers/App';
 import AdminContainer from './containers/admin/AdminContainer';
-import WMSStatusContainer from './containers/admin/sidemenu/WMSStatusContainer';
-import HandlingItemContainer from './containers/admin/sidemenu/HandlingItemContainer';
-import InboundContainer from './containers/admin/sidemenu/InboundContainer';
-import OutboundContainer from './containers/admin/sidemenu/OutboundContainer';
-import ByLocationContainer from './containers/admin/sidemenu/ByLocationContainer';
-import ByItemContainer from './containers/admin/sidemenu/ByItemContainer';
-import ByDateContainer from './containers/admin/sidemenu/ByDateContainer';
-import AllItemsContainer from './containers/admin/sidemenu/AllItemsContainer';
+import WMSStatusContainer from './containers/admin/sidemenu/Dashboard/WMSStatusContainer';
+import HandlingItemContainer from './containers/admin/sidemenu/Summary/HandlingItemContainer';
+import InboundContainer from './containers/admin/sidemenu/Summary/InboundContainer';
+import OutboundContainer from './containers/admin/sidemenu/Summary/OutboundContainer';
+import ByLocationContainer from './containers/admin/sidemenu/Inventory/ByLocationContainer';
+import ByItemContainer from './containers/admin/sidemenu/Inventory/ByItemContainer';
+import ByDateContainer from './containers/admin/sidemenu/Inventory/ByDateContainer';
+import AllItemsContainer from './containers/admin/sidemenu/Inventory/AllItemsContainer';
 import configureStore from './store/configureStore';
 
 injectTapEventPlugin();

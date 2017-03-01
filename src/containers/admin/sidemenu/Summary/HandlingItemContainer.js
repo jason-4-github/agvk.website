@@ -4,10 +4,10 @@ import { Row, Col } from 'react-bootstrap';
 import NotificationSystem from 'react-notification-system';
 import io from 'socket.io-client';
 
-import { styles } from '../../../styles';
-import PageNavigator from '../../../components/PageNavigator';
-import Phase1 from '../map/Phase1';
-import { doHighlightLocations } from '../../../actions';
+import { styles } from '../../../../styles';
+import PageNavigator from '../../../../components/PageNavigator';
+import Phase1 from '../../map/Phase1';
+import { doHighlightLocations } from '../../../../actions';
 
 class HandlingItemContainer extends React.Component {
   constructor(props) {

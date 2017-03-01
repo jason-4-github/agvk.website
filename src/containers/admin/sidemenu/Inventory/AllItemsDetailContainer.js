@@ -3,11 +3,11 @@ import { connect } from 'react-redux';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import _ from 'lodash';
 
-import { styles } from '../../../styles';
-import PageNavigator from '../../../components/PageNavigator';
-import GreneralInfo from '../../../components/GreneralInfo';
-import Inventory from '../../../components/Inventory';
-import Salesrecord from '../../../components/Salesrecord';
+import { styles } from '../../../../styles';
+import PageNavigator from '../../../../components/PageNavigator';
+import GreneralInfo from '../../../../components/GreneralInfo';
+import Inventory from '../../../../components/Inventory';
+import Salesrecord from '../../../../components/Salesrecord';
 class AllItemsDetailContainer extends React.Component {
     render() {
       const {
