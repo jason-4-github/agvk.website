@@ -9,7 +9,7 @@ import {
   YAxis,
   CartesianGrid,
   Tooltip,
-  Legend
+  Legend,
 } from 'recharts';
 
 import { styles } from '../styles';
@@ -17,53 +17,57 @@ import { styles } from '../styles';
 class BarChartCard extends React.Component {
   render() {
     const data = [
-      {name: 'Page A', uv: 4000, pv: 2400, amt: 2400},
-      {name: 'Page B', uv: 3000, pv: 1398, amt: 2210},
-      {name: 'Page C', uv: 2000, pv: 9800, amt: 2290},
-      {name: 'Page D', uv: 2780, pv: 3908, amt: 2000},
-      {name: 'Page E', uv: 1890, pv: 4800, amt: 2181},
-      {name: 'Page F', uv: 2390, pv: 3800, amt: 2500},
-      {name: 'Page G', uv: 3490, pv: 4300, amt: 2100}
+      { name: 'Page A', uv: 4000, pv: 2400, amt: 2400 },
+      { name: 'Page B', uv: 3000, pv: 1398, amt: 2210 },
+      { name: 'Page C', uv: 2000, pv: 9800, amt: 2290 },
+      { name: 'Page D', uv: 2780, pv: 3908, amt: 2000 },
+      { name: 'Page E', uv: 1890, pv: 4800, amt: 2181 },
+      { name: 'Page F', uv: 2390, pv: 3800, amt: 2500 },
+      { name: 'Page G', uv: 3490, pv: 4300, amt: 2100 },
     ];
 
     const { title, subtitle } = this.props;
     return (
-      <Card style={{minHeight: '100px', minWidth: '100px'}}>
+      <Card style={{ minHeight: '100px', minWidth: '100px' }}>
         <CardHeader
           title={title}
           subtitle={subtitle}
           style={styles.Cube.card.header}
-          titleStyle={styles.Cube.card.titleStyle} />
-        <CardText style={{height: '300px', width: '100%'}}>
+          titleStyle={styles.Cube.card.titleStyle}
+        />
+        <CardText style={{ height: '300px', width: '100%' }}>
           <Divider />
           <ResponsiveContainer>
             <BarChart
               width={600}
               height={300}
               data={data}
-              margin={{top: 50, right: 30, left: 20, bottom: 5}}>
-              <XAxis dataKey="name"/>
+              margin={{ top: 50, right: 30, left: 20, bottom: 5 }}
+            >
+              <XAxis dataKey="name" />
               <YAxis />
               <CartesianGrid strokeDasharray="3 3" />
               <Tooltip />
               <Legend />
               <Bar
                 dataKey="pv"
-                fill="#8884d8" />
+                fill="#8884d8"
+              />
               <Bar
                 dataKey="uv"
-                fill="#82ca9d" />
+                fill="#82ca9d"
+              />
             </BarChart>
           </ResponsiveContainer>
         </CardText>
       </Card>
     );
   }
-};
+}
 
 BarChartCard.propTypes = {
   title: PropTypes.string,
-  subtitle: PropTypes.string
+  subtitle: PropTypes.string,
 };
 
 export default BarChartCard;

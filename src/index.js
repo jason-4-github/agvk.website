@@ -16,13 +16,13 @@ import ByLocationContainer from './containers/admin/sidemenu/Inventory/ByLocatio
 import ByItemContainer from './containers/admin/sidemenu/Inventory/ByItemContainer';
 import ByDateContainer from './containers/admin/sidemenu/Inventory/ByDateContainer';
 import AllItemsContainer from './containers/admin/sidemenu/Inventory/AllItemsContainer';
+import AllItemsDetailContainer from './containers/admin/sidemenu/Inventory/AllItemsDetailContainer';
 import configureStore from './store/configureStore';
 
 injectTapEventPlugin();
 
 const store = configureStore();
 const history = syncHistoryWithStore(browserHistory, store);
-
 
 // TODO(S.C.) => need to add "onEnter" function for checking auth in Route "/admin"
 const RouterDom = () => {
@@ -39,6 +39,7 @@ const RouterDom = () => {
         <Route path="/admin/inventory/by-item" component={ByItemContainer} />
         <Route path="/admin/inventory/by-date" component={ByDateContainer} />
         <Route path="/admin/inventory/all-items" component={AllItemsContainer} />
+        <Route path="/admin/inventory/all-items/:itemName" component={AllItemsDetailContainer} />
       </Route>
     </Router>
   );
@@ -50,8 +51,8 @@ render(
       {RouterDom()}
     </Provider>
   </MuiThemeProvider>,
-  document.getElementById('app'));
-
+  document.getElementById('app'),
+);
 
 export const localStorage = {
   isAuth: false,

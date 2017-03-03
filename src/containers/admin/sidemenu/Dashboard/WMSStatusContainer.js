@@ -20,8 +20,8 @@ class WMSStatusContainer extends React.Component {
   render() {
     const { isSideMenuOpen, wmsStatusData } = this.props;
     const toggleStyle = isSideMenuOpen === true
-      ? styles.contentWithSideMenu
-      : styles.contentWithoutSideMenu;
+                        ? styles.contentWithSideMenu
+                        : styles.contentWithoutSideMenu;
 
     if (!wmsStatusData) {
       return (

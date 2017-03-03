@@ -14,7 +14,8 @@ class Cube extends React.Component {
           title={title}
           subtitle={subtitle}
           style={styles.Cube.card.header}
-          titleStyle={styles.Cube.card.titleStyle} />
+          titleStyle={styles.Cube.card.titleStyle}
+        />
         <CardText style={styles.Cube.card.value}>
           <Divider />
           {numeral(value).format('0,0')}
@@ -22,12 +23,12 @@ class Cube extends React.Component {
       </Card>
     );
   }
-};
+}
 
 Cube.propTypes = {
   title: PropTypes.string,
   subtitle: PropTypes.string,
-  value: PropTypes.number
+  value: PropTypes.number,
 };
 
 export default Cube;

@@ -182,4 +182,30 @@ export const styles = {
       paddingLeft: '20px',
     },
   },
+  AllItemsContainer: {
+    colRightButton: {
+      marginBottom: 10,
+      bottom: -9,
+      right: -380,
+      position: 'fixed',
+    },
+  },
+  ItemCube: {
+    dropDownCricleBorder: {
+      borderTopLeftRadius: '20px',
+      borderBottomLeftRadius: '20px',
+    },
+    textInputCircleBorder: {
+      borderTopRightRadius: '20px',
+      borderBottomRightRadius: '20px',
+    },
+  },
+  ItemGreneralInfo: {
+    rowStyle: {
+      padding: '60px',
+    },
+    tableTd: {
+      width: '30%',
+    },
+  },
 };

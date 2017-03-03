@@ -40,7 +40,6 @@ export const doLogin = (passProps) => (dispatch, getState) => {
       localStorage.isAuth = false;
       return;
     }
-
     dispatch({
       type: types.LOGIN_SUCCESS,
       isLoginLoading: false,
@@ -86,7 +85,7 @@ export const doListRacksLocation = (passProps) => (dispatch, getState) => {
         listRacksLocationData: data,
       });
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch({
         type: types.LIST_RACK_LOCATION_FAILURE,
         listRacksLocationData: [],
@@ -120,7 +119,7 @@ export const doShowRacksLocation = (passProps) => (dispatch, getState) => {
         showRacksLocationInMapData: newData,
       });
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch({
         type: types.SHOW_RACK_LOCATION_FAILURE,
         showRacksLocationInMapData: [],
@@ -134,7 +133,6 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LIST_RACK_DETAIL_REQUEST,
   });
-
   if (!passProps) {
     dispatch({
       type: types.LIST_RACK_DETAIL_SUCCESS,
@@ -142,7 +140,6 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
     });
     return;
   }
-
   fetch(`${serverConfig.url}/listRackDetail/${passProps}`)
     .then(checkStatus)
     .then(parseJSON)
@@ -152,12 +149,41 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
         rackDetailData: data,
       });
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch({
         type: types.LIST_RACK_DETAIL_FAILURE,
         rackDetailData: [],
       });
     });
+};
+
+export const doListAllItems= (passProps) => (dispatch, getState) => {
+  dispatch({
+    type: types.LIST_ALLITEMS_REQUEST,
+    listAllItemData: [],
+  });
+  fetch(`${serverConfig.url}/listAllItems`)
+    .then(checkStatus)
+    .then(parseJSON)
+    .then((data) => {
+      dispatch({
+        type: types.LIST_ALLITEMS_SUCCESS,
+        listAllItemData: data,
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: types.LIST_ALLITEMS_FAILURE,
+        listAllItemData: [],
+      });
+    });
+};
+
+export const doTransferItemDetailData = (passProps) => (dispatch) => {
+  dispatch({
+    type: types.TRANSFER_ITEM_DETAILDATA,
+    itemDetailData: passProps.itemDetailData,
+  });
 };
 
 export const doHighlightLocations = (passProps) => (dispatch, getState) => {
@@ -182,7 +208,7 @@ export const doListWMSStatus = (passProps) => (dispatch, getState) => {
         wmsStatusData: data,
       });
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch({
         type: types.LIST_WMS_STATUS_FAILURE,
         wmsStatusData: undefined,
@@ -197,12 +223,12 @@ export const doDownloadInventoryReport = (passProps) => (dispatch, getState) => 
   fetch(`${serverConfig.url}/downloadInventoryReport/`)
     .then(checkStatus)
     .then(parseJSON)
-    .then((data) => {
+    .then(() => {
       dispatch({
         type: types.DOWNLOAD_INVENTORY_REPORT_SUCCESS,
       });
     })
-    .catch((error) => {
+    .catch(() => {
       dispatch({
         type: types.DOWNLOAD_INVENTORY_REPORT_FAILURE,
       });

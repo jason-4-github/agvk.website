@@ -64,8 +64,8 @@ class HandlingItemContainer extends React.Component {
   render() {
     const { isSideMenuOpen, highlightLocations, focusHighLightLocation } = this.props;
     const toggleStyle = isSideMenuOpen === true
-      ? styles.contentWithSideMenu
-      : styles.contentWithoutSideMenu;
+                        ? styles.contentWithSideMenu
+                        : styles.contentWithoutSideMenu;
 
     return (
       <div style={toggleStyle}>
