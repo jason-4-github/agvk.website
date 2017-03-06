@@ -9,30 +9,33 @@ import { searchBarOptions } from '../actions';
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-    const { searchBarOptions } = this.props;
+    const { searchBarOptions, searchBarQueryStr } = this.props;
     this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
     searchBarOptions({
       filterStr: 'options',
-      queryStr: 'Input the text',
+      filterCurrectOption: '',
+      queryStr: searchBarQueryStr || 'Input the text',
     });
   }
   handleQueryStrChange(e) {
-    const { searchBarOptions, filterStr } = this.props;
+    const { searchBarOptions, filterStr, filterCurrectOption } = this.props;
     searchBarOptions({
       filterStr,
+      filterCurrectOption,
       queryStr: e.target.value,
     });
   }
   handleFilterChange(event) {
-    const { searchBarOptions, queryStr } = this.props;
+    const { searchBarOptions, queryStr, filters } = this.props;
     searchBarOptions({
       queryStr,
       filterStr: event,
+      filterCurrectOption: filters[event],
     });
   }
   render() {
-    const { filters, filterStr, queryStr } = this.props;
+    const { filters, filterStr, filterCurrectOption, queryStr, onChangeFunc } = this.props;
     const menus = [];
     _.map(filters, (value, key) => {
       menus.push(
@@ -45,7 +48,7 @@ class SearchBar extends React.Component {
           <DropdownButton
             componentClass={InputGroup.Button}
             id="input-dropdown-addon"
-            title={filterStr || 'options'}
+            title={filterCurrectOption || 'options'}
             onSelect={this.handleFilterChange}
             style={styles.byItemStyle.dropDownCricleBorder}
           >
@@ -55,7 +58,7 @@ class SearchBar extends React.Component {
             type="text"
             style={styles.byItemStyle.textInputCircleBorder}
             placeholder={queryStr}
-            onChange={this.handleQueryStrChange}
+            onChange={onChangeFunc || this.handleQueryStrChange}
           />
         </InputGroup>
       </FormGroup>

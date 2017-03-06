@@ -199,6 +199,12 @@ export const styles = {
       borderTopRightRadius: '20px',
       borderBottomRightRadius: '20px',
     },
+    searchBarCol: {
+      display: 'flex',
+    },
+    searchIcon: {
+      paddingTop: '5px',
+    },
   },
   ItemGreneralInfo: {
     rowStyle: {
