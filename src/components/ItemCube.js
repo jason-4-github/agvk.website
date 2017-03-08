@@ -2,20 +2,13 @@ import { connect } from 'react-redux';
 import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { Table, Column, Cell } from 'fixed-data-table-2';
-import {
-  Row,
-  Col,
-  FormControl,
-  FormGroup,
-  InputGroup,
-  DropdownButton,
-  MenuItem }
-  from 'react-bootstrap';
+import { Row, Col } from 'react-bootstrap';
 import LinearProgress from 'material-ui/LinearProgress';
 import _ from 'lodash';
 
 import { styles } from '../styles';
-import { doTransferItemDetailData } from '../actions';
+import SearchBar from './SearchBar';
+import { searchBarOptions } from '../actions';
 
 const fixDataTableHeight = document.documentElement.clientHeight * 0.635;
 const fixDataTableWidth = document.documentElement.clientWidth * 0.79;
@@ -27,65 +20,29 @@ class ItemCube extends React.Component {
     super(props);
     const { data } = this.props;
     this.state = {
-      filterStr: '',
-      DropdownTitle: <span><i className="material-icons" style={{ fontSize:'16px' }}>search</i><span>Filters</span></span>,
+      queryStr: '',
       filteredDataList: data,
     };
-    this.handleFilterChange = this.handleFilterChange.bind(this);
     this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
   }
-
   handleQueryStrChange(e) {
-    const { data } = this.props;
-    const { filterStr } = this.state;
+    const { data, filterStr, filterCurrectOption, searchBarOptions } = this.props;
     const size = data.length;
-    const filterBy = e.target.value;
     const filteredIndexes = [];
-    for (var index = 0; index < size; index++) {
-      if (_.isMatch(data[index][filterStr].toString(), filterBy)) {
+    for (let index = 0; index < size; index += 1) {
+      if (_.isMatch(data[index][filterStr].toString(), e.target.value)) {
         filteredIndexes.push(data[index]);
       }
     }
-    {e.target.value
-      ? this.setState({
-        filteredDataList: filteredIndexes,
-      })
-      : this.setState({
-        filteredDataList: data,
-      })
-    }
+    searchBarOptions({
+      queryStr: e.target.value,
+      filterStr,
+      filterCurrectOption,
+    });
+    this.setState({
+      filteredDataList: e.target.value ? filteredIndexes : data,
+    });
   }
-  handleFilterChange(value) {
-      switch (value) {
-        case 'Item Name':
-            this.setState({
-              filterStr: 'ItemName',
-              DropdownTitle: value,
-            });
-          break;
-        case 'Part.No.':
-            this.setState({
-              filterStr: "ItemName",
-              DropdownTitle: value,
-            });
-          break;
-        case 'Qty':
-          this.setState({
-            filterStr: 'ItemCount',
-            DropdownTitle: value,
-          });
-          break;
-        case 'Status':
-          this.setState({
-            filterStr: 'Status',
-            DropdownTitle: value,
-          });
-          break;
-        default:
-          break;
-      }
-  }
-
   render() {
     const { filteredDataList } = this.state;
     if (document.readyState !== 'complete') {
@@ -99,33 +56,21 @@ class ItemCube extends React.Component {
         </Row>
       );
     }
+    const MenuItemsObj = {
+      ItemName: 'Part.No.',
+      ItemCount: 'Qty',
+    };
     return (
       <div>
         <Row>
-          <Col xs={4} sm={4} md={4} lg={4}>
-            <FormGroup>
-              <InputGroup>
-                <DropdownButton
-                  id="input-dropdown-addon"
-                  title={this.state.DropdownTitle}
-                  onSelect={this.handleFilterChange}
-                  componentClass={InputGroup.Button}
-                  style={styles.ItemCube.dropDownCricleBorder}
-                >
-                  <MenuItem eventKey="Item Name" >Item Name</MenuItem>
-                  <MenuItem eventKey="Part.No.">Part.No.</MenuItem>
-                  <MenuItem eventKey="Qty">Qty</MenuItem>
-                  <MenuItem eventKey="Status">Status</MenuItem>
-                </DropdownButton>
-                <FormControl
-                  type="text"
-                  placeholder="Keyword"
-                  height="43px"
-                  style={styles.ItemCube.textInputCircleBorder}
-                  onChange={this.handleQueryStrChange}
-                />
-              </InputGroup>
-            </FormGroup>
+          <Col xs={4} sm={4} md={4} lg={4} style={styles.ItemCube.searchBarCol}>
+            <i className="material-icons" style={styles.ItemCube.searchIcon}>search</i>
+            <SearchBar
+              filters={MenuItemsObj}
+              onChangeFunc={this.handleQueryStrChange}
+              searchBarQueryStr={this.state.queryStr}
+
+            />
           </Col>
           <Col xs={8} sm={8} md={8} lg={8} />
         </Row>
@@ -142,9 +87,9 @@ class ItemCube extends React.Component {
           <Column
             header={<Cell>Picture</Cell>}
             cell={({ rowIndex, ...props }) => (
-             <Cell {...props} style={{ cursor: 'pointer' }}>
-               { null }
-             </Cell>
+              <Cell {...props} style={{ cursor: 'pointer' }}>
+                { null }
+              </Cell>
             )}
             width={fixDataTableImageColumnWidth}
             align="center"
@@ -152,9 +97,9 @@ class ItemCube extends React.Component {
           <Column
             header={<Cell>Item Name</Cell>}
             cell={({ rowIndex, ...props }) => (
-             <Cell {...props} style={{ cursor: 'pointer' }}>
-               { this.state.filteredDataList[rowIndex].ItemName }
-             </Cell>
+              <Cell {...props} style={{ cursor: 'pointer' }}>
+                { this.state.filteredDataList[rowIndex].ItemName }
+              </Cell>
             )}
             width={fixDataTableColumnWidth}
             align="center"
@@ -162,9 +107,9 @@ class ItemCube extends React.Component {
           <Column
             header={<Cell>Part .No.</Cell>}
             cell={({ rowIndex, ...props }) => (
-             <Cell {...props} style={{ cursor: 'pointer' }}>
-               { this.state.filteredDataList[rowIndex].ItemName }
-             </Cell>
+              <Cell {...props} style={{ cursor: 'pointer' }}>
+                { this.state.filteredDataList[rowIndex].ItemName }
+              </Cell>
               )}
             width={fixDataTableColumnWidth}
             align="center"
@@ -182,9 +127,9 @@ class ItemCube extends React.Component {
           <Column
             header={<Cell>Status</Cell>}
             cell={({ rowIndex, ...props }) => (
-            <Cell {...props} style={{ cursor: 'pointer' }}>
-              {null}
-            </Cell>
+              <Cell {...props} style={{ cursor: 'pointer' }}>
+                {null}
+              </Cell>
             )}
             width={fixDataTableColumnWidth}
             align="center"
@@ -206,7 +151,5 @@ const mapStateToProps = (state) => {
 };
 export default connect(
   mapStateToProps,
-  {
-    doTransferItemDetailData,
-  },
+  { searchBarOptions },
 )(ItemCube);
