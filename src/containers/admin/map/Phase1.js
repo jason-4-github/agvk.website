@@ -21,14 +21,7 @@ import Dialog from 'material-ui/Dialog';
 import FlatButton from 'material-ui/FlatButton';
 import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
-import {
-  Table,
-  TableBody,
-  TableHeader,
-  TableHeaderColumn,
-  TableRow,
-  TableRowColumn,
-} from 'material-ui/Table';
+import { Table, Column, Cell } from 'fixed-data-table-2';
 
 import Phase1Config from '../../../config/maps/Phase1Config';
 
@@ -47,6 +40,9 @@ const focusColor = '#FF4AA1';
 const borderSize = 20;
 const gap = 1;
 const viewBoxAttr = `0 0 ${borderSize} ${borderSize}`;
+const fixDataTableHeight = document.documentElement.clientHeight * 0.6;
+const fixDataTableWidth = document.documentElement.clientWidth * 0.85;
+const fixDataTableColumnWidth = (fixDataTableWidth / 6);
 
 const tmp = {};
 
@@ -93,21 +89,6 @@ class Phase1 extends React.Component {
     });
     const focusElement = ReactDOM.findDOMNode(this.refs[focusHighLightLocation.substr(2)]);
     focusElement.setAttribute('fill', focusColor);
-  }
-  showTableBodyData(data) {
-    const rootDom = [];
-    _.map(data, (i, k) => {
-      rootDom.push(
-        <TableRow key={k} selected={false}>
-          <TableRowColumn>{`${i.RackSide}-${i.RackLayer}-${i.RackBlock}`}</TableRowColumn>
-          <TableRowColumn>{i.ItemName}</TableRowColumn>
-          <TableRowColumn>{i.ItemExternalID}</TableRowColumn>
-          <TableRowColumn>{i.Vendor}</TableRowColumn>
-          <TableRowColumn>{i.ItemCount}</TableRowColumn>
-          <TableRowColumn>{i.DateCode}</TableRowColumn>
-        </TableRow>);
-    });
-    return (rootDom);
   }
   handleRackClick(x, y, isEnable, identity) {
     const { handleRackClickFunc } = this.props;
@@ -178,8 +159,10 @@ class Phase1 extends React.Component {
 
     const { rackDetailData } = this.props;
     return (
+
       <div>
         <Dialog
+          name = "rckDialog"
           title={str}
           actions={actions}
           modal={false}
@@ -187,37 +170,78 @@ class Phase1 extends React.Component {
           open={this.state.isDialogOpen}
           onRequestClose={() => { this.handleDialogClose(); }}
         >
-          <Table
-            height="450px"
-            fixedHeade
-            selectable={false}
-            multiSelectable={false}
-          >
-            <TableHeader
-              displaySelectAll={false}
-              adjustForCheckbox={false}
-              enableSelectAll={false}
-            >
-              <TableRow>
-                <TableHeaderColumn tooltip="Block No.">Block No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Part. No.">Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Cust. Part. No.">Cust. Part. No.</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Vendor">Vendor</TableHeaderColumn>
-                <TableHeaderColumn tooltip="QTY">QTY</TableHeaderColumn>
-                <TableHeaderColumn tooltip="Date">Date</TableHeaderColumn>
-              </TableRow>
-            </TableHeader>
-            <TableBody
-              displayRowCheckbox={false}
-              deselectOnClickaway
-              showRowHover
-              stripedRows={false}
-            >
-              { rackDetailData
-                ? this.showTableBodyData(rackDetailData)
-                : ''}
-            </TableBody>
-          </Table>
+            {rackDetailData
+                ? <Table
+                  rowHeight={50}
+                  rowsCount={rackDetailData.length}
+                  width={fixDataTableWidth}
+                  height={fixDataTableHeight}
+                  headerHeight={50}
+                >
+                  <Column
+                    header={<Cell>Block No.</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                      <Cell {...props}>
+                        {`${rackDetailData[rowIndex].RackSide} -
+                          ${rackDetailData[rowIndex].RackLayer}-
+                          ${rackDetailData[rowIndex].RackBlock}`}
+                      </Cell>
+                        )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                  <Column
+                    header={<Cell>Part. No.</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                      <Cell {...props}>
+                        { rackDetailData[rowIndex].ItemName }
+                      </Cell>
+                        )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                  <Column
+                    header={<Cell>Cust. Part. No.</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                      <Cell {...props}>
+                        { rackDetailData[rowIndex].ItemExternalID }
+                      </Cell>
+                        )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                  <Column
+                    header={<Cell>Vendor</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                      <Cell {...props}>
+                        { rackDetailData[rowIndex].Vendor }
+                      </Cell>
+                        )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                  <Column
+                    header={<Cell>QTY</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                      <Cell {...props}>
+                        { rackDetailData[rowIndex].ItemCount }
+                      </Cell>
+                        )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                  <Column
+                    header={<Cell>Date</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                    <Cell {...props}>
+                      { rackDetailData[rowIndex].DateCode }
+                    </Cell>
+                    )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                </Table>
+            : '' }
         </Dialog>
       </div>
     );
