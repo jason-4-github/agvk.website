@@ -182,14 +182,6 @@ export const styles = {
       paddingLeft: '20px',
     },
   },
-  AllItemsContainer: {
-    colRightButton: {
-      marginBottom: 10,
-      bottom: -9,
-      right: -380,
-      position: 'fixed',
-    },
-  },
   ItemCube: {
     dropDownCricleBorder: {
       borderTopLeftRadius: '20px',
@@ -212,6 +204,16 @@ export const styles = {
     },
     tableTd: {
       width: '30%',
+    },
+  },
+  RackLocationTableCard: {
+    divstyle: {
+      position: 'relative',
+      margin: 'auto',
+    },
+    downloadButtonstyle: {
+      position: 'fixed ',
+      right: '10',
     },
   },
 };
