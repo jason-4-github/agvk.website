@@ -10,11 +10,6 @@ import { styles } from '../styles';
 import SearchBar from './SearchBar';
 import { searchBarOptions } from '../actions';
 
-const fixDataTableHeight = document.documentElement.clientHeight * 0.635;
-const fixDataTableWidth = document.documentElement.clientWidth * 0.79;
-const fixDataTableImageColumnWidth = ((fixDataTableWidth / 5) * 0.4);
-const fixDataTableColumnWidth = ((fixDataTableWidth - fixDataTableImageColumnWidth) / 4);
-
 class ItemCube extends React.Component {
   constructor(props) {
     super(props);
@@ -22,8 +17,44 @@ class ItemCube extends React.Component {
     this.state = {
       queryStr: '',
       filteredDataList: data,
+      ChangeSize: false,
+      fixDataTableHeight: (window.innerHeight - 200) * 0.8,
+      fixDataTableWidth: (window.innerWidth - 256) * 0.98,
+      fixDataTablePictureColumnWidth: 0,
+      fixDataTableColumnWidth: 0,
     };
     this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  handleResize() {
+    const checkWidthsize = window.innerWidth - 256;
+    const checkHeightsize = window.innerHeight - 200;
+    if ((checkWidthsize <= 992) || (checkHeightsize <= 435)) {
+      this.setState({
+        fixDataTableHeight: checkHeightsize * 0.8,
+        fixDataTableWidth: window.innerWidth * 0.98,
+        fixDataTablePictureColumnWidth: (((window.innerWidth * 0.98) / 5) * 0.4),
+        fixDataTableColumnWidth: (((window.innerWidth * 0.98)
+                               - (((window.innerWidth * 0.98) / 5) * 0.4)) / 4),
+      });
+    } else if ((checkWidthsize !== 1110) || (checkHeightsize !== 462)) {
+      this.setState({
+        fixDataTableHeight: checkHeightsize * 0.8,
+        fixDataTableWidth: checkWidthsize * 0.98,
+        fixDataTablePictureColumnWidth: ((checkWidthsize / 5) * 0.4),
+        fixDataTableColumnWidth: ((checkWidthsize - ((checkWidthsize / 5) * 0.4)) / 4),
+      });
+    } else {
+      this.setState({
+        fixDataTableHeight: 356,
+        fixDataTableWidth: 1072,
+        fixDataTablePictureColumnWidth: ((checkWidthsize / 5) * 0.4),
+        fixDataTableColumnWidth: ((checkWidthsize - ((checkWidthsize / 5) * 0.4)) / 4),
+      });
+    }
   }
   handleQueryStrChange(e) {
     const { data, filterStr, filterCurrectOption, searchBarOptions } = this.props;
@@ -45,6 +76,10 @@ class ItemCube extends React.Component {
   }
   render() {
     const { filteredDataList } = this.state;
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTablePictureColumnWidth,
+            fixDataTableColumnWidth } = this.state;
     if (document.readyState !== 'complete') {
       return (
         <Row style={styles.Row}>
@@ -69,7 +104,6 @@ class ItemCube extends React.Component {
               filters={MenuItemsObj}
               onChangeFunc={this.handleQueryStrChange}
               searchBarQueryStr={this.state.queryStr}
-
             />
           </Col>
           <Col xs={8} sm={8} md={8} lg={8} />
@@ -91,7 +125,7 @@ class ItemCube extends React.Component {
                 { null }
               </Cell>
             )}
-            width={fixDataTableImageColumnWidth}
+            width={fixDataTablePictureColumnWidth}
             align="center"
           />
           <Column

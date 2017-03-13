@@ -1,6 +1,5 @@
 import React, { PropTypes } from 'react';
 import { connect } from 'react-redux';
-import { Row, Col } from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
 
 import { styles } from '../../../../styles';
@@ -23,29 +22,22 @@ class AllItemsContainer extends React.Component {
       listAllItemData,
     } = this.props;
     const toggleStyle = isSideMenuOpen === true
-                        ? styles.contentWithSideMenu
-                        : styles.contentWithoutSideMenu;
-
+      ? styles.contentWithSideMenu
+      : styles.contentWithoutSideMenu;
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
         {(listAllItemData !== undefined) && (listAllItemData.length !== 0)
-        ? <ItemCube data={listAllItemData} />
-        : ''}
+          ? <ItemCube data={listAllItemData} />
+          : ''}
         <br />
-        <Row style={styles.Row}>
-          <Col
-            xs={12} sm={6} md={6} lg={6}
-            style={styles.AllItemsContainer.colRightButton}
-          >
-            <RaisedButton
-              label="Download Inventory Report"
-              className="border-color-button"
-              onClick={() => { this.handleClickDownload(); }}
-              primary
-            />
-          </Col>
-        </Row>
+        <RaisedButton
+          label="Download Inventory Report"
+          className="border-color-button"
+          style={styles.RackLocationTableCard.downloadButtonstyle}
+          onClick={() => { this.handleClickDownload(); }}
+          primary
+        />
       </div>
     );
   }
