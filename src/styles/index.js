@@ -142,6 +142,9 @@ export const styles = {
     tabStyle: {
       backgroundColor: 'rgba(170, 184, 185, 1)',
     },
+    textCenter: {
+      textAlign: 'center',
+    },
   },
   ByDatePage: {
     datePickerText: {
@@ -155,6 +158,15 @@ export const styles = {
     },
     textCenter: {
       textAlign: 'center',
+    },
+    textLeft: {
+      textAlign: 'left',
+    },
+    textRight: {
+      textAlign: 'right',
+    },
+    buttonPadding: {
+      paddingTop: '5px',
     },
     filterStyle: {
       height: '18vh',
@@ -180,6 +192,9 @@ export const styles = {
     },
     tableContainer: {
       paddingLeft: '20px',
+    },
+    textCenter: {
+      textAlign: 'center',
     },
   },
   ItemCube: {

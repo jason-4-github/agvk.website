@@ -24,7 +24,7 @@ class ByItemContainer extends React.Component {
   }
   showFilter() {
     const searchBarObj = {
-      PartNo: 'Part. No.',
+      PartNo: 'Parts. No.',
       CustPartNo: 'Cust. Part. No.',
       Vendor: 'Vendor',
       LotNo: 'Lot No',
@@ -44,7 +44,7 @@ class ByItemContainer extends React.Component {
         <Col xs={4} sm={4} md={4} lg={4} >
           <SearchBar filters={searchBarObj} />
         </Col>
-        <Col xs={2} sm={2} md={2} lg={2} >
+        <Col xs={2} sm={2} md={2} lg={2} style={{ textAlign: 'right' }}>
           <RaisedButton
             label="Search"
             primary
@@ -57,7 +57,7 @@ class ByItemContainer extends React.Component {
   showResultTable(data, type) {
     if (type === 'SHOW_RACK_LOCATION_REQUEST') {
       return (
-        <div>
+        <div style={styles.byItemStyle.textCenter}>
           <CircularProgress />
         </div>
       );
@@ -115,8 +115,8 @@ class ByItemContainer extends React.Component {
   }
   showData(data, tableWidth) {
     const rootDom = [];
-    const tmpA = ['Part. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location'];
-    const tmpB = ['ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location'];
+    const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
+    const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
     _.map(tmpB, (d, i) => {
       rootDom.push(
         <Column
@@ -128,9 +128,9 @@ class ByItemContainer extends React.Component {
                 : data[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 5.5}
+          width={tableWidth / 6.5}
           key={d + i}
-          fixed={d === 'ItemName' || d === 'ItemExternalID'
+          fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
             : false
           }

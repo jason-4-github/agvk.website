@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import { Grid, Row, Col, Table } from 'react-bootstrap';
+import { Row, Col, Table } from 'react-bootstrap';
 import { Card, CardText } from 'material-ui/Card';
 import Checkbox from 'material-ui/Checkbox';
 
