@@ -40,9 +40,6 @@ const focusColor = '#FF4AA1';
 const borderSize = 20;
 const gap = 1;
 const viewBoxAttr = `0 0 ${borderSize} ${borderSize}`;
-const fixDataTableHeight = document.documentElement.clientHeight * 0.6;
-const fixDataTableWidth = document.documentElement.clientWidth * 0.85;
-const fixDataTableColumnWidth = (fixDataTableWidth / 6);
 
 const tmp = {};
 
@@ -52,7 +49,14 @@ class Phase1 extends React.Component {
     this.state = {
       isDialogOpen: false,
       queryStr: '',
+      fixDataTableHeight: 0,
+      fixDataTableWidth: 0,
+      fixDataTableColumnWidth: 0,
     };
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
   }
   componentWillUpdate() {
     if (!tmp.highlightLocations) { return; }
@@ -62,7 +66,6 @@ class Phase1 extends React.Component {
     const locationX = parseInt(locationArr[1], 10);
     const locationY = parseInt(locationArr[2], 10);
     if (_.find(Phase1Config.stationPositions, { x: locationX, y: locationY })) {
-      console.log('enter');
       _.map(tmp.highlightLocations, (h) => {
         const element = ReactDOM.findDOMNode(this.refs[h.substr(2)]);
         element.setAttribute('fill', stationColor);
@@ -119,7 +122,25 @@ class Phase1 extends React.Component {
       queryStr: '',
     });
   }
+  handleResize() {
+    if (window.innerWidth < 768) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight * 0.6,
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth * 0.8) / 8),
+      });
+    } else {
+      this.setState({
+        fixDataTableHeight: window.innerHeight * 0.6,
+        fixDataTableWidth: window.innerWidth * 0.85,
+        fixDataTableColumnWidth: ((window.innerWidth * 0.85) / 8),
+      });
+    }
+  }
   showTableDialog(str, type) {
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     const actions = [
       <FlatButton
         label="OK"
@@ -182,9 +203,17 @@ class Phase1 extends React.Component {
                     header={<Cell>Block No.</Cell>}
                     cell={({ rowIndex, ...props }) => (
                       <Cell {...props}>
-                        {`${rackDetailData[rowIndex].RackSide} -
-                          ${rackDetailData[rowIndex].RackLayer}-
-                          ${rackDetailData[rowIndex].RackBlock}`}
+                        {rackDetailData[rowIndex].RackBlockNO}
+                      </Cell>
+                        )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                  <Column
+                    header={<Cell>Pic</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                      <Cell {...props}>
+                        { rackDetailData[rowIndex].picture }
                       </Cell>
                         )}
                     width={fixDataTableColumnWidth}
@@ -235,6 +264,16 @@ class Phase1 extends React.Component {
                     cell={({ rowIndex, ...props }) => (
                     <Cell {...props}>
                       { rackDetailData[rowIndex].DateCode }
+                    </Cell>
+                    )}
+                    width={fixDataTableColumnWidth}
+                    align="center"
+                  />
+                  <Column
+                    header={<Cell>Status</Cell>}
+                    cell={({ rowIndex, ...props }) => (
+                    <Cell {...props}>
+                      { rackDetailData[rowIndex].status }
                     </Cell>
                     )}
                     width={fixDataTableColumnWidth}

@@ -5,23 +5,57 @@ import { connect } from 'react-redux';
 
 import { doHighlightLocations } from '../actions';
 
-const fixDataTableHeight = document.documentElement.clientHeight * 0.7;
-const fixDataTableWidth = document.documentElement.clientWidth * 0.4;
-const fixDataTableColumnWidth = (fixDataTableWidth / 2);
 class RackLocationTableCard extends React.Component {
-  static showData(data) {
-    const rootDom = [];
-    _.map(data, (i, k) => {
-      rootDom.push(
-        <TableRow key={k} selected={false}>
-          <TableRowColumn>{i.rackName}</TableRowColumn>
-          <TableRowColumn>{i.rackLocation}</TableRowColumn>
-        </TableRow>);
-    });
-    return (rootDom);
+  constructor(props) {
+    super(props);
+    this.state = {
+      fixDataTableHeight: 0,
+      fixDataTableWidth: 0,
+      fixDataTableColumnWidth: 0,
+    };
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  handleResize() {
+    if (window.innerWidth < 412) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: window.innerWidth * 0.9,
+        fixDataTableColumnWidth: (window.innerWidth * 0.9) / 2,
+      });
+    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: window.innerWidth * 0.93,
+        fixDataTableColumnWidth: (window.innerWidth * 0.93) / 2,
+      });
+    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: (window.innerWidth - 251) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 251) * 0.8) / 2,
+      });
+    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: (window.innerWidth - 507) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 507) * 0.8) / 2,
+      });
+    } else {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: (window.innerWidth - 507) * 0.7,
+        fixDataTableColumnWidth: (((window.innerWidth - 507) * 0.7) / 2),
+      });
+    }
   }
   render() {
     const { data } = this.props;
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     return (
       <div>
         {data
@@ -40,7 +74,7 @@ class RackLocationTableCard extends React.Component {
               }}
             >
               <Column
-                header={<Cell>rackName</Cell>}
+                header={<Cell>Rack No.</Cell>}
                 cell={({ rowIndex, ...props }) => (
                   <Cell {...props}>
                     { data[rowIndex].rackName }
@@ -50,7 +84,7 @@ class RackLocationTableCard extends React.Component {
                 align="center"
               />
               <Column
-                header={<Cell>rackLocation</Cell>}
+                header={<Cell>Location</Cell>}
                 cell={({ rowIndex, ...props }) => (
                 <Cell {...props}>
                   { data[rowIndex].rackLocation }

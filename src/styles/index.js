@@ -182,6 +182,11 @@ export const styles = {
       paddingLeft: '20px',
     },
   },
+  AllItemsContainer: {
+    circularProgressStyles: {
+      left: '50%',
+    },
+  },
   ItemCube: {
     dropDownCricleBorder: {
       borderTopLeftRadius: '20px',
@@ -204,6 +209,10 @@ export const styles = {
     },
     tableTd: {
       width: '30%',
+    },
+    circlePosition: {
+      display: 'block',
+      margin: 'auto',
     },
   },
   RackLocationTableCard: {

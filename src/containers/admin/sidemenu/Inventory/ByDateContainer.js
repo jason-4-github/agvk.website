@@ -97,7 +97,7 @@ class ByDateContainer extends React.Component {
   }
   showResultTableCard(data, isSideMenuOpen) {
     const tableWidth = (isSideMenuOpen
-      ? window.innerWidth - 356
+      ? window.innerWidth - 340
       : window.innerWidth - 100);
     return (
       <div
