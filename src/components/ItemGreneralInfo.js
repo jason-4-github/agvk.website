@@ -44,7 +44,8 @@ class ItemGreneralInfo extends React.Component {
         <CardText>
           <Row style={styles.ItemGreneralInfo.rowStyle}>
             <Col xs={12} sm={6} md={6} lg={6}>
-              <Avatar src="images/uxceo-128.jpg" size={circleHeightwidth} style={ styles.ItemGreneralInfo.circlePosition }/>
+              <Avatar src="images/uxceo-128.jpg" size={circleHeightwidth} style={styles.ItemGreneralInfo.circlePosition} />
+              <br />
             </Col>
             <Col xs={12} sm={6} md={6} lg={6}>
               <Row>
