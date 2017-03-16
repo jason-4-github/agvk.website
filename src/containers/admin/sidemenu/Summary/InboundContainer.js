@@ -12,7 +12,7 @@ class InboundContainer extends React.Component {
     doAllItemsSelectData();
   }
   render() {
-    const { isSideMenuOpen, detailData, type } = this.props;
+    const { isSideMenuOpen, detailData } = this.props;
     const toggleStyle = isSideMenuOpen === true
       ? styles.contentWithSideMenu
       : styles.contentWithoutSideMenu;

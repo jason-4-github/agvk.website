@@ -183,7 +183,7 @@ class Phase1 extends React.Component {
 
       <div>
         <Dialog
-          name = "rckDialog"
+          name="rckDialog"
           title={str}
           actions={actions}
           modal={false}
@@ -191,95 +191,95 @@ class Phase1 extends React.Component {
           open={this.state.isDialogOpen}
           onRequestClose={() => { this.handleDialogClose(); }}
         >
-            {rackDetailData
-                ? <Table
-                  rowHeight={50}
-                  rowsCount={rackDetailData.length}
-                  width={fixDataTableWidth}
-                  height={fixDataTableHeight}
-                  headerHeight={50}
-                >
-                  <Column
-                    header={<Cell>Block No.</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                      <Cell {...props}>
-                        {rackDetailData[rowIndex].RackBlockNO}
-                      </Cell>
-                        )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                  <Column
-                    header={<Cell>Pic</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                      <Cell {...props}>
-                        { rackDetailData[rowIndex].picture }
-                      </Cell>
-                        )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                  <Column
-                    header={<Cell>Part. No.</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                      <Cell {...props}>
-                        { rackDetailData[rowIndex].ItemName }
-                      </Cell>
-                        )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                  <Column
-                    header={<Cell>Cust. Part. No.</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                      <Cell {...props}>
-                        { rackDetailData[rowIndex].ItemExternalID }
-                      </Cell>
-                        )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                  <Column
-                    header={<Cell>Vendor</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                      <Cell {...props}>
-                        { rackDetailData[rowIndex].Vendor }
-                      </Cell>
-                        )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                  <Column
-                    header={<Cell>QTY</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                      <Cell {...props}>
-                        { rackDetailData[rowIndex].ItemCount }
-                      </Cell>
-                        )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                  <Column
-                    header={<Cell>Date</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                    <Cell {...props}>
-                      { rackDetailData[rowIndex].DateCode }
-                    </Cell>
+          {rackDetailData
+            ? <Table
+              rowHeight={50}
+              rowsCount={rackDetailData.length}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
+              headerHeight={50}
+            >
+              <Column
+                header={<Cell>Block No.</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    {rackDetailData[rowIndex].RackBlockNO}
+                  </Cell>
                     )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                  <Column
-                    header={<Cell>Status</Cell>}
-                    cell={({ rowIndex, ...props }) => (
-                    <Cell {...props}>
-                      { rackDetailData[rowIndex].status }
-                    </Cell>
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Pic</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { rackDetailData[rowIndex].picture }
+                  </Cell>
                     )}
-                    width={fixDataTableColumnWidth}
-                    align="center"
-                  />
-                </Table>
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Part. No.</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { rackDetailData[rowIndex].ItemName }
+                  </Cell>
+                    )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Cust. Part. No.</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { rackDetailData[rowIndex].ItemExternalID }
+                  </Cell>
+                    )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Vendor</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { rackDetailData[rowIndex].Vendor }
+                  </Cell>
+                    )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>QTY</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                  <Cell {...props}>
+                    { rackDetailData[rowIndex].ItemCount }
+                  </Cell>
+                    )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Date</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                <Cell {...props}>
+                  { rackDetailData[rowIndex].DateCode }
+                </Cell>
+                )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+              <Column
+                header={<Cell>Status</Cell>}
+                cell={({ rowIndex, ...props }) => (
+                <Cell {...props}>
+                  { rackDetailData[rowIndex].status }
+                </Cell>
+                )}
+                width={fixDataTableColumnWidth}
+                align="center"
+              />
+            </Table>
             : '' }
         </Dialog>
       </div>
@@ -287,7 +287,6 @@ class Phase1 extends React.Component {
   }
   buildMapDom(Config) {
     const rootItemsStyle = { height: borderSize };
-
     const rootItems = _.range(Config.yAxisLength).map((y) => {
       const childItems = _.range(Config.xAxisLength).map((x) => {
         if (_.find(Config.stationPositions, { x, y })) {

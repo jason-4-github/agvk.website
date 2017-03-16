@@ -43,6 +43,7 @@ const Options = (props) => {
           primaryText={i.root.primaryText}
           leftIcon={<DashboardIcon color={grey100} />}
           nestedItems={childrenDom}
+          primaryTogglesNestedList
         />,
       );
     } else if (k === 1) {
@@ -53,6 +54,7 @@ const Options = (props) => {
           primaryText={i.root.primaryText}
           leftIcon={<SummaryIcon color={grey100} />}
           nestedItems={childrenDom}
+          primaryTogglesNestedList
         />,
       );
     } else if (k === 2) {
@@ -63,6 +65,7 @@ const Options = (props) => {
           primaryText={i.root.primaryText}
           leftIcon={<InventoryIcon color={grey100} />}
           nestedItems={childrenDom}
+          primaryTogglesNestedList
         />,
       );
     } else if (k === 3) {
@@ -73,6 +76,7 @@ const Options = (props) => {
           primaryText={i.root.primaryText}
           leftIcon={<OperationIcon color={grey100} />}
           nestedItems={childrenDom}
+          primaryTogglesNestedList
         />,
       );
     } else if (k === 4) {
@@ -83,6 +87,7 @@ const Options = (props) => {
           primaryText={i.root.primaryText}
           leftIcon={<SettingIcon color={grey100} />}
           nestedItems={childrenDom}
+          primaryTogglesNestedList
         />,
       );
     }

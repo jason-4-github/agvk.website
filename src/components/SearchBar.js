@@ -35,7 +35,7 @@ class SearchBar extends React.Component {
     });
   }
   render() {
-    const { filters, filterStr, filterCurrectOption, queryStr, onChangeFunc } = this.props;
+    const { filters, filterCurrectOption, queryStr, onChangeFunc } = this.props;
     const menus = [];
     _.map(filters, (value, key) => {
       menus.push(
