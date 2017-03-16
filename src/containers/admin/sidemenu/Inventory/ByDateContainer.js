@@ -2,6 +2,7 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { Row, Col } from 'react-bootstrap';
 import RaisedButton from 'material-ui/RaisedButton';
+import CircularProgress from 'material-ui/CircularProgress';
 import _ from 'lodash';
 import moment from 'moment';
 import { Table, Column, Cell } from 'fixed-data-table-2';
@@ -25,11 +26,7 @@ class ByDateContainer extends React.Component {
 
     this.onDatesChange = this.onDatesChange.bind(this);
     this.onFocusChange = this.onFocusChange.bind(this);
-  }
-
-  componentDidMount() {
-    const { doAllItemsSelectData } = this.props;
-    doAllItemsSelectData();
+    this.handleClickSearch = this.handleClickSearch.bind(this);
   }
   onDatesChange({ startDate, endDate }) {
     this.setState({ startDate, endDate });
@@ -48,13 +45,17 @@ class ByDateContainer extends React.Component {
       this.setState({ endDate: null });
     }
   }
+  handleClickSearch() {
+    const { doAllItemsSelectData } = this.props;
+    doAllItemsSelectData();
+  }
   showDatePickerCard() {
     const { focusedInput, startDate, endDate } = this.state;
     const dateRule = day => !isInclusivelyBeforeDay(day, moment());
     return (
       <Row>
         <Col sm={6} md={6} lg={7} />
-        <Col xs={12} sm={6} md={6} lg={5} style={styles.ByDatePage.textCenter} >
+        <Col xs={12} sm={6} md={6} lg={5} style={styles.ByDatePage.textRight} >
           <DateRangePicker
             {...this.props}
             displayFormat="YYYY-MM-DD"
@@ -73,8 +74,8 @@ class ByDateContainer extends React.Component {
   }
   showData(data, tableWidth) {
     const rootDom = [];
-    const tmpA = ['Part. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location'];
-    const tmpB = ['ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location'];
+    const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
+    const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
     _.map(tmpB, (d, i) => {
       rootDom.push(
         <Column
@@ -84,9 +85,9 @@ class ByDateContainer extends React.Component {
               {data[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 5.5}
+          width={tableWidth / 6.5}
           key={d + i}
-          fixed={d === 'ItemName' || d === 'ItemExternalID'
+          fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
             : false
           }
@@ -95,10 +96,18 @@ class ByDateContainer extends React.Component {
     });
     return (rootDom);
   }
-  showResultTableCard(data, isSideMenuOpen) {
+  showResultTableCard(data) {
+    const { isSideMenuOpen, type } = this.props;
     const tableWidth = (isSideMenuOpen
-      ? window.innerWidth - 356
-      : window.innerWidth - 100);
+      ? window.innerWidth - 340
+      : window.innerWidth - 70);
+    if (type === 'LIST_ALLITEMS_SELECT_REQUEST') {
+      return (
+        <div style={styles.ByDatePage.textCenter}>
+          <CircularProgress />
+        </div>
+      );
+    }
     return (
       <div
         style={{
@@ -122,7 +131,7 @@ class ByDateContainer extends React.Component {
     );
   }
   render() {
-    const { isSideMenuOpen, detailData } = this.props;
+    const { isSideMenuOpen, detailData, type } = this.props;
     const toggleStyle = isSideMenuOpen === true
       ? styles.contentWithSideMenu
       : styles.contentWithoutSideMenu;
@@ -132,14 +141,18 @@ class ByDateContainer extends React.Component {
         <PageNavigator pages={['Inventory', 'By Date']} />
         <Row style={styles.Row}>
           <Col
-            xs={12} sm={10} md={10} lg={10}
+            xs={10} sm={10} md={10} lg={10}
             style={styles.Col}
           >
             {this.showDatePickerCard()}
           </Col>
           <Col
-            xs={12} sm={2} md={2} lg={2}
-            style={{ ...styles.Col, ...styles.ByDatePage.textCenter }}
+            xs={2} sm={2} md={2} lg={2}
+            style={{
+              ...styles.Col,
+              ...styles.ByDatePage.textLeft,
+              ...styles.ByDatePage.buttonPadding,
+            }}
           >
             <RaisedButton
               label="Search"
@@ -151,7 +164,7 @@ class ByDateContainer extends React.Component {
             xs={12} sm={12} md={12} lg={12}
             style={styles.Col}
           >
-            {this.showResultTableCard(detailData, isSideMenuOpen)}
+            {this.showResultTableCard(detailData, isSideMenuOpen, type)}
           </Col>
         </Row>
       </div>

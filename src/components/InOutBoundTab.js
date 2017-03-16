@@ -6,8 +6,8 @@ import { Table, Column, Cell } from 'fixed-data-table-2';
 import { Card, CardText } from 'material-ui/Card';
 import { Tabs, Tab } from 'material-ui/Tabs';
 import _ from 'lodash';
-import 'react-dates/lib/css/_datepicker.css';
 
+import 'react-dates/lib/css/_datepicker.css';
 import '../../public/stylesheets/tableStyle.css';
 import PieChartModel from './PieChartModel';
 import { styles } from '../styles';
@@ -34,8 +34,8 @@ class InOutBoundTab extends React.Component {
   }
   showTableData(data, tableWidth) {
     const rootDom = [];
-    const tmpA = ['Part. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location'];
-    const tmpB = ['ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location'];
+    const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
+    const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
     _.map(tmpB, (d, i) => {
       rootDom.push(
         <Column
@@ -45,9 +45,9 @@ class InOutBoundTab extends React.Component {
               {data[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 5.5}
+          width={tableWidth / 6.5}
           key={d + i}
-          fixed={d === 'ItemName' || d === 'ItemExternalID'}
+          fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'}
         />,
       );
     });
@@ -58,7 +58,7 @@ class InOutBoundTab extends React.Component {
       ? window.innerWidth - 356
       : window.innerWidth - 100);
     return (
-      <div style={styles.Inbound.tableLeftPadding}>
+      <div style={{ ...styles.Inbound.tableLeftPadding, ...styles.Inbound.textCenter }}>
         {data
           ? (
             <Table

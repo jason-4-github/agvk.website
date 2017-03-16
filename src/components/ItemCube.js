@@ -3,7 +3,6 @@ import React, { PropTypes } from 'react';
 import { browserHistory } from 'react-router';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import { Row, Col } from 'react-bootstrap';
-import LinearProgress from 'material-ui/LinearProgress';
 import _ from 'lodash';
 
 import { styles } from '../styles';
@@ -17,7 +16,6 @@ class ItemCube extends React.Component {
     this.state = {
       queryStr: '',
       filteredDataList: data,
-      ChangeSize: false,
       fixDataTableHeight: (window.innerHeight - 200) * 0.8,
       fixDataTableWidth: (window.innerWidth - 256) * 0.98,
       fixDataTablePictureColumnWidth: 0,
@@ -30,29 +28,45 @@ class ItemCube extends React.Component {
     this.handleResize();
   }
   handleResize() {
-    const checkWidthsize = window.innerWidth - 256;
-    const checkHeightsize = window.innerHeight - 200;
-    if ((checkWidthsize <= 992) || (checkHeightsize <= 435)) {
+    if (window.innerWidth < 412) {
       this.setState({
-        fixDataTableHeight: checkHeightsize * 0.8,
+        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
+        fixDataTableWidth: window.innerWidth * 0.95,
+        fixDataTablePictureColumnWidth: (((window.innerWidth * 0.95) / 5) * 0.4),
+        fixDataTableColumnWidth: (((window.innerWidth * 0.95)
+                               - (((window.innerWidth * 0.95) / 5) * 0.4)) / 4),
+      });
+    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
+        fixDataTableWidth: window.innerWidth * 0.95,
+        fixDataTablePictureColumnWidth: (((window.innerWidth * 0.95) / 5) * 0.4),
+        fixDataTableColumnWidth: (((window.innerWidth * 0.95)
+                               - (((window.innerWidth * 0.95) / 5) * 0.4)) / 4),
+      });
+    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
         fixDataTableWidth: window.innerWidth * 0.98,
         fixDataTablePictureColumnWidth: (((window.innerWidth * 0.98) / 5) * 0.4),
         fixDataTableColumnWidth: (((window.innerWidth * 0.98)
                                - (((window.innerWidth * 0.98) / 5) * 0.4)) / 4),
       });
-    } else if ((checkWidthsize !== 1110) || (checkHeightsize !== 462)) {
+    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
       this.setState({
-        fixDataTableHeight: checkHeightsize * 0.8,
-        fixDataTableWidth: checkWidthsize * 0.98,
-        fixDataTablePictureColumnWidth: ((checkWidthsize / 5) * 0.4),
-        fixDataTableColumnWidth: ((checkWidthsize - ((checkWidthsize / 5) * 0.4)) / 4),
+        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
+        fixDataTablePictureColumnWidth: ((((window.innerWidth - 256) * 0.95) / 5) * 0.4),
+        fixDataTableColumnWidth: ((((window.innerWidth - 256) * 0.95)
+                               - ((((window.innerWidth - 256) * 0.95) / 5) * 0.4)) / 4),
       });
     } else {
       this.setState({
-        fixDataTableHeight: 356,
-        fixDataTableWidth: 1072,
-        fixDataTablePictureColumnWidth: ((checkWidthsize / 5) * 0.4),
-        fixDataTableColumnWidth: ((checkWidthsize - ((checkWidthsize / 5) * 0.4)) / 4),
+        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
+        fixDataTablePictureColumnWidth: ((((window.innerWidth - 256) * 0.95) / 5) * 0.4),
+        fixDataTableColumnWidth: ((((window.innerWidth - 256) * 0.95)
+                               - ((((window.innerWidth - 256) * 0.95) / 5) * 0.4)) / 4),
       });
     }
   }
@@ -80,17 +94,6 @@ class ItemCube extends React.Component {
             fixDataTableWidth,
             fixDataTablePictureColumnWidth,
             fixDataTableColumnWidth } = this.state;
-    if (document.readyState !== 'complete') {
-      return (
-        <Row style={styles.Row}>
-          <font size="5"><center>Loading of the site, please later....</center></font>
-          <LinearProgress
-            mode="indeterminate"
-            style={{ width: '90%', marginLeft: '5%' }}
-          />
-        </Row>
-      );
-    }
     const MenuItemsObj = {
       ItemName: 'Part.No.',
       ItemCount: 'Qty',

@@ -111,7 +111,7 @@ export const doShowRacksLocation = (passProps) => (dispatch, getState) => {
         newObj.ItemCount = i.ItemCount;
         newObj.Vendor = i.Vendor;
         newObj.DateCode = i.DateCode;
-        newObj.Location = `${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
+        newObj.Location = `${i.RackName} ${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
         newData.push(newObj);
       });
       dispatch({
@@ -144,9 +144,24 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
+      const newData = [];
+      _.map(data, (i) => {
+        const newObj = {};
+        newObj.RackName = i.RackName;
+        newObj.RackSide = i.RackSide;
+        newObj.RackLayer = i.RackLayer;
+        newObj.RackBlock = i.RackBlock;
+        newObj.ItemCount = i.ItemCount;
+        newObj.Vendor = i.Vendor;
+        newObj.DateCode = i.DateCode;
+        newObj.ItemExternalID = i.ItemExternalID;
+        newObj.ItemName = i.ItemName;
+        newObj.RackBlockNO = `${i.RackSide}-${i.RackLayer}-${i.RackBlock}`;
+        newData.push(newObj);
+      });
       dispatch({
         type: types.LIST_RACK_DETAIL_SUCCESS,
-        rackDetailData: data,
+        rackDetailData: newData,
       });
     })
     .catch(() => {
