@@ -76,7 +76,7 @@ export const doListRacksLocation = (passProps) => (dispatch, getState) => {
     type: types.LIST_RACK_LOCATION_REQUEST,
     listRacksLocationData: [],
   });
-  fetch(`${serverConfig.url}/listRacksLocation`)
+  fetch(`${serverConfig.url}/locations/rack`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
@@ -98,7 +98,7 @@ export const doShowRacksLocation = (passProps) => (dispatch, getState) => {
     type: types.SHOW_RACK_LOCATION_REQUEST,
     showRacksLocationInMapData: [],
   });
-  fetch(`${serverConfig.url}/showRacksLocation/${passProps.token}/${passProps.queryStr}`)
+  fetch(`${serverConfig.url}/locations/rack/q/?colName=${passProps.token}&queryStr=${passProps.queryStr}`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
@@ -140,7 +140,7 @@ export const doQueryRackDetail = (passProps) => (dispatch, getState) => {
     });
     return;
   }
-  fetch(`${serverConfig.url}/listRackDetail/${passProps}`)
+  fetch(`${serverConfig.url}/items/q/?rackName=${passProps}`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
@@ -177,7 +177,7 @@ export const doListAllItems= (passProps) => (dispatch, getState) => {
     type: types.LIST_ALLITEMS_REQUEST,
     listAllItemData: [],
   });
-  fetch(`${serverConfig.url}/listAllItems`)
+  fetch(`${serverConfig.url}/items`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
@@ -253,9 +253,9 @@ export const doDownloadInventoryReport = (passProps) => (dispatch, getState) => 
 export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LIST_ALLITEMS_SELECT_REQUEST,
-    selectrackdetaildata: [],
+    detailData: [],
   });
-  fetch(`${serverConfig.url}/listAllItems`)
+  fetch(`${serverConfig.url}/items`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
@@ -279,6 +279,44 @@ export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
       dispatch({
         type: types.LIST_ALLITEMS_SELECT_FAILURE,
         datailData: [],
+      });
+    });
+};
+
+export const doListInOutboundData = (passProps) => (dispatch, getState) => {
+  dispatch({
+    type: types.LIST_INBOUND_REQUEST,
+    listInOutboundData: [],
+  });
+  if (!passProps.formatOption && !passProps.queryTime && !passProps.boundTypeData) {
+    dispatch({
+      type: types.LIST_RACK_DETAIL_SUCCESS,
+      listInOutboundData: [],
+    });
+    return;
+  }
+
+  fetch(`${serverConfig.url}/inbound/q/?formatOption=${passProps.formatOption}&queryTime=${passProps.queryTime}`)
+    .then(checkStatus)
+    .then(parseJSON)
+    .then((data) => {
+      const newData = [];
+      _.map(data, (i, j) => {
+        const newObj = {};
+        newObj.name = `Q${j+1}`;
+        newObj.value = i.amountOfInvoice;
+        newData.push(newObj);
+      });
+      dispatch({
+        type: types.LIST_INOUTBOUND_SUCCESS,
+        listInOutboundData: data,
+        listPiChartData: newData,
+      });
+    })
+    .catch(() => {
+      dispatch({
+        type: types.LIST_INOUTBOUND_FAILURE,
+        listInOutboundData: [],
       });
     });
 };

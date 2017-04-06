@@ -4,22 +4,24 @@ import { connect } from 'react-redux';
 import PageNavigator from '../../../../components/PageNavigator';
 import { styles } from '../../../../styles';
 import InOutBoundTable from '../../../../components/InOutBoundTab';
-import { doAllItemsSelectData } from '../../../../actions';
 
 class InboundContainer extends React.Component {
-  componentDidMount() {
-    const { doAllItemsSelectData } = this.props;
-    doAllItemsSelectData();
-  }
   render() {
-    const { isSideMenuOpen, detailData } = this.props;
+    const { isSideMenuOpen } = this.props;
+    const tableHeaders = ['Amount of Invoice', 'Item QTY', 'Total QTY', 'Date'];
+    const tableCells = ['amountOfInvoice', 'itemQty', 'totalQty', 'time'];
     const toggleStyle = isSideMenuOpen === true
       ? styles.contentWithSideMenu
       : styles.contentWithoutSideMenu;
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Summary', 'Inbound']} />
-        <InOutBoundTable data={detailData} isSideMenuOpen={isSideMenuOpen} />
+        <InOutBoundTable
+          isSideMenuOpen={isSideMenuOpen}
+          headerNames={tableHeaders}
+          cellNames={tableCells}
+          boundType={'inbound'}
+        />
       </div>
     );
   }
@@ -33,5 +35,4 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { doAllItemsSelectData },
 )(InboundContainer);

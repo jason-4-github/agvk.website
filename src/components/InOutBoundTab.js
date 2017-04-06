@@ -1,6 +1,7 @@
 import React from 'react';
-import { SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
+import { connect } from 'react-redux';
 import moment from 'moment';
+import { SingleDatePicker, isInclusivelyBeforeDay } from 'react-dates';
 import { Row, Col } from 'react-bootstrap';
 import { Table, Column, Cell } from 'fixed-data-table-2';
 import { Card, CardText } from 'material-ui/Card';
@@ -11,74 +12,101 @@ import 'react-dates/lib/css/_datepicker.css';
 import '../../public/stylesheets/tableStyle.css';
 import PieChartModel from './PieChartModel';
 import { styles } from '../styles';
+import { doListInOutboundData } from '../actions';
 
 class InOutBoundTab extends React.Component {
   constructor(props) {
     super(props);
+    const { boundType } = this.props;
     this.state = {
       date: null,
       focused: null,
       value: 0,
+      boundTypeData: boundType,
     };
     this.handleDateClick = this.handleDateClick.bind(this);
     this.handleFocusClick = this.handleFocusClick.bind(this);
   }
   handleTabsChange = (value) => {
-    this.setState({ value });
+    const { doListInOutboundData,boundType } = this.props;
+    this.setState({
+      value,
+      date: null,
+      focused: null,
+    });
+    doListInOutboundData({
+      formatOption: null,
+      queryTime: null,
+      boundTypeData: boundType,
+    });
   };
   handleDateClick(date) {
-    this.setState({ date });
+    const { value } = this.state;
+    const formatOptionArr = ['day', 'month', 'year'];
+    const dateFormat = ['YYYY-MM-DD', 'YYYY-MM', 'YYYY'];
+    const { doListInOutboundData, boundType } = this.props;
+    this.setState({
+      date,
+    });
+    doListInOutboundData({
+      formatOption: formatOptionArr[value],
+      queryTime: moment(date).format(dateFormat[value]),
+      boundTypeData: boundType,
+    });
   }
   handleFocusClick({ focused }) {
     this.setState({ focused });
   }
-  showTableData(data, tableWidth) {
+  showTableData(listInOutboundData, tableWidth, headerNames, cellNames) {
     const rootDom = [];
-    const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
-    const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
-    _.map(tmpB, (d, i) => {
+    _.map(cellNames, (d, i) => {
       rootDom.push(
         <Column
-          header={<Cell>{tmpA[i]}</Cell>}
+          header={<Cell>{headerNames[i]}</Cell>}
           cell={({ rowIndex, ...props }) => (
             <Cell {...props}>
-              {data[rowIndex][d]}
+              {listInOutboundData[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 6.5}
+          width={tableWidth / 4}
           key={d + i}
-          fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'}
         />,
       );
     });
     return (rootDom);
   }
-  showTable(data, isSideMenuOpen, showTableData) {
+  showTable(listInOutboundData, isSideMenuOpen, showTableData, headerNames, cellNames) {
     const tableWidth = (isSideMenuOpen
       ? window.innerWidth - 356
       : window.innerWidth - 100);
     return (
       <div style={{ ...styles.Inbound.tableLeftPadding, ...styles.Inbound.textCenter }}>
-        {data
+        {listInOutboundData
           ? (
             <Table
-              rowsCount={data.length}
+              rowsCount={listInOutboundData.length}
               rowHeight={50}
               headerHeight={50}
               width={tableWidth}
               height={500}
             >
-              {showTableData(data, tableWidth)}
+              {showTableData(listInOutboundData, tableWidth, headerNames, cellNames)}
             </Table>)
           : ''
         }
       </div>
     );
   }
-  showTabsContent(data, isSideMenuOpen) {
+  showTabsContent(
+    listInOutboundData,
+    isSideMenuOpen,
+    headerNames,
+    cellNames,
+    listPiChartData) {
     const { date, focused, value } = this.state;
     const dateRule = day => !isInclusivelyBeforeDay(day, moment());
     const tabName = ['Date', 'Month', 'Year'];
+    const dateFormat = ['YYYY-MM-DD', 'YYYY-MM', 'YYYY'];
     const rootDom = [];
     _.map(tabName, (name, key) => {
       rootDom.push(
@@ -95,7 +123,7 @@ class InOutBoundTab extends React.Component {
                 ? <Row>
                   <Col xs={12} sm={12} md={12} lg={12}>
                     <SingleDatePicker
-                      displayFormat="YYYY-MM-DD"
+                      displayFormat={dateFormat[key]}
                       id="date_input"
                       onDateChange={this.handleDateClick}
                       onFocusChange={this.handleFocusClick}
@@ -107,15 +135,28 @@ class InOutBoundTab extends React.Component {
                     />
                   </Col>
                   <Row>
-                    <Col xs={12} sm={12} md={12} lg={12} style={{ height: (window.innerHeight / 4) }}>
-                      { data
-                        ? <PieChartModel isSideMenuOpen={isSideMenuOpen} container="InOutBound" />
-                        : '' }
+                    <Col
+                      xs={12} sm={12} md={12} lg={12}
+                      style={{ height: (window.innerHeight / 4) }}
+                    >
+                      { (listPiChartData !== undefined) && (listPiChartData !== 0) &&
+                        (listInOutboundData !== undefined) && (listInOutboundData.length !== 0)
+                        ? <PieChartModel
+                          isSideMenuOpen={isSideMenuOpen}
+                          container="InOutBound"
+                          inOutboundData={listPiChartData}
+                        />
+                        : ''}
                     </Col>
                   </Row>
                   <Row>
                     <Col xs={12} sm={12} md={12} lg={12} style={styles.Inbound.tableTopMargin}>
-                      {this.showTable(data, isSideMenuOpen, this.showTableData)}
+                      {this.showTable(
+                        listInOutboundData,
+                        isSideMenuOpen,
+                        this.showTableData,
+                        headerNames,
+                        cellNames)}
                     </Col>
                   </Row>
                 </Row>
@@ -129,16 +170,36 @@ class InOutBoundTab extends React.Component {
     return (rootDom);
   }
   render() {
-    const { data, isSideMenuOpen } = this.props;
+    const {
+      listInOutboundData,
+      listPiChartData,
+      isSideMenuOpen,
+      headerNames,
+      cellNames,
+      } = this.props;
     return (
       <Tabs
         value={this.state.value}
         onChange={this.handleTabsChange}
       >
-        {this.showTabsContent(data, isSideMenuOpen)}
+        {this.showTabsContent(
+          listInOutboundData,
+          isSideMenuOpen,
+          headerNames,
+          cellNames,
+          listPiChartData)}
       </Tabs>
     );
   }
 }
 
-export default InOutBoundTab;
+const mapStateToProps = (state) => {
+  return {
+    ...state.admin,
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  { doListInOutboundData },
+)(InOutBoundTab);
