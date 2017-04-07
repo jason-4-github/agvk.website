@@ -9,7 +9,7 @@ class OutboundContainer extends React.Component {
   render() {
     const { isSideMenuOpen } = this.props;
     const tableHeaders = ['Amount of MO', 'Item QTY', 'Total QTY', 'Date'];
-    const tableCells = ['amountOfInvoice', 'itemQty', 'totalQty', 'time'];
+    const tableCells = ['amountOfMo', 'itemQty', 'totalQty', 'time'];
     const toggleStyle = isSideMenuOpen === true
       ? styles.contentWithSideMenu
       : styles.contentWithoutSideMenu;

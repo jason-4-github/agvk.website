@@ -9,7 +9,6 @@ import { styles } from '../styles';
 class ItemGreneralInfo extends React.Component {
   constructor(props) {
     super(props);
-    const { data } = this.props;
     this.state = {
       circleHeightwidth: 0,
     };
