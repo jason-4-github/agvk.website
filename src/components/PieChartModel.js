@@ -1,9 +1,10 @@
 import React, { PropTypes } from 'react';
-import { ResponsiveContainer, PieChart, Pie, Cell } from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
 
 class PieChartModel extends React.Component {
   render() {
-    const data = [
+    const { inOutboundData } = this.props;
+    const data = inOutboundData || [
       { name: 'Group A', value: 400 },
       { name: 'Group B', value: 300 },
       { name: 'Group C', value: 300 },
@@ -16,10 +17,9 @@ class PieChartModel extends React.Component {
       const radius = innerRadius + ((outerRadius - innerRadius) * 0.5);
       const x = cx + (radius * Math.cos(-midAngle * RADIAN));
       const y = cy + (radius * Math.sin(-midAngle * RADIAN));
-
       return (
         <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-          {`${(percent * 100).toFixed(0)}%`}
+          {(percent !== 0) ? `${(percent * 100).toFixed(1)}%` : null}
         </text>
       );
     };
@@ -31,6 +31,7 @@ class PieChartModel extends React.Component {
     return (
       <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
         <PieChart>
+          <Tooltip />
           <Pie
             data={data}
             cx={xWidth}

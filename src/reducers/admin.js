@@ -24,6 +24,9 @@ import {
   LIST_ALLITEMS_SELECT_REQUEST,
   LIST_ALLITEMS_SELECT_SUCCESS,
   LIST_ALLITEMS_SELECT_FAILURE,
+  LIST_INBOUND_REQUEST,
+  LIST_INOUTBOUND_SUCCESS,
+  LIST_INOUTBOUND_FAILURE,
   LISTENING_CHANGED_OPTIONS,
 } from '../constants/ActionTypes';
 
@@ -94,6 +97,13 @@ const admin = (state = initialState, action) => {
     case LIST_ALLITEMS_SELECT_REQUEST:
     case LIST_ALLITEMS_SELECT_SUCCESS:
     case LIST_ALLITEMS_SELECT_FAILURE:
+      return {
+        ...state,
+        ...action,
+      };
+    case LIST_INBOUND_REQUEST:
+    case LIST_INOUTBOUND_SUCCESS:
+    case LIST_INOUTBOUND_FAILURE:
       return {
         ...state,
         ...action,
