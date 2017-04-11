@@ -28,6 +28,13 @@ class ByDateContainer extends React.Component {
     this.onFocusChange = this.onFocusChange.bind(this);
     this.handleClickSearch = this.handleClickSearch.bind(this);
   }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
   onDatesChange({ startDate, endDate }) {
     this.setState({ startDate, endDate });
     const tmpStart = moment(startDate).format('YYYY-MM-DD');
@@ -43,6 +50,39 @@ class ByDateContainer extends React.Component {
     this.setState({ focusedInput });
     if (focusedInput === 'startDate') {
       this.setState({ endDate: null });
+    }
+  }
+  handleResize() {
+    if (window.innerWidth < 412) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
+        fixDataTableWidth: window.innerWidth * 0.9,
+        fixDataTableColumnWidth: (window.innerWidth * 0.9) / 6.5,
+      });
+    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: window.innerWidth * 0.9,
+        fixDataTableColumnWidth: (window.innerWidth * 0.9) / 6.5,
+      });
+    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: window.innerWidth * 0.95,
+        fixDataTableColumnWidth: (window.innerWidth * 0.95) / 6.5,
+      });
+    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.95) / 6.5,
+      });
+    } else {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.95) / 6.5,
+      });
     }
   }
   handleClickSearch() {
@@ -72,7 +112,7 @@ class ByDateContainer extends React.Component {
       </Row>
     );
   }
-  showData(data, tableWidth) {
+  showData(data, fixDataTableColumnWidth) {
     const rootDom = [];
     const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
     const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
@@ -85,7 +125,7 @@ class ByDateContainer extends React.Component {
               {data[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 6.5}
+          width={fixDataTableColumnWidth}
           key={d + i}
           fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
@@ -97,10 +137,10 @@ class ByDateContainer extends React.Component {
     return (rootDom);
   }
   showResultTableCard(data) {
-    const { isSideMenuOpen, type } = this.props;
-    const tableWidth = (isSideMenuOpen
-      ? window.innerWidth - 340
-      : window.innerWidth - 70);
+    const { type } = this.props;
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     if (type === 'LIST_ALLITEMS_SELECT_REQUEST') {
       return (
         <div style={styles.ByDatePage.textCenter}>
@@ -120,10 +160,10 @@ class ByDateContainer extends React.Component {
               rowsCount={data.length}
               rowHeight={50}
               headerHeight={50}
-              width={tableWidth}
-              height={500}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
             >
-              {this.showData(data, tableWidth)}
+              {this.showData(data, fixDataTableColumnWidth)}
             </Table>)
           : ''
         }
@@ -164,7 +204,7 @@ class ByDateContainer extends React.Component {
             xs={12} sm={12} md={12} lg={12}
             style={styles.Col}
           >
-            {this.showResultTableCard(detailData, isSideMenuOpen, type)}
+            {this.showResultTableCard(detailData, type)}
           </Col>
         </Row>
       </div>

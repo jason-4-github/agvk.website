@@ -27,13 +27,16 @@ class ItemInventory extends React.Component {
             doShowRacksLocation,
             transferData,
       } = this.props;
-    window.addEventListener('resize', this.handleResize.bind(this));
-    this.handleResize();
     doListRacksLocation();
     doShowRacksLocation({
       token: 'PartNo',
       queryStr: transferData,
     });
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
     if (window.innerWidth < 412) {

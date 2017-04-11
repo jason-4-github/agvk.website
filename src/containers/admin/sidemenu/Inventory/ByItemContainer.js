@@ -18,9 +18,48 @@ import {
 } from '../../../../actions';
 
 class ByItemContainer extends React.Component {
+
   componentDidMount() {
     const { doListRacksLocation } = this.props;
     doListRacksLocation();
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
+  handleResize() {
+    if (window.innerWidth < 412) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
+      });
+    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: window.innerWidth * 0.85,
+        fixDataTableColumnWidth: (window.innerWidth * 0.85) / 6.5,
+      });
+    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: (window.innerWidth - 251) * 0.9,
+        fixDataTableColumnWidth: ((window.innerWidth - 251) * 0.9) / 6.5,
+      });
+    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: (window.innerWidth - 507) * 0.95,
+        fixDataTableColumnWidth: ((window.innerWidth - 507) * 0.95) / 6.5,
+      });
+    } else {
+      this.setState({
+        fixDataTableHeight: window.innerHeight - 250,
+        fixDataTableWidth: (window.innerWidth - 507) * 0.8,
+        fixDataTableColumnWidth: (((window.innerWidth - 507) * 0.8) / 6.5),
+      });
+    }
   }
   showFilter() {
     const searchBarObj = {
@@ -71,6 +110,9 @@ class ByItemContainer extends React.Component {
     }
     if (!data) { return ''; }
     const { isSideMenuOpen } = this.props;
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     let tableWidth = (isSideMenuOpen
       ? (window.innerWidth * 0.75) - 256
       : window.innerWidth * 0.7);
@@ -87,8 +129,8 @@ class ByItemContainer extends React.Component {
               rowsCount={data.length}
               rowHeight={50}
               headerHeight={50}
-              width={tableWidth}
-              height={500}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
               onRowMouseEnter={(i, k) => {
                 const { listRacksLocationData, showRacksLocationInMapData } = this.props;
                 const locations = [];
@@ -106,14 +148,14 @@ class ByItemContainer extends React.Component {
                 });
               }}
             >
-              {this.showData(data, tableWidth)}
+              {this.showData(data, fixDataTableColumnWidth)}
             </Table>)
           : ''
         }
       </div>
     );
   }
-  showData(data, tableWidth) {
+  showData(data, fixDataTableColumnWidth) {
     const rootDom = [];
     const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
     const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
@@ -128,7 +170,7 @@ class ByItemContainer extends React.Component {
                 : data[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 6.5}
+          width={fixDataTableColumnWidth}
           key={d + i}
           fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
@@ -144,7 +186,7 @@ class ByItemContainer extends React.Component {
     const { doShowRacksLocation, queryStr, filterStr } = this.props;
     if (!queryStr) { return; }
     if (!filterStr) { return; }
-    
+
     doShowRacksLocation({
       token: filterStr,
       queryStr,

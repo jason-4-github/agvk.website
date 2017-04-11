@@ -27,6 +27,9 @@ class ItemCube extends React.Component {
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
   }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
   handleResize() {
     if (window.innerWidth < 412) {
       this.setState({
@@ -89,8 +92,8 @@ class ItemCube extends React.Component {
     });
   }
   render() {
-    const { filteredDataList } = this.state;
-    const { fixDataTableHeight,
+    const { filteredDataList,
+            fixDataTableHeight,
             fixDataTableWidth,
             fixDataTablePictureColumnWidth,
             fixDataTableColumnWidth } = this.state;

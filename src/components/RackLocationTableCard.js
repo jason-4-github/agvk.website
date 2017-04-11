@@ -18,6 +18,9 @@ class RackLocationTableCard extends React.Component {
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
   }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
   handleResize() {
     if (window.innerWidth < 412) {
       this.setState({

@@ -17,15 +17,62 @@ import { doListInOutboundData } from '../actions';
 class InOutBoundTab extends React.Component {
   constructor(props) {
     super(props);
-    const { boundType } = this.props;
     this.state = {
       date: null,
       focused: null,
       value: 0,
-      boundTypeData: boundType,
+      fixDataTableHeight: (window.innerHeight - 200) * 0.8,
+      fixDataTableWidth: (window.innerWidth - 256) * 0.98,
+      fixDataTableColumnWidth: 0,
     };
     this.handleDateClick = this.handleDateClick.bind(this);
     this.handleFocusClick = this.handleFocusClick.bind(this);
+  }
+  componentDidMount() {
+    const { doListInOutboundData,boundType } = this.props;
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+    doListInOutboundData({
+      formatOption: null,
+      queryTime: null,
+      boundTypeData: boundType,
+    });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
+  handleResize() {
+    if (window.innerWidth < 412) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth * 0.8) / 4),
+      });
+    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
+        fixDataTableWidth: window.innerWidth * 0.85,
+        fixDataTableColumnWidth: ((window.innerWidth * 0.85) / 4),
+      });
+    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
+        fixDataTableWidth: window.innerWidth * 0.9,
+        fixDataTableColumnWidth: ((window.innerWidth * 0.9) / 4),
+      });
+    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.9,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.9) / 4,
+      });
+    } else {
+      this.setState({
+        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.95) / 4,
+      });
+    }
   }
   handleTabsChange = (value) => {
     const { doListInOutboundData,boundType } = this.props;
@@ -57,7 +104,7 @@ class InOutBoundTab extends React.Component {
   handleFocusClick({ focused }) {
     this.setState({ focused });
   }
-  showTableData(listInOutboundData, tableWidth, headerNames, cellNames) {
+  showTableData(listInOutboundData, fixDataTableColumnWidth, headerNames, cellNames) {
     const rootDom = [];
     _.map(cellNames, (d, i) => {
       rootDom.push(
@@ -68,7 +115,7 @@ class InOutBoundTab extends React.Component {
               {listInOutboundData[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 4}
+          width={fixDataTableColumnWidth}
           key={d + i}
         />,
       );
@@ -76,9 +123,9 @@ class InOutBoundTab extends React.Component {
     return (rootDom);
   }
   showTable(listInOutboundData, isSideMenuOpen, showTableData, headerNames, cellNames) {
-    const tableWidth = (isSideMenuOpen
-      ? window.innerWidth - 356
-      : window.innerWidth - 100);
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     return (
       <div style={{ ...styles.Inbound.tableLeftPadding, ...styles.Inbound.textCenter }}>
         {listInOutboundData
@@ -87,10 +134,10 @@ class InOutBoundTab extends React.Component {
               rowsCount={listInOutboundData.length}
               rowHeight={50}
               headerHeight={50}
-              width={tableWidth}
-              height={500}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
             >
-              {showTableData(listInOutboundData, tableWidth, headerNames, cellNames)}
+              {showTableData(listInOutboundData, fixDataTableColumnWidth, headerNames, cellNames)}
             </Table>)
           : ''
         }
