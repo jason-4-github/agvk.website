@@ -288,7 +288,7 @@ export const doListInOutboundData = (passProps) => (dispatch, getState) => {
     type: types.LIST_INBOUND_REQUEST,
     listInOutboundData: [],
   });
-  if (!passProps.formatOption && !passProps.queryTime && !passProps.boundTypeData) {
+  if (!passProps.formatOption && !passProps.queryTime) {
     dispatch({
       type: types.LIST_RACK_DETAIL_SUCCESS,
       listInOutboundData: [],
@@ -296,17 +296,26 @@ export const doListInOutboundData = (passProps) => (dispatch, getState) => {
     return;
   }
 
-  fetch(`${serverConfig.url}/inbound/q/?formatOption=${passProps.formatOption}&queryTime=${passProps.queryTime}`)
+  fetch(`${serverConfig.url}/${passProps.boundTypeData}/q/?formatOption=${passProps.formatOption}&queryTime=${passProps.queryTime}`)
     .then(checkStatus)
     .then(parseJSON)
     .then((data) => {
       const newData = [];
-      _.map(data, (i, j) => {
-        const newObj = {};
-        newObj.name = `Q${j+1}`;
-        newObj.value = i.amountOfInvoice;
-        newData.push(newObj);
-      });
+      if (passProps.boundTypeData === 'inbound') {
+        _.map(data, (i, j) => {
+          const newObj = {};
+          newObj.name = `Q${j + 1}`;
+          newObj.value = i.amountOfInvoice;
+          newData.push(newObj);
+        });
+      } else {
+        _.map(data, (i, j) => {
+          const newObj = {};
+          newObj.name = `Q${j + 1}`;
+          newObj.value = i.amountOfMo;
+          newData.push(newObj);
+        });
+      }
       dispatch({
         type: types.LIST_INOUTBOUND_SUCCESS,
         listInOutboundData: data,

@@ -17,15 +17,21 @@ import { doListInOutboundData } from '../actions';
 class InOutBoundTab extends React.Component {
   constructor(props) {
     super(props);
-    const { boundType } = this.props;
     this.state = {
       date: null,
       focused: null,
       value: 0,
-      boundTypeData: boundType,
     };
     this.handleDateClick = this.handleDateClick.bind(this);
     this.handleFocusClick = this.handleFocusClick.bind(this);
+  }
+  componentDidMount() {
+    const { doListInOutboundData,boundType } = this.props;
+    doListInOutboundData({
+      formatOption: null,
+      queryTime: null,
+      boundTypeData: boundType,
+    });
   }
   handleTabsChange = (value) => {
     const { doListInOutboundData,boundType } = this.props;
