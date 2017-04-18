@@ -3,6 +3,27 @@ import randomColor from 'random-color';
 import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 class PieChartModel extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      COLORS: '',
+    };
+  }
+  componentDidMount() {
+    this.handleRandomColor();
+  }
+  handleRandomColor() {
+    const { inOutboundData } = this.props;
+    const colorsIndexes = [];
+    const colorlength = inOutboundData.length || 4 ;
+    for (let index = 0; index < colorlength; index += 1) {
+      const color = randomColor();
+      colorsIndexes.push(color.hexString());
+    }
+    this.setState({
+      COLORS: colorsIndexes,
+    });
+  }
   render() {
     const { inOutboundData } = this.props;
     const data = inOutboundData || [
@@ -24,6 +45,7 @@ class PieChartModel extends React.Component {
       );
     };
     const { isSideMenuOpen, container } = this.props;
+    const { COLORS } = this.state;
     const windowsWid = window.innerWidth;
     const windowsHei = window.innerHeight;
     let xWidth = (container === 'InOutBound' ? windowsWid / 2 : windowsWid / 6);
@@ -43,10 +65,7 @@ class PieChartModel extends React.Component {
             fill="#8884d8"
           >
             {
-              data.map((entry, index) => {
-                const color = randomColor();
-                return (<Cell fill={color.hexString()} key={entry} />);
-              })
+              data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} key={entry} />)
             }
           </Pie>
         </PieChart>
