@@ -8,7 +8,8 @@ import { localStorage } from '../index';
 
 // TODO(S.C.) => url need to be changed as production
 const serverConfig = {
-  url: 'http://172.21.37.5:4001/apis',
+  // url: 'http://172.21.37.5:4001/apis',
+  url: 'http://localhost:4001/apis',
 };
 
 function checkStatus(response) {
@@ -304,16 +305,20 @@ export const doListInOutboundData = (passProps) => (dispatch, getState) => {
       if (passProps.boundTypeData === 'inbound') {
         _.map(data, (i, j) => {
           const newObj = {};
-          newObj.name = `Q${j + 1}`;
-          newObj.value = i.amountOfInvoice;
-          newData.push(newObj);
+          if (i.amountOfInvoice > 0) {
+            newObj.name = `Q${j + 1}`;
+            newObj.value = i.amountOfInvoice;
+            newData.push(newObj);
+          }
         });
       } else {
         _.map(data, (i, j) => {
           const newObj = {};
-          newObj.name = `Q${j + 1}`;
-          newObj.value = i.amountOfMo;
-          newData.push(newObj);
+          if (i.amountOfMo > 0) {
+            newObj.name = `Q${j + 1}`;
+            newObj.value = i.amountOfMo;
+            newData.push(newObj);
+          }
         });
       }
       dispatch({

@@ -1,5 +1,6 @@
 import React, { PropTypes } from 'react';
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
+import randomColor from 'random-color';
+import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
 
 class PieChartModel extends React.Component {
   render() {
@@ -10,7 +11,6 @@ class PieChartModel extends React.Component {
       { name: 'Group C', value: 300 },
       { name: 'Group D', value: 200 },
     ];
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
     const RADIAN = Math.PI / 180;
     const renderCustomizedLabel = (
       { cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
@@ -18,8 +18,8 @@ class PieChartModel extends React.Component {
       const x = cx + (radius * Math.cos(-midAngle * RADIAN));
       const y = cy + (radius * Math.sin(-midAngle * RADIAN));
       return (
-        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-          {(percent !== 0) ? `${(percent * 100).toFixed(1)}%` : null}
+        <text x={x} y={y} fill="black" textAnchor={'middle'} dominantBaseline="central">
+          {(percent !== 0) ? `${(percent * 100).toFixed()}%` : null}
         </text>
       );
     };
@@ -29,9 +29,10 @@ class PieChartModel extends React.Component {
     let xWidth = (container === 'InOutBound' ? windowsWid / 2 : windowsWid / 6);
     xWidth = (isSideMenuOpen === true ? xWidth - 170 : xWidth);
     return (
-      <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
+      <ResponsiveContainer width="100%" >
         <PieChart>
           <Tooltip />
+          <Legend layout="horizontal" align="center" verticalAlign="bottom" height={36} />
           <Pie
             data={data}
             cx={xWidth}
@@ -42,7 +43,10 @@ class PieChartModel extends React.Component {
             fill="#8884d8"
           >
             {
-              data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} key={entry} />)
+              data.map((entry, index) => {
+                const color = randomColor();
+                return (<Cell fill={color.hexString()} key={entry} />);
+              })
             }
           </Pie>
         </PieChart>
