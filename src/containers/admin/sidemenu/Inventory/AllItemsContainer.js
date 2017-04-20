@@ -6,16 +6,12 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { styles } from '../../../../styles';
 import PageNavigator from '../../../../components/PageNavigator';
 import ItemCube from '../../../../components/ItemCube';
-import { doDownloadInventoryReport, doListAllItems } from '../../../../actions';
+import { doListAllItems } from '../../../../actions';
 
 class AllItemsContainer extends React.Component {
   componentDidMount() {
     const { doListAllItems } = this.props;
     doListAllItems();
-  }
-  handleClickDownload() {
-    const { doDownloadInventoryReport } = this.props;
-    doDownloadInventoryReport();
   }
   render() {
     const {
@@ -38,7 +34,7 @@ class AllItemsContainer extends React.Component {
           label="Download Inventory Report"
           className="border-color-button"
           style={styles.RackLocationTableCard.downloadButtonstyle}
-          onClick={() => { this.handleClickDownload(); }}
+          onClick={() => { window.open('http://172.21.37.5:4001/apis/downloadInventoryReport'); }}
           primary
         />
       </div>
@@ -49,7 +45,6 @@ class AllItemsContainer extends React.Component {
 AllItemsContainer.propTypes = {
   listAllItemData: PropTypes.array,
   doListAllItems: PropTypes.func,
-  doDownloadInventoryReport: PropTypes.func,
 };
 const mapStateToProps = (state) => {
   return {
@@ -59,7 +54,6 @@ const mapStateToProps = (state) => {
 export default connect(
   mapStateToProps,
   {
-    doDownloadInventoryReport,
     doListAllItems,
   },
 )(AllItemsContainer);

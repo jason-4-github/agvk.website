@@ -231,25 +231,6 @@ export const doListWMSStatus = (passProps) => (dispatch, getState) => {
     });
 };
 
-export const doDownloadInventoryReport = (passProps) => (dispatch, getState) => {
-  dispatch({
-    type: types.DOWNLOAD_INVENTORY_REPORT_REQUEST,
-  });
-  fetch(`${serverConfig.url}/downloadInventoryReport/`)
-    .then(checkStatus)
-    .then(parseJSON)
-    .then(() => {
-      dispatch({
-        type: types.DOWNLOAD_INVENTORY_REPORT_SUCCESS,
-      });
-    })
-    .catch(() => {
-      dispatch({
-        type: types.DOWNLOAD_INVENTORY_REPORT_FAILURE,
-      });
-    });
-};
-
 export const doAllItemsSelectData = (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LIST_ALLITEMS_SELECT_REQUEST,
