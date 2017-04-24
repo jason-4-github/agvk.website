@@ -31,33 +31,33 @@ class ByItemContainer extends React.Component {
   handleResize() {
     if (window.innerWidth < 412) {
       this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
+        fixDataTableHeight: (window.innerHeight - 200),
         fixDataTableWidth: window.innerWidth * 0.8,
         fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
       });
     } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
       this.setState({
-        fixDataTableHeight: window.innerHeight - 250,
-        fixDataTableWidth: window.innerWidth * 0.85,
-        fixDataTableColumnWidth: (window.innerWidth * 0.85) / 6.5,
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
       });
     } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
       this.setState({
-        fixDataTableHeight: window.innerHeight - 250,
-        fixDataTableWidth: (window.innerWidth - 251) * 0.9,
-        fixDataTableColumnWidth: ((window.innerWidth - 251) * 0.9) / 6.5,
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 6.5,
       });
     } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
       this.setState({
-        fixDataTableHeight: window.innerHeight - 250,
-        fixDataTableWidth: (window.innerWidth - 507) * 0.95,
-        fixDataTableColumnWidth: ((window.innerWidth - 507) * 0.95) / 6.5,
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 512) * 0.8) / 6.5,
       });
     } else {
       this.setState({
-        fixDataTableHeight: window.innerHeight - 250,
-        fixDataTableWidth: (window.innerWidth - 507) * 0.8,
-        fixDataTableColumnWidth: (((window.innerWidth - 507) * 0.8) / 6.5),
+        fixDataTableHeight: window.innerHeight - 200,
+        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
+        fixDataTableColumnWidth: (((window.innerWidth - 512) * 0.8) / 6.5),
       });
     }
   }

@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import { doHighlightLocations } from '../actions';
+import { TableReSizefunc } from '../utils/tableReSize';
 
 class RackLocationTableCard extends React.Component {
   constructor(props) {
@@ -22,35 +23,40 @@ class RackLocationTableCard extends React.Component {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
+    const sizeArrs = TableReSizefunc({
+      columnCount: 2,
+      sideMenuWidth: 512,
+    });
+    console.log(sizeArrs);
     if (window.innerWidth < 412) {
       this.setState({
         fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.9,
-        fixDataTableColumnWidth: (window.innerWidth * 0.9) / 2,
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 2,
       });
     } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
       this.setState({
         fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.93,
-        fixDataTableColumnWidth: (window.innerWidth * 0.93) / 2,
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 2,
       });
     } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
       this.setState({
         fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 251) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 251) * 0.8) / 2,
+        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 2,
       });
     } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
       this.setState({
         fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 507) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 507) * 0.8) / 2,
+        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 512) * 0.8) / 2,
       });
     } else {
       this.setState({
         fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 507) * 0.7,
-        fixDataTableColumnWidth: (((window.innerWidth - 507) * 0.7) / 2),
+        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
+        fixDataTableColumnWidth: (((window.innerWidth - 512) * 0.8) / 2),
       });
     }
   }

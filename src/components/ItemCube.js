@@ -21,76 +21,71 @@ class ItemCube extends React.Component {
       fixDataTablePictureColumnWidth: 0,
       fixDataTableColumnWidth: 0,
     };
-    this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
+    // this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
   }
   componentDidMount() {
     window.addEventListener('resize', this.handleResize.bind(this));
-    this.handleResize();
   }
   componentWillUnmount() {
     window.removeEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
   }
   handleResize() {
     if (window.innerWidth < 412) {
       this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
-        fixDataTableWidth: window.innerWidth * 0.95,
-        fixDataTablePictureColumnWidth: (((window.innerWidth * 0.95) / 5) * 0.4),
-        fixDataTableColumnWidth: (((window.innerWidth * 0.95)
-                               - (((window.innerWidth * 0.95) / 5) * 0.4)) / 4),
+        fixDataTableHeight: (window.innerHeight - 200),
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 5,
       });
     } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
       this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
-        fixDataTableWidth: window.innerWidth * 0.95,
-        fixDataTablePictureColumnWidth: (((window.innerWidth * 0.95) / 5) * 0.4),
-        fixDataTableColumnWidth: (((window.innerWidth * 0.95)
-                               - (((window.innerWidth * 0.95) / 5) * 0.4)) / 4),
+        fixDataTableHeight: (window.innerHeight - 200),
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 5,
       });
     } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
       this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
-        fixDataTableWidth: window.innerWidth * 0.98,
-        fixDataTablePictureColumnWidth: (((window.innerWidth * 0.98) / 5) * 0.4),
-        fixDataTableColumnWidth: (((window.innerWidth * 0.98)
-                               - (((window.innerWidth * 0.98) / 5) * 0.4)) / 4),
+        fixDataTableHeight: (window.innerHeight - 200),
+        fixDataTableWidth: window.innerWidth * 0.8,
+        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 5,
       });
     } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
       this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
-        fixDataTablePictureColumnWidth: ((((window.innerWidth - 256) * 0.95) / 5) * 0.4),
-        fixDataTableColumnWidth: ((((window.innerWidth - 256) * 0.95)
-                               - ((((window.innerWidth - 256) * 0.95) / 5) * 0.4)) / 4),
+        fixDataTableHeight: (window.innerHeight - 200),
+        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 5,
       });
     } else {
       this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.9,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
-        fixDataTablePictureColumnWidth: ((((window.innerWidth - 256) * 0.95) / 5) * 0.4),
-        fixDataTableColumnWidth: ((((window.innerWidth - 256) * 0.95)
-                               - ((((window.innerWidth - 256) * 0.95) / 5) * 0.4)) / 4),
+        fixDataTableHeight: (window.innerHeight - 200),
+        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
+        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 5,
       });
     }
   }
-  handleQueryStrChange(e) {
-    const { data, filterStr, filterCurrectOption, searchBarOptions } = this.props;
-    const size = data.length;
-    const filteredIndexes = [];
-    for (let index = 0; index < size; index += 1) {
-      if (_.isMatch(data[index][filterStr].toString(), e.target.value)) {
-        filteredIndexes.push(data[index]);
-      }
-    }
-    searchBarOptions({
-      queryStr: e.target.value,
-      filterStr,
-      filterCurrectOption,
-    });
-    this.setState({
-      filteredDataList: e.target.value ? filteredIndexes : data,
-    });
-  }
+  // handleQueryStrChange(e) {
+  //   const { data, filterStr, filterCurrectOption, searchBarOptions } = this.props;
+  //   const size = data.length;
+  //   const filteredIndexes = [];
+  //   for (let index = 0; index < size; index += 1) {
+  //     if (_.isMatch(data[index][filterStr].toString(), e.target.value)) {
+  //       filteredIndexes.push(data[index]);
+  //     }
+  //   }
+  //   searchBarOptions({
+  //     queryStr: e.target.value,
+  //     filterStr,
+  //     filterCurrectOption,
+  //   });
+  //   this.setState({
+  //     filteredDataList: e.target.value ? filteredIndexes : data,
+  //   });
+  // }
+  // <SearchBar
+  //   filters={MenuItemsObj}
+  //   onChangeFunc={this.handleQueryStrChange}
+  //   searchBarQueryStr={this.state.queryStr}
+  // />
   render() {
     const { filteredDataList,
             fixDataTableHeight,
@@ -106,11 +101,6 @@ class ItemCube extends React.Component {
         <Row>
           <Col xs={4} sm={4} md={4} lg={4} style={styles.ItemCube.searchBarCol}>
             <i className="material-icons" style={styles.ItemCube.searchIcon}>search</i>
-            <SearchBar
-              filters={MenuItemsObj}
-              onChangeFunc={this.handleQueryStrChange}
-              searchBarQueryStr={this.state.queryStr}
-            />
           </Col>
           <Col xs={8} sm={8} md={8} lg={8} />
         </Row>
@@ -131,7 +121,7 @@ class ItemCube extends React.Component {
                 { null }
               </Cell>
             )}
-            width={fixDataTablePictureColumnWidth}
+            width={fixDataTableColumnWidth}
             align="center"
           />
           <Column

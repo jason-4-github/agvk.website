@@ -237,7 +237,7 @@ export const styles = {
     },
     downloadButtonstyle: {
       position: 'fixed ',
-      right: '10',
+      right: '10px',
     },
   },
 };
