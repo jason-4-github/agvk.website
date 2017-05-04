@@ -30,8 +30,10 @@ const customContentStyle = {
   maxWidth: 'none',
 };
 
-const unuseColor = '#F3F3F3';
-const stationColor = '#3EBE35';
+const unuseColor = '#000000';
+const unknownColor = '#D8E4BC';
+const gateColor = '#95B3D7';
+const stationColor = '#B8CCE4';
 const aisleColor = '#D5EDFF';
 const rackColor = '#FABB7D';
 const highlightColor = '#FFD6E0';
@@ -300,7 +302,45 @@ class Phase1 extends React.Component {
               ref={`${x}-${y}`}
               key={`${x}-${y}`}
               onClick={() => { this.handleRackClick(`${x}`, `${y}`, true); }}
-            >d
+            >
+              <rect
+                x={gap}
+                y={gap} width={borderSize - (2 * gap)} height={borderSize - (2 * gap)}
+              />
+            </svg>
+          );
+        }
+        if (_.find(Config.unknownPositions, { x, y })) {
+          return (
+            <svg
+              data-x={`${x}`}
+              fill={unknownColor}
+              width={borderSize}
+              height={borderSize}
+              viewBox={viewBoxAttr}
+              ref={`${x}-${y}`}
+              key={`${x}-${y}`}
+              onClick={() => { this.handleRackClick(`${x}`, `${y}`, true); }}
+            >
+              <rect
+                x={gap}
+                y={gap} width={borderSize - (2 * gap)} height={borderSize - (2 * gap)}
+              />
+            </svg>
+          );
+        }
+        if (_.find(Config.gatePositions, { x, y })) {
+          return (
+            <svg
+              data-x={`${x}`}
+              fill={gateColor}
+              width={borderSize}
+              height={borderSize}
+              viewBox={viewBoxAttr}
+              ref={`${x}-${y}`}
+              key={`${x}-${y}`}
+              onClick={() => { this.handleRackClick(`${x}`, `${y}`, true); }}
+            >
               <rect
                 x={gap}
                 y={gap} width={borderSize - (2 * gap)} height={borderSize - (2 * gap)}
