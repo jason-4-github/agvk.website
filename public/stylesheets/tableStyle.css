@@ -1,6 +1,10 @@
+.fixedDataTableLayout_main {
+  margin:0px auto;
+}
 .fixedDataTableRowLayout_rowWrapper:hover .public_fixedDataTableCell_main {
   background-color: rgba(211, 211, 211, 0.7);
 }
+
 .SingleDatePicker__picker, .tether-element, .DateRangePicker__picker {
   z-index: 2;
 }

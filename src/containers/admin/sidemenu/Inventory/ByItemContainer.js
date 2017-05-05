@@ -11,6 +11,7 @@ import '../../../../../public/stylesheets/tableStyle.css';
 import Phase1 from '../../map/Phase1';
 import SearchBar from '../../../../components/SearchBar';
 import PageNavigator from '../../../../components/PageNavigator';
+import { TableReSizefunc } from '../../../../utils/tableSize';
 import {
   doListRacksLocation,
   doShowRacksLocation,
@@ -29,37 +30,15 @@ class ByItemContainer extends React.Component {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
-    if (window.innerWidth < 412) {
-      this.setState({
-        fixDataTableHeight: (window.innerHeight - 200),
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
-      });
-    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
-      });
-    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 6.5,
-      });
-    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 512) * 0.8) / 6.5,
-      });
-    } else {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
-        fixDataTableColumnWidth: (((window.innerWidth - 512) * 0.8) / 6.5),
-      });
-    }
+    const sizeArrs = TableReSizefunc({
+      columnCount: 6.5,
+      sizeModel: 'ModelB',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0],
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   showFilter() {
     const searchBarObj = {

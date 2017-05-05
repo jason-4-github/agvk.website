@@ -13,6 +13,7 @@ import '../../public/stylesheets/tableStyle.css';
 import PieChartModel from './PieChartModel';
 import { styles } from '../styles';
 import { doListInOutboundData } from '../actions';
+import { TableReSizefunc } from '../utils/tableSize';
 
 class InOutBoundTab extends React.Component {
   constructor(props) {
@@ -42,37 +43,15 @@ class InOutBoundTab extends React.Component {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
-    if (window.innerWidth < 412) {
-      this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth * 0.8) / 4),
-      });
-    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
-      this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
-        fixDataTableWidth: window.innerWidth * 0.85,
-        fixDataTableColumnWidth: ((window.innerWidth * 0.85) / 4),
-      });
-    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
-      this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
-        fixDataTableWidth: window.innerWidth * 0.9,
-        fixDataTableColumnWidth: ((window.innerWidth * 0.9) / 4),
-      });
-    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-      this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.9,
-        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.9) / 4,
-      });
-    } else {
-      this.setState({
-        fixDataTableHeight: (window.innerHeight - 200) * 0.4,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.95,
-        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.95) / 4,
-      });
-    }
+    const sizeArrs = TableReSizefunc({
+      columnCount: 4,
+      sizeModel: 'ModelB',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0] * 0.4,
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   handleTabsChange = (value) => {
     const { doListInOutboundData,boundType } = this.props;

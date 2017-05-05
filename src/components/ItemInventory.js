@@ -7,6 +7,7 @@ import _ from 'lodash';
 
 import { styles } from '../styles';
 import Phase1 from '../containers/admin/map/Phase1';
+import { TableReSizefunc } from '../utils/tableSize';
 import {
   doListRacksLocation,
   doShowRacksLocation,
@@ -39,37 +40,15 @@ class ItemInventory extends React.Component {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
-    if (window.innerWidth < 412) {
-      this.setState({
-        fixDataTableHeight: (window.innerHeight - 200),
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 8,
-      });
-    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 8,
-      });
-    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 8,
-      });
-    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 512) * 0.8) / 8,
-      });
-    } else {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
-        fixDataTableColumnWidth: (((window.innerWidth - 512) * 0.8) / 8),
-      });
-    }
+    const sizeArrs = TableReSizefunc({
+      columnCount: 8,
+      sizeModel: 'ModelB',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0],
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   render() {
     const {

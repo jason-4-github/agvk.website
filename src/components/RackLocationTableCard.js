@@ -4,7 +4,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import { doHighlightLocations } from '../actions';
-import { TableReSizefunc } from '../utils/tableReSize';
+import { TableReSizefunc } from '../utils/tableSize';
 
 class RackLocationTableCard extends React.Component {
   constructor(props) {
@@ -25,40 +25,13 @@ class RackLocationTableCard extends React.Component {
   handleResize() {
     const sizeArrs = TableReSizefunc({
       columnCount: 2,
-      sideMenuWidth: 512,
+      sizeModel: 'ModelB',
     });
-    console.log(sizeArrs);
-    if (window.innerWidth < 412) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 2,
-      });
-    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 2,
-      });
-    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 2,
-      });
-    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 512) * 0.8) / 2,
-      });
-    } else {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 512) * 0.8,
-        fixDataTableColumnWidth: (((window.innerWidth - 512) * 0.8) / 2),
-      });
-    }
+    this.setState({
+      fixDataTableHeight: sizeArrs[0],
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   render() {
     const { data } = this.props;

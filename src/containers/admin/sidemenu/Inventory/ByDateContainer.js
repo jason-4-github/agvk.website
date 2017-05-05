@@ -13,6 +13,7 @@ import '../../../../../public/stylesheets/tableStyle.css';
 import { styles } from '../../../../styles';
 import PageNavigator from '../../../../components/PageNavigator';
 import { doAllItemsSelectData, listeningChangedOptions } from '../../../../actions';
+import { TableReSizefunc } from '../../../../utils/tableSize';
 
 class ByDateContainer extends React.Component {
   constructor(props) {
@@ -53,37 +54,15 @@ class ByDateContainer extends React.Component {
     }
   }
   handleResize() {
-    if (window.innerWidth < 412) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
-      });
-    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
-      });
-    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: (window.innerWidth * 0.8) / 6.5,
-      });
-    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 6.5,
-      });
-    } else {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 256) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 256) * 0.8) / 6.5,
-      });
-    }
+    const sizeArrs = TableReSizefunc({
+      columnCount: 8,
+      sizeModel: 'ModelA',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0],
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   handleClickSearch() {
     const { doAllItemsSelectData } = this.props;
