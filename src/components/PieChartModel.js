@@ -1,23 +1,31 @@
 import React, { PropTypes } from 'react';
 import randomColor from 'random-color';
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip, Legend } from 'recharts';
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Sector } from 'recharts';
 
 class PieChartModel extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       COLORS: '',
+      activeIndex: 0,
     };
+    this.onPieEnter = this.onPieEnter.bind(this);
+    this.handleRandomColor = this.handleRandomColor.bind(this);
   }
   componentDidMount() {
     this.handleRandomColor();
   }
+  onPieEnter(data, index) {
+    this.setState({
+      activeIndex: index,
+    });
+  }
   handleRandomColor() {
     const { inOutboundData } = this.props;
     const colorsIndexes = [];
-    const colorlength = inOutboundData.length || 4 ;
+    const colorlength = inOutboundData ? inOutboundData.length : 4;
     for (let index = 0; index < colorlength; index += 1) {
-      const color = randomColor();
+      const color = randomColor(0.8, 0.99);
       colorsIndexes.push(color.hexString());
     }
     this.setState({
@@ -32,16 +40,47 @@ class PieChartModel extends React.Component {
       { name: 'Group C', value: 300 },
       { name: 'Group D', value: 200 },
     ];
-    const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = (
-      { cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-      const radius = innerRadius + ((outerRadius - innerRadius) * 0.5);
-      const x = cx + (radius * Math.cos(-midAngle * RADIAN));
-      const y = cy + (radius * Math.sin(-midAngle * RADIAN));
+    const renderActiveShape = (props) => {
+      const RADIAN = Math.PI / 180;
+      const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+        fill, percent, name } = props;
+      const sin = Math.sin(-RADIAN * midAngle);
+      const cos = Math.cos(-RADIAN * midAngle);
+      const sx = cx + ((outerRadius + 10) * cos);
+      const sy = cy + ((outerRadius + 10) * sin);
+      const mx = cx + ((outerRadius + 30) * cos);
+      const my = cy + ((outerRadius + 30) * sin);
+      const ex = mx + ((cos >= 0 ? 1 : -1) * 22);
+      const ey = my;
+      const textAnchor = cos >= 0 ? 'start' : 'end';
+
       return (
-        <text x={x} y={y} fill="black" textAnchor={'middle'} dominantBaseline="central">
-          {(percent !== 0) ? `${(percent * 100).toFixed()}%` : null}
-        </text>
+        <g>
+          <Sector
+            cx={cx}
+            cy={cy}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            startAngle={startAngle}
+            endAngle={endAngle}
+            fill={fill}
+          />
+          <Sector
+            cx={cx}
+            cy={cy}
+            startAngle={startAngle}
+            endAngle={endAngle}
+            innerRadius={outerRadius + 6}
+            outerRadius={outerRadius + 10}
+            fill={fill}
+          />
+          <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+          <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+          <text x={ex + ((cos >= 0 ? 1 : -1) * 12)} y={ey} textAnchor={textAnchor} fill="#333">{`${name}`}</text>
+          <text x={ex + ((cos >= 0 ? 1 : -1) * 12)} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+            {`(${(percent * 100).toFixed(2)}%)`}
+          </text>
+        </g>
       );
     };
     const { isSideMenuOpen, container } = this.props;
@@ -52,15 +91,14 @@ class PieChartModel extends React.Component {
     xWidth = (isSideMenuOpen === true ? xWidth - 170 : xWidth);
     return (
       <ResponsiveContainer width="100%" >
-        <PieChart>
-          <Tooltip />
+        <PieChart onMouseEnter={this.onPieEnter}>
           <Legend layout="horizontal" align="center" verticalAlign="bottom" height={36} />
           <Pie
+            activeIndex={this.state.activeIndex}
+            activeShape={renderActiveShape}
             data={data}
             cx={xWidth}
             cy={windowsHei / 7}
-            labelLine={false}
-            label={renderCustomizedLabel}
             outerRadius={80}
             fill="#8884d8"
           >
