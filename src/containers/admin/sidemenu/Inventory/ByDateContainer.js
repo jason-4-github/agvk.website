@@ -13,6 +13,7 @@ import '../../../../../public/stylesheets/tableStyle.css';
 import { styles } from '../../../../styles';
 import PageNavigator from '../../../../components/PageNavigator';
 import { doAllItemsSelectData, listeningChangedOptions } from '../../../../actions';
+import { TableResizefunc } from '../../../../utils/tableSize';
 
 class ByDateContainer extends React.Component {
   constructor(props) {
@@ -27,6 +28,13 @@ class ByDateContainer extends React.Component {
     this.onDatesChange = this.onDatesChange.bind(this);
     this.onFocusChange = this.onFocusChange.bind(this);
     this.handleClickSearch = this.handleClickSearch.bind(this);
+  }
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
   }
   onDatesChange({ startDate, endDate }) {
     this.setState({ startDate, endDate });
@@ -44,6 +52,17 @@ class ByDateContainer extends React.Component {
     if (focusedInput === 'startDate') {
       this.setState({ endDate: null });
     }
+  }
+  handleResize() {
+    const sizeArrs = TableResizefunc({
+      columnCount: 8,
+      sizeModel: 'ModelA',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0],
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   handleClickSearch() {
     const { doAllItemsSelectData } = this.props;
@@ -72,7 +91,7 @@ class ByDateContainer extends React.Component {
       </Row>
     );
   }
-  showData(data, tableWidth) {
+  showData(data, fixDataTableColumnWidth) {
     const rootDom = [];
     const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
     const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
@@ -85,7 +104,7 @@ class ByDateContainer extends React.Component {
               {data[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 6.5}
+          width={fixDataTableColumnWidth}
           key={d + i}
           fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
@@ -97,10 +116,10 @@ class ByDateContainer extends React.Component {
     return (rootDom);
   }
   showResultTableCard(data) {
-    const { isSideMenuOpen, type } = this.props;
-    const tableWidth = (isSideMenuOpen
-      ? window.innerWidth - 340
-      : window.innerWidth - 70);
+    const { type } = this.props;
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     if (type === 'LIST_ALLITEMS_SELECT_REQUEST') {
       return (
         <div style={styles.ByDatePage.textCenter}>
@@ -120,10 +139,10 @@ class ByDateContainer extends React.Component {
               rowsCount={data.length}
               rowHeight={50}
               headerHeight={50}
-              width={tableWidth}
-              height={500}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
             >
-              {this.showData(data, tableWidth)}
+              {this.showData(data, fixDataTableColumnWidth)}
             </Table>)
           : ''
         }
@@ -164,7 +183,7 @@ class ByDateContainer extends React.Component {
             xs={12} sm={12} md={12} lg={12}
             style={styles.Col}
           >
-            {this.showResultTableCard(detailData, isSideMenuOpen, type)}
+            {this.showResultTableCard(detailData, type)}
           </Col>
         </Row>
       </div>

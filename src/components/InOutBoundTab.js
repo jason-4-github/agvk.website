@@ -13,6 +13,7 @@ import '../../public/stylesheets/tableStyle.css';
 import PieChartModel from './PieChartModel';
 import { styles } from '../styles';
 import { doListInOutboundData } from '../actions';
+import { TableResizefunc } from '../utils/tableSize';
 
 class InOutBoundTab extends React.Component {
   constructor(props) {
@@ -21,16 +22,35 @@ class InOutBoundTab extends React.Component {
       date: null,
       focused: null,
       value: 0,
+      fixDataTableHeight: (window.innerHeight - 200) * 0.8,
+      fixDataTableWidth: (window.innerWidth - 256) * 0.98,
+      fixDataTableColumnWidth: 0,
     };
     this.handleDateClick = this.handleDateClick.bind(this);
     this.handleFocusClick = this.handleFocusClick.bind(this);
   }
   componentDidMount() {
     const { doListInOutboundData,boundType } = this.props;
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
     doListInOutboundData({
       formatOption: null,
       queryTime: null,
       boundTypeData: boundType,
+    });
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
+  handleResize() {
+    const sizeArrs = TableResizefunc({
+      columnCount: 4,
+      sizeModel: 'ModelB',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0] * 0.4,
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
     });
   }
   handleTabsChange = (value) => {
@@ -63,7 +83,7 @@ class InOutBoundTab extends React.Component {
   handleFocusClick({ focused }) {
     this.setState({ focused });
   }
-  showTableData(listInOutboundData, tableWidth, headerNames, cellNames) {
+  showTableData(listInOutboundData, fixDataTableColumnWidth, headerNames, cellNames) {
     const rootDom = [];
     _.map(cellNames, (d, i) => {
       rootDom.push(
@@ -74,7 +94,7 @@ class InOutBoundTab extends React.Component {
               {listInOutboundData[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 4}
+          width={fixDataTableColumnWidth}
           key={d + i}
         />,
       );
@@ -82,9 +102,9 @@ class InOutBoundTab extends React.Component {
     return (rootDom);
   }
   showTable(listInOutboundData, isSideMenuOpen, showTableData, headerNames, cellNames) {
-    const tableWidth = (isSideMenuOpen
-      ? window.innerWidth - 356
-      : window.innerWidth - 100);
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     return (
       <div style={{ ...styles.Inbound.tableLeftPadding, ...styles.Inbound.textCenter }}>
         {listInOutboundData
@@ -93,10 +113,10 @@ class InOutBoundTab extends React.Component {
               rowsCount={listInOutboundData.length}
               rowHeight={50}
               headerHeight={50}
-              width={tableWidth}
-              height={500}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
             >
-              {showTableData(listInOutboundData, tableWidth, headerNames, cellNames)}
+              {showTableData(listInOutboundData, fixDataTableColumnWidth, headerNames, cellNames)}
             </Table>)
           : ''
         }

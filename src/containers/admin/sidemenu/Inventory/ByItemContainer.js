@@ -11,6 +11,7 @@ import '../../../../../public/stylesheets/tableStyle.css';
 import Phase1 from '../../map/Phase1';
 import SearchBar from '../../../../components/SearchBar';
 import PageNavigator from '../../../../components/PageNavigator';
+import { TableResizefunc } from '../../../../utils/tableSize';
 import {
   doListRacksLocation,
   doShowRacksLocation,
@@ -18,9 +19,26 @@ import {
 } from '../../../../actions';
 
 class ByItemContainer extends React.Component {
+
   componentDidMount() {
     const { doListRacksLocation } = this.props;
     doListRacksLocation();
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
+  handleResize() {
+    const sizeArrs = TableResizefunc({
+      columnCount: 6.5,
+      sizeModel: 'ModelB',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0],
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   showFilter() {
     const searchBarObj = {
@@ -71,6 +89,9 @@ class ByItemContainer extends React.Component {
     }
     if (!data) { return ''; }
     const { isSideMenuOpen } = this.props;
+    const { fixDataTableHeight,
+            fixDataTableWidth,
+            fixDataTableColumnWidth } = this.state;
     let tableWidth = (isSideMenuOpen
       ? (window.innerWidth * 0.75) - 256
       : window.innerWidth * 0.7);
@@ -87,8 +108,8 @@ class ByItemContainer extends React.Component {
               rowsCount={data.length}
               rowHeight={50}
               headerHeight={50}
-              width={tableWidth}
-              height={500}
+              width={fixDataTableWidth}
+              height={fixDataTableHeight}
               onRowMouseEnter={(i, k) => {
                 const { listRacksLocationData, showRacksLocationInMapData } = this.props;
                 const locations = [];
@@ -106,14 +127,14 @@ class ByItemContainer extends React.Component {
                 });
               }}
             >
-              {this.showData(data, tableWidth)}
+              {this.showData(data, fixDataTableColumnWidth)}
             </Table>)
           : ''
         }
       </div>
     );
   }
-  showData(data, tableWidth) {
+  showData(data, fixDataTableColumnWidth) {
     const rootDom = [];
     const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
     const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
@@ -128,7 +149,7 @@ class ByItemContainer extends React.Component {
                 : data[rowIndex][d]}
             </Cell>
           )}
-          width={tableWidth / 6.5}
+          width={fixDataTableColumnWidth}
           key={d + i}
           fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
@@ -144,7 +165,7 @@ class ByItemContainer extends React.Component {
     const { doShowRacksLocation, queryStr, filterStr } = this.props;
     if (!queryStr) { return; }
     if (!filterStr) { return; }
-    
+
     doShowRacksLocation({
       token: filterStr,
       queryStr,

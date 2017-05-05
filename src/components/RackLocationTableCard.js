@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { connect } from 'react-redux';
 
 import { doHighlightLocations } from '../actions';
+import { TableResizefunc } from '../utils/tableSize';
 
 class RackLocationTableCard extends React.Component {
   constructor(props) {
@@ -18,38 +19,19 @@ class RackLocationTableCard extends React.Component {
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
   }
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.handleResize.bind(this));
+  }
   handleResize() {
-    if (window.innerWidth < 412) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.9,
-        fixDataTableColumnWidth: (window.innerWidth * 0.9) / 2,
-      });
-    } else if (window.innerWidth >= 412 && window.innerWidth < 768) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: window.innerWidth * 0.93,
-        fixDataTableColumnWidth: (window.innerWidth * 0.93) / 2,
-      });
-    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 251) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 251) * 0.8) / 2,
-      });
-    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 507) * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth - 507) * 0.8) / 2,
-      });
-    } else {
-      this.setState({
-        fixDataTableHeight: window.innerHeight - 200,
-        fixDataTableWidth: (window.innerWidth - 507) * 0.7,
-        fixDataTableColumnWidth: (((window.innerWidth - 507) * 0.7) / 2),
-      });
-    }
+    const sizeArrs = TableResizefunc({
+      columnCount: 2,
+      sizeModel: 'ModelB',
+    });
+    this.setState({
+      fixDataTableHeight: sizeArrs[0],
+      fixDataTableWidth: sizeArrs[1],
+      fixDataTableColumnWidth: sizeArrs[2],
+    });
   }
   render() {
     const { data } = this.props;

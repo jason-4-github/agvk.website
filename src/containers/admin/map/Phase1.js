@@ -123,19 +123,11 @@ class Phase1 extends React.Component {
     });
   }
   handleResize() {
-    if (window.innerWidth < 768) {
-      this.setState({
-        fixDataTableHeight: window.innerHeight * 0.6,
-        fixDataTableWidth: window.innerWidth * 0.8,
-        fixDataTableColumnWidth: ((window.innerWidth * 0.8) / 8),
-      });
-    } else {
-      this.setState({
-        fixDataTableHeight: window.innerHeight * 0.6,
-        fixDataTableWidth: window.innerWidth * 0.85,
-        fixDataTableColumnWidth: ((window.innerWidth * 0.85) / 8),
-      });
-    }
+    this.setState({
+      fixDataTableHeight: window.innerHeight * 0.6,
+      fixDataTableWidth: window.innerWidth * 0.8,
+      fixDataTableColumnWidth: ((window.innerWidth * 0.8) / 8),
+    });
   }
   showTableDialog(str, type) {
     const { fixDataTableHeight,

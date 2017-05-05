@@ -32,7 +32,7 @@ class ByLocationContainer extends React.Component {
         <PageNavigator pages={['Inventory', 'By Location']} />
         <Row style={styles.Row}>
           <Col
-            xs={12} sm={4} md={4}
+            xs={12} sm={3} md={3}
             style={{ ...styles.Col, ...{ textAlign: 'center' } }}
           >
             <Phase1
@@ -45,7 +45,7 @@ class ByLocationContainer extends React.Component {
             />
           </Col>
           <Col
-            xs={12} sm={4} md={4}
+            xs={12} sm={9} md={9}
             style={styles.Col}
           >
             <RackLocationTableCard
