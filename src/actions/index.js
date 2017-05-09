@@ -9,7 +9,6 @@ import { localStorage } from '../index';
 // TODO(S.C.) => url need to be changed as production
 const serverConfig = {
   url: 'http://172.21.37.5:4001/apis',
-  // url: 'http://localhost:4001/apis',
 };
 
 function checkStatus(response) {

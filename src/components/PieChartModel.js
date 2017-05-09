@@ -5,9 +5,16 @@ import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Sector } from 'rechar
 class PieChartModel extends React.Component {
   constructor(props) {
     super(props);
+    const { inOutboundData } = this.props;
     this.state = {
-      COLORS: '',
+      pieColors: '',
       activeIndex: 0,
+      data: inOutboundData || [
+        { name: 'Group A', value: 400 },
+        { name: 'Group B', value: 300 },
+        { name: 'Group C', value: 300 },
+        { name: 'Group D', value: 200 },
+      ],
     };
     this.onPieEnter = this.onPieEnter.bind(this);
     this.handleRandomColor = this.handleRandomColor.bind(this);
@@ -29,17 +36,12 @@ class PieChartModel extends React.Component {
       colorsIndexes.push(color.hexString());
     }
     this.setState({
-      COLORS: colorsIndexes,
+      pieColors: colorsIndexes,
     });
   }
+
   render() {
-    const { inOutboundData } = this.props;
-    const data = inOutboundData || [
-      { name: 'Group A', value: 400 },
-      { name: 'Group B', value: 300 },
-      { name: 'Group C', value: 300 },
-      { name: 'Group D', value: 200 },
-    ];
+    const { data } = this.state;
     const renderActiveShape = (props) => {
       const RADIAN = Math.PI / 180;
       const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
@@ -83,27 +85,27 @@ class PieChartModel extends React.Component {
         </g>
       );
     };
-    const { isSideMenuOpen, container } = this.props;
-    const { COLORS } = this.state;
-    const windowsWid = window.innerWidth;
-    const windowsHei = window.innerHeight;
-    let xWidth = (container === 'InOutBound' ? windowsWid / 2 : windowsWid / 6);
-    xWidth = (isSideMenuOpen === true ? xWidth - 170 : xWidth);
+    const { container } = this.props;
+    const { pieColors } = this.state;
+
     return (
       <ResponsiveContainer width="100%" >
         <PieChart onMouseEnter={this.onPieEnter}>
-          <Legend layout="horizontal" align="center" verticalAlign="bottom" height={36} />
+          {container === 'InOutBound'
+          ? <Legend layout="horizontal" align="center" verticalAlign="bottom" height={50} />
+          : ''}
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={data}
-            cx={xWidth}
-            cy={windowsHei / 7}
             outerRadius={80}
             fill="#8884d8"
           >
             {
-              data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} key={entry} />)
+              data.map((entry, index) =>
+              <Cell
+                fill={pieColors[index % pieColors.length]} key={entry}
+              />)
             }
           </Pie>
         </PieChart>
