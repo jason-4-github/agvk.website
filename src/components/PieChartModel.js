@@ -1,5 +1,5 @@
 import React, { PropTypes } from 'react';
-import randomColor from 'random-color';
+import * as d3 from "d3";
 import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Sector } from 'recharts';
 
 class PieChartModel extends React.Component {
@@ -7,8 +7,8 @@ class PieChartModel extends React.Component {
     super(props);
     const { inOutboundData } = this.props;
     this.state = {
-      pieColors: '',
       activeIndex: 0,
+      pieColors: '',
       data: inOutboundData || [
         { name: 'Group A', value: 400 },
         { name: 'Group B', value: 300 },
@@ -29,11 +29,12 @@ class PieChartModel extends React.Component {
   }
   handleRandomColor() {
     const { inOutboundData } = this.props;
+    const schemeCategory10 = d3.scaleOrdinal(d3.schemeCategory10);
+    const schemeCategory20 = d3.scaleOrdinal(d3.schemeCategory20c);
     const colorsIndexes = [];
     const colorlength = inOutboundData ? inOutboundData.length : 4;
     for (let index = 0; index < colorlength; index += 1) {
-      const color = randomColor(0.8, 0.99);
-      colorsIndexes.push(color.hexString());
+      colorsIndexes.push(index > 19 ? schemeCategory10(index) : schemeCategory20(index));
     }
     this.setState({
       pieColors: colorsIndexes,
@@ -87,7 +88,6 @@ class PieChartModel extends React.Component {
     };
     const { container } = this.props;
     const { pieColors } = this.state;
-
     return (
       <ResponsiveContainer width="100%" >
         <PieChart onMouseEnter={this.onPieEnter}>
@@ -98,14 +98,16 @@ class PieChartModel extends React.Component {
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={data}
+            cy={142}
             outerRadius={80}
             fill="#8884d8"
           >
             {
-              data.map((entry, index) =>
-              <Cell
-                fill={pieColors[index % pieColors.length]} key={entry}
-              />)
+              data.map((entry, index) => {
+                return (
+                  <Cell fill={pieColors[index % pieColors.length]} key={entry} />
+                );
+              })
             }
           </Pie>
         </PieChart>
