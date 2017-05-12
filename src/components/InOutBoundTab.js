@@ -163,7 +163,7 @@ class InOutBoundTab extends React.Component {
                   <Row>
                     <Col
                       xs={12} sm={12} md={12} lg={12}
-                      style={{ height: (window.innerHeight / 4) }}
+                      style={{ height: '380px' }}
                     >
                       { (listPiChartData !== undefined) && (listPiChartData !== 0) &&
                         (listInOutboundData !== undefined) && (listInOutboundData.length !== 0)

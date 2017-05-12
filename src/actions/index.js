@@ -282,21 +282,17 @@ export const doListInOutboundData = (passProps) => (dispatch, getState) => {
     .then(parseJSON)
     .then((data) => {
       const newData = [];
-      if (passProps.boundTypeData === 'inbound') {
         _.map(data, (i, j) => {
           const newObj = {};
-          newObj.name = `Q${j + 1}`;
-          newObj.value = i.amountOfInvoice;
-          newData.push(newObj);
+          const amountOfData = (passProps.boundTypeData === 'inbound')
+            ? i.amountOfInvoice
+            : i.amountOfMo;
+          if (amountOfData > 0) {
+            newObj.name = `Q${j + 1}`;
+            newObj.value = amountOfData;
+            newData.push(newObj);
+          }
         });
-      } else {
-        _.map(data, (i, j) => {
-          const newObj = {};
-          newObj.name = `Q${j + 1}`;
-          newObj.value = i.amountOfMo;
-          newData.push(newObj);
-        });
-      }
       dispatch({
         type: types.LIST_INOUTBOUND_SUCCESS,
         listInOutboundData: data,

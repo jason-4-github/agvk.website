@@ -1,48 +1,113 @@
 import React, { PropTypes } from 'react';
-import { ResponsiveContainer, PieChart, Pie, Cell, Tooltip } from 'recharts';
+import * as d3 from "d3";
+import { ResponsiveContainer, PieChart, Pie, Cell, Legend, Sector } from 'recharts';
 
 class PieChartModel extends React.Component {
-  render() {
+  constructor(props) {
+    super(props);
     const { inOutboundData } = this.props;
-    const data = inOutboundData || [
-      { name: 'Group A', value: 400 },
-      { name: 'Group B', value: 300 },
-      { name: 'Group C', value: 300 },
-      { name: 'Group D', value: 200 },
-    ];
-    const COLORS = ['#0088FE', '#00C49F', '#FFBB28', '#FF8042'];
-    const RADIAN = Math.PI / 180;
-    const renderCustomizedLabel = (
-      { cx, cy, midAngle, innerRadius, outerRadius, percent }) => {
-      const radius = innerRadius + ((outerRadius - innerRadius) * 0.5);
-      const x = cx + (radius * Math.cos(-midAngle * RADIAN));
-      const y = cy + (radius * Math.sin(-midAngle * RADIAN));
+    this.state = {
+      activeIndex: 0,
+      pieColors: '',
+      data: inOutboundData || [
+        { name: 'Group A', value: 400 },
+        { name: 'Group B', value: 300 },
+        { name: 'Group C', value: 300 },
+        { name: 'Group D', value: 200 },
+      ],
+    };
+    this.onPieEnter = this.onPieEnter.bind(this);
+    this.handleRandomColor = this.handleRandomColor.bind(this);
+  }
+  componentDidMount() {
+    this.handleRandomColor();
+  }
+  onPieEnter(data, index) {
+    this.setState({
+      activeIndex: index,
+    });
+  }
+  handleRandomColor() {
+    const { inOutboundData } = this.props;
+    const schemeCategory10 = d3.scaleOrdinal(d3.schemeCategory10);
+    const schemeCategory20 = d3.scaleOrdinal(d3.schemeCategory20c);
+    const colorsIndexes = [];
+    const colorlength = inOutboundData ? inOutboundData.length : 4;
+    for (let index = 0; index < colorlength; index += 1) {
+      colorsIndexes.push(index > 19 ? schemeCategory10(index) : schemeCategory20(index));
+    }
+    this.setState({
+      pieColors: colorsIndexes,
+    });
+  }
+
+  render() {
+    const { data } = this.state;
+    const renderActiveShape = (props) => {
+      const RADIAN = Math.PI / 180;
+      const { cx, cy, midAngle, innerRadius, outerRadius, startAngle, endAngle,
+        fill, percent, name } = props;
+      const sin = Math.sin(-RADIAN * midAngle);
+      const cos = Math.cos(-RADIAN * midAngle);
+      const sx = cx + ((outerRadius + 10) * cos);
+      const sy = cy + ((outerRadius + 10) * sin);
+      const mx = cx + ((outerRadius + 30) * cos);
+      const my = cy + ((outerRadius + 30) * sin);
+      const ex = mx + ((cos >= 0 ? 1 : -1) * 22);
+      const ey = my;
+      const textAnchor = cos >= 0 ? 'start' : 'end';
+
       return (
-        <text x={x} y={y} fill="white" textAnchor={x > cx ? 'start' : 'end'} dominantBaseline="central">
-          {(percent !== 0) ? `${(percent * 100).toFixed(1)}%` : null}
-        </text>
+        <g>
+          <Sector
+            cx={cx}
+            cy={cy}
+            innerRadius={innerRadius}
+            outerRadius={outerRadius}
+            startAngle={startAngle}
+            endAngle={endAngle}
+            fill={fill}
+          />
+          <Sector
+            cx={cx}
+            cy={cy}
+            startAngle={startAngle}
+            endAngle={endAngle}
+            innerRadius={outerRadius + 6}
+            outerRadius={outerRadius + 10}
+            fill={fill}
+          />
+          <path d={`M${sx},${sy}L${mx},${my}L${ex},${ey}`} stroke={fill} fill="none" />
+          <circle cx={ex} cy={ey} r={2} fill={fill} stroke="none" />
+          <text x={ex + ((cos >= 0 ? 1 : -1) * 12)} y={ey} textAnchor={textAnchor} fill="#333">{`${name}`}</text>
+          <text x={ex + ((cos >= 0 ? 1 : -1) * 12)} y={ey} dy={18} textAnchor={textAnchor} fill="#999">
+            {`(${(percent * 100).toFixed(2)}%)`}
+          </text>
+        </g>
       );
     };
-    const { isSideMenuOpen, container } = this.props;
-    const windowsWid = window.innerWidth;
-    const windowsHei = window.innerHeight;
-    let xWidth = (container === 'InOutBound' ? windowsWid / 2 : windowsWid / 6);
-    xWidth = (isSideMenuOpen === true ? xWidth - 170 : xWidth);
+    const { container } = this.props;
+    const { pieColors } = this.state;
     return (
-      <ResponsiveContainer width="100%" aspect={4.0 / 3.0}>
-        <PieChart>
-          <Tooltip />
+      <ResponsiveContainer width="100%" >
+        <PieChart onMouseEnter={this.onPieEnter}>
+          {container === 'InOutBound'
+          ? <Legend layout="horizontal" align="center" verticalAlign="bottom" height={50} />
+          : ''}
           <Pie
+            activeIndex={this.state.activeIndex}
+            activeShape={renderActiveShape}
             data={data}
-            cx={xWidth}
-            cy={windowsHei / 7}
-            labelLine={false}
-            label={renderCustomizedLabel}
+            cy={142}
             outerRadius={80}
             fill="#8884d8"
           >
             {
-              data.map((entry, index) => <Cell fill={COLORS[index % COLORS.length]} key={entry} />)
+              data.map((entry, index) => {
+                return (
+                  <Cell fill={pieColors[index % pieColors.length]} key={entry} />
+                );
+              })
             }
           </Pie>
         </PieChart>
