@@ -7,8 +7,20 @@ import PageNavigator from '../../../../components/PageNavigator';
 import ItemGreneralInfo from '../../../../components/ItemGreneralInfo';
 import ItemInventory from '../../../../components/ItemInventory';
 import ItemSalesRecord from '../../../../components/ItemSalesRecord';
+import { tableProperty } from '../../../../actions';
 
 class AllItemsDetailContainer extends React.Component {
+  componentDidMount() {
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
+  }
+  handleResize() {
+    const { tableProperty } = this.props;
+    tableProperty({
+      columnCount: 8,
+      sizeModel: 'ModelB',
+    });
+  }
   render() {
     const { isSideMenuOpen } = this.props;
     const transferItemName = this.props.params.itemName;
@@ -23,7 +35,9 @@ class AllItemsDetailContainer extends React.Component {
             <ItemGreneralInfo />
           </Tab>
           <Tab label="INVENTORY">
-            <ItemInventory transferData={transferItemName} />
+            <ItemInventory
+              transferData={transferItemName}
+            />
           </Tab>
           <Tab label="SALES RECORD">
             <ItemSalesRecord />
@@ -43,4 +57,7 @@ const mapStateToProps = (state) => {
 };
 export default connect(
   mapStateToProps,
+  {
+    tableProperty,
+  },
 )(AllItemsDetailContainer);

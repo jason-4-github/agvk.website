@@ -12,8 +12,7 @@ import 'react-dates/lib/css/_datepicker.css';
 import '../../public/stylesheets/tableStyle.css';
 import PieChartModel from './PieChartModel';
 import { styles } from '../styles';
-import { doListInOutboundData } from '../actions';
-import { TableResizefunc } from '../utils/tableSize';
+import { doListInOutboundData, tableProperty } from '../actions';
 
 class InOutBoundTab extends React.Component {
   constructor(props) {
@@ -22,15 +21,13 @@ class InOutBoundTab extends React.Component {
       date: null,
       focused: null,
       value: 0,
-      fixDataTableHeight: (window.innerHeight - 200) * 0.8,
-      fixDataTableWidth: (window.innerWidth - 256) * 0.98,
-      fixDataTableColumnWidth: 0,
     };
     this.handleDateClick = this.handleDateClick.bind(this);
     this.handleFocusClick = this.handleFocusClick.bind(this);
+    this.handleResize = this.handleResize.bind(this);
   }
   componentDidMount() {
-    const { doListInOutboundData,boundType } = this.props;
+    const { doListInOutboundData, boundType } = this.props;
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
     doListInOutboundData({
@@ -43,14 +40,10 @@ class InOutBoundTab extends React.Component {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
-    const sizeArrs = TableResizefunc({
+    const { tableProperty } = this.props;
+    tableProperty({
       columnCount: 4,
-      sizeModel: 'ModelB',
-    });
-    this.setState({
-      fixDataTableHeight: sizeArrs[0] * 0.4,
-      fixDataTableWidth: sizeArrs[1],
-      fixDataTableColumnWidth: sizeArrs[2],
+      sizeModel: 'ModelA',
     });
   }
   handleTabsChange = (value) => {
@@ -83,7 +76,7 @@ class InOutBoundTab extends React.Component {
   handleFocusClick({ focused }) {
     this.setState({ focused });
   }
-  showTableData(listInOutboundData, fixDataTableColumnWidth, headerNames, cellNames) {
+  showTableData(listInOutboundData, tableColumnSize, headerNames, cellNames) {
     const rootDom = [];
     _.map(cellNames, (d, i) => {
       rootDom.push(
@@ -94,7 +87,7 @@ class InOutBoundTab extends React.Component {
               {listInOutboundData[rowIndex][d]}
             </Cell>
           )}
-          width={fixDataTableColumnWidth}
+          width={tableColumnSize}
           key={d + i}
         />,
       );
@@ -102,9 +95,9 @@ class InOutBoundTab extends React.Component {
     return (rootDom);
   }
   showTable(listInOutboundData, isSideMenuOpen, showTableData, headerNames, cellNames) {
-    const { fixDataTableHeight,
-            fixDataTableWidth,
-            fixDataTableColumnWidth } = this.state;
+    const { tableHeightSize,
+            tableWidthSize,
+            tableColumnSize } = this.props;
     return (
       <div style={{ ...styles.Inbound.tableLeftPadding, ...styles.Inbound.textCenter }}>
         {listInOutboundData
@@ -113,10 +106,10 @@ class InOutBoundTab extends React.Component {
               rowsCount={listInOutboundData.length}
               rowHeight={50}
               headerHeight={50}
-              width={fixDataTableWidth}
-              height={fixDataTableHeight}
+              width={tableWidthSize}
+              height={tableHeightSize * 0.4}
             >
-              {showTableData(listInOutboundData, fixDataTableColumnWidth, headerNames, cellNames)}
+              {showTableData(listInOutboundData, tableColumnSize, headerNames, cellNames)}
             </Table>)
           : ''
         }
@@ -163,7 +156,7 @@ class InOutBoundTab extends React.Component {
                   <Row>
                     <Col
                       xs={12} sm={12} md={12} lg={12}
-                      style={{ height: '380px' }}
+                      style={{ height: '280px' }}
                     >
                       { (listPiChartData !== undefined) && (listPiChartData !== 0) &&
                         (listInOutboundData !== undefined) && (listInOutboundData.length !== 0)
@@ -176,7 +169,10 @@ class InOutBoundTab extends React.Component {
                     </Col>
                   </Row>
                   <Row>
-                    <Col xs={12} sm={12} md={12} lg={12} style={styles.Inbound.tableTopMargin}>
+                    <Col
+                      xs={12} sm={12} md={12} lg={12}
+                      style={{ ...styles.Inbound.tableTopMargin }}
+                    >
                       {this.showTable(
                         listInOutboundData,
                         isSideMenuOpen,
@@ -227,5 +223,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { doListInOutboundData },
+  { doListInOutboundData, tableProperty },
 )(InOutBoundTab);

@@ -11,11 +11,11 @@ import '../../../../../public/stylesheets/tableStyle.css';
 import Phase1 from '../../map/Phase1';
 import SearchBar from '../../../../components/SearchBar';
 import PageNavigator from '../../../../components/PageNavigator';
-import { TableResizefunc } from '../../../../utils/tableSize';
 import {
   doListRacksLocation,
   doShowRacksLocation,
   doHighlightLocations,
+  tableProperty,
 } from '../../../../actions';
 
 class ByItemContainer extends React.Component {
@@ -30,14 +30,10 @@ class ByItemContainer extends React.Component {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
-    const sizeArrs = TableResizefunc({
+    const { tableProperty } = this.props;
+    tableProperty({
       columnCount: 6.5,
       sizeModel: 'ModelB',
-    });
-    this.setState({
-      fixDataTableHeight: sizeArrs[0],
-      fixDataTableWidth: sizeArrs[1],
-      fixDataTableColumnWidth: sizeArrs[2],
     });
   }
   showFilter() {
@@ -72,7 +68,7 @@ class ByItemContainer extends React.Component {
       </Row>
     );
   }
-  showResultTable(data, type) {
+  showResultTable(data, type, tableHeightSize, tableWidthSize, tableColumnSize) {
     if (type === 'SHOW_RACK_LOCATION_REQUEST') {
       return (
         <div style={styles.byItemStyle.textCenter}>
@@ -88,18 +84,6 @@ class ByItemContainer extends React.Component {
       );
     }
     if (!data) { return ''; }
-    const { isSideMenuOpen } = this.props;
-    const { fixDataTableHeight,
-            fixDataTableWidth,
-            fixDataTableColumnWidth } = this.state;
-    let tableWidth = (isSideMenuOpen
-      ? (window.innerWidth * 0.75) - 256
-      : window.innerWidth * 0.7);
-    if (window.innerWidth < 767) {
-      tableWidth = (isSideMenuOpen
-        ? window.innerWidth - 336
-        : window.innerWidth - 80);
-    }
     return (
       <div style={styles.byItemStyle.tableContainer}>
         {data
@@ -108,8 +92,8 @@ class ByItemContainer extends React.Component {
               rowsCount={data.length}
               rowHeight={50}
               headerHeight={50}
-              width={fixDataTableWidth}
-              height={fixDataTableHeight}
+              width={tableWidthSize}
+              height={485}
               onRowMouseEnter={(i, k) => {
                 const { listRacksLocationData, showRacksLocationInMapData } = this.props;
                 const locations = [];
@@ -127,14 +111,14 @@ class ByItemContainer extends React.Component {
                 });
               }}
             >
-              {this.showData(data, fixDataTableColumnWidth)}
+              {this.showData(data, tableColumnSize)}
             </Table>)
           : ''
         }
       </div>
     );
   }
-  showData(data, fixDataTableColumnWidth) {
+  showData(data, tableColumnSize) {
     const rootDom = [];
     const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
     const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
@@ -149,7 +133,7 @@ class ByItemContainer extends React.Component {
                 : data[rowIndex][d]}
             </Cell>
           )}
-          width={fixDataTableColumnWidth}
+          width={tableColumnSize}
           key={d + i}
           fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
@@ -178,11 +162,13 @@ class ByItemContainer extends React.Component {
       type,
       highlightLocations,
       focusHighLightLocation,
+      tableHeightSize,
+      tableWidthSize,
+      tableColumnSize
     } = this.props;
     const toggleStyle = isSideMenuOpen === true
       ? styles.contentWithSideMenu
       : styles.contentWithoutSideMenu;
-
     return (
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'By Item']} />
@@ -214,7 +200,12 @@ class ByItemContainer extends React.Component {
                 xs={12} sm={12} md={12} lg={12}
                 style={styles.Col}
               >
-                {this.showResultTable(showRacksLocationInMapData, type)}
+                {this.showResultTable(
+                  showRacksLocationInMapData,
+                  type,
+                  tableHeightSize,
+                  tableWidthSize,
+                  tableColumnSize)}
               </Col>
             </Row>
           </Col>
@@ -248,5 +239,6 @@ export default connect(
     doListRacksLocation,
     doShowRacksLocation,
     doHighlightLocations,
+    tableProperty,
   },
 )(ByItemContainer);

@@ -7,7 +7,6 @@ import _ from 'lodash';
 
 import { styles } from '../styles';
 import Phase1 from '../containers/admin/map/Phase1';
-import { TableResizefunc } from '../utils/tableSize';
 import {
   doListRacksLocation,
   doShowRacksLocation,
@@ -33,22 +32,6 @@ class ItemInventory extends React.Component {
       token: 'PartNo',
       queryStr: transferData,
     });
-    window.addEventListener('resize', this.handleResize.bind(this));
-    this.handleResize();
-  }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize.bind(this));
-  }
-  handleResize() {
-    const sizeArrs = TableResizefunc({
-      columnCount: 8,
-      sizeModel: 'ModelB',
-    });
-    this.setState({
-      fixDataTableHeight: sizeArrs[0],
-      fixDataTableWidth: sizeArrs[1],
-      fixDataTableColumnWidth: sizeArrs[2],
-    });
   }
   render() {
     const {
@@ -57,10 +40,10 @@ class ItemInventory extends React.Component {
         focusHighLightLocation,
         showRacksLocationInMapData,
         listRacksLocationData,
+        tableHeightSize,
+        tableWidthSize,
+        tableColumnSize
       } = this.props;
-    const { fixDataTableHeight,
-            fixDataTableWidth,
-            fixDataTableColumnWidth } = this.state;
     return (
       <Card>
         <CardText>
@@ -76,12 +59,12 @@ class ItemInventory extends React.Component {
               />
             </Col>
             <Col xs={12} sm={9} md={9} lg={9} style={styles.Col}>
-              { showRacksLocationInMapData
+              { showRacksLocationInMapData && tableHeightSize
                 ? <Table
                   rowHeight={50}
                   rowsCount={showRacksLocationInMapData.length}
-                  width={fixDataTableWidth}
-                  height={fixDataTableHeight}
+                  width={tableWidthSize}
+                  height={540}
                   headerHeight={50}
                   onRowMouseEnter={(i, j) => {
                     const locations = [];
@@ -107,7 +90,7 @@ class ItemInventory extends React.Component {
                         { showRacksLocationInMapData[rowIndex].ItemName }
                       </Cell>
                         )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                   <Column
@@ -117,7 +100,7 @@ class ItemInventory extends React.Component {
                         { showRacksLocationInMapData[rowIndex].ItemName }
                       </Cell>
                         )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                   <Column
@@ -127,7 +110,7 @@ class ItemInventory extends React.Component {
                         { showRacksLocationInMapData[rowIndex].ItemExternalID }
                       </Cell>
                         )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                   <Column
@@ -137,7 +120,7 @@ class ItemInventory extends React.Component {
                         { showRacksLocationInMapData[rowIndex].ItemCount }
                       </Cell>
                         )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                   <Column
@@ -147,7 +130,7 @@ class ItemInventory extends React.Component {
                         { showRacksLocationInMapData[rowIndex].Vendor }
                       </Cell>
                     )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                   <Column
@@ -157,7 +140,7 @@ class ItemInventory extends React.Component {
                         { showRacksLocationInMapData[rowIndex].DateCode }
                       </Cell>
                     )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                   <Column
@@ -167,7 +150,7 @@ class ItemInventory extends React.Component {
                         { showRacksLocationInMapData[rowIndex].Location }
                       </Cell>
                     )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                   <Column
@@ -177,7 +160,7 @@ class ItemInventory extends React.Component {
                         { null }
                       </Cell>
                     )}
-                    width={fixDataTableColumnWidth}
+                    width={tableColumnSize}
                     align="center"
                   />
                 </Table>

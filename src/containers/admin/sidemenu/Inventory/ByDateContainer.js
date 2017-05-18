@@ -12,19 +12,16 @@ import 'react-dates/lib/css/_datepicker.css';
 import '../../../../../public/stylesheets/tableStyle.css';
 import { styles } from '../../../../styles';
 import PageNavigator from '../../../../components/PageNavigator';
-import { doAllItemsSelectData, listeningChangedOptions } from '../../../../actions';
-import { TableResizefunc } from '../../../../utils/tableSize';
+import { doAllItemsSelectData, listeningChangedOptions, tableProperty } from '../../../../actions';
 
 class ByDateContainer extends React.Component {
   constructor(props) {
     super(props);
-
     this.state = {
       focusedInput: null,
       startDate: null,
       endDate: null,
     };
-
     this.onDatesChange = this.onDatesChange.bind(this);
     this.onFocusChange = this.onFocusChange.bind(this);
     this.handleClickSearch = this.handleClickSearch.bind(this);
@@ -54,14 +51,10 @@ class ByDateContainer extends React.Component {
     }
   }
   handleResize() {
-    const sizeArrs = TableResizefunc({
+    const { tableProperty } = this.props;
+    tableProperty({
       columnCount: 8,
       sizeModel: 'ModelA',
-    });
-    this.setState({
-      fixDataTableHeight: sizeArrs[0],
-      fixDataTableWidth: sizeArrs[1],
-      fixDataTableColumnWidth: sizeArrs[2],
     });
   }
   handleClickSearch() {
@@ -91,7 +84,7 @@ class ByDateContainer extends React.Component {
       </Row>
     );
   }
-  showData(data, fixDataTableColumnWidth) {
+  showData(data, tableColumnSize) {
     const rootDom = [];
     const tmpA = ['Picture', 'Parts. No.', 'Cust. Part. No.', 'QTY', 'Vendor', 'Date', 'Location', 'Status'];
     const tmpB = ['Picture', 'ItemName', 'ItemExternalID', 'ItemCount', 'Vendor', 'DateCode', 'Location', 'Status'];
@@ -104,7 +97,7 @@ class ByDateContainer extends React.Component {
               {data[rowIndex][d]}
             </Cell>
           )}
-          width={fixDataTableColumnWidth}
+          width={tableColumnSize}
           key={d + i}
           fixed={d === 'ItemName' || d === 'ItemExternalID' || d === 'Picture'
             ? true
@@ -116,10 +109,10 @@ class ByDateContainer extends React.Component {
     return (rootDom);
   }
   showResultTableCard(data) {
-    const { type } = this.props;
-    const { fixDataTableHeight,
-            fixDataTableWidth,
-            fixDataTableColumnWidth } = this.state;
+    const { type,
+            tableHeightSize,
+            tableWidthSize,
+            tableColumnSize } = this.props;
     if (type === 'LIST_ALLITEMS_SELECT_REQUEST') {
       return (
         <div style={styles.ByDatePage.textCenter}>
@@ -139,10 +132,10 @@ class ByDateContainer extends React.Component {
               rowsCount={data.length}
               rowHeight={50}
               headerHeight={50}
-              width={fixDataTableWidth}
-              height={fixDataTableHeight}
+              width={tableWidthSize}
+              height={tableHeightSize * 0.9}
             >
-              {this.showData(data, fixDataTableColumnWidth)}
+              {this.showData(data, tableColumnSize)}
             </Table>)
           : ''
         }
@@ -198,5 +191,5 @@ const mapStateToProps = (state) => {
 
 export default connect(
   mapStateToProps,
-  { doAllItemsSelectData, listeningChangedOptions },
+  { doAllItemsSelectData, listeningChangedOptions, tableProperty },
 )(ByDateContainer);

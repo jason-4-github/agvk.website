@@ -137,7 +137,7 @@ export const styles = {
       paddingLeft: '20px',
     },
     tableTopMargin: {
-      marginTop: '75px',
+      marginTop: '50px',
     },
     tabStyle: {
       backgroundColor: 'rgba(170, 184, 185, 1)',

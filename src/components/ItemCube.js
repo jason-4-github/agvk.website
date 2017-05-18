@@ -8,7 +8,6 @@ import _ from 'lodash';
 import { styles } from '../styles';
 import SearchBar from './SearchBar';
 import { searchBarOptions } from '../actions';
-import { TableResizefunc } from '../utils/tableSize';
 
 class ItemCube extends React.Component {
   constructor(props) {
@@ -17,30 +16,8 @@ class ItemCube extends React.Component {
     this.state = {
       queryStr: '',
       filteredDataList: data,
-      fixDataTableHeight: (window.innerHeight - 200) * 0.8,
-      fixDataTableWidth: (window.innerWidth - 256) * 0.98,
-      fixDataTablePictureColumnWidth: 0,
-      fixDataTableColumnWidth: 0,
     };
     this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
-  }
-  componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this));
-    this.handleResize();
-  }
-  componentWillUnmount() {
-    window.removeEventListener('resize', this.handleResize.bind(this));
-  }
-  handleResize() {
-    const sizeArrs = TableResizefunc({
-      columnCount: 5,
-      sizeModel: 'ModelA',
-    });
-    this.setState({
-      fixDataTableHeight: sizeArrs[0],
-      fixDataTableWidth: sizeArrs[1],
-      fixDataTableColumnWidth: sizeArrs[2],
-    });
   }
   handleQueryStrChange(e) {
     const { data, filterStr, filterCurrectOption, searchBarOptions } = this.props;
@@ -61,11 +38,10 @@ class ItemCube extends React.Component {
     });
   }
   render() {
-    const { filteredDataList,
-            fixDataTableHeight,
-            fixDataTableWidth,
-            fixDataTablePictureColumnWidth,
-            fixDataTableColumnWidth } = this.state;
+    const { filteredDataList } = this.state;
+    const { tableHeightSize,
+            tableWidthSize,
+            tableColumnSize } = this.props;
     const MenuItemsObj = {
       ItemName: 'Part.No.',
       ItemCount: 'Qty',
@@ -87,8 +63,8 @@ class ItemCube extends React.Component {
           rowHeight={50}
           headerHeight={50}
           rowsCount={filteredDataList.length}
-          width={fixDataTableWidth}
-          height={fixDataTableHeight}
+          width={tableWidthSize}
+          height={tableHeightSize * 0.9}
           onRowClick={(i, j) => {
             browserHistory.push(`/admin/inventory/all-items/${this.state.filteredDataList[j].ItemName}`);
           }}
@@ -100,7 +76,7 @@ class ItemCube extends React.Component {
                 { null }
               </Cell>
             )}
-            width={fixDataTableColumnWidth}
+            width={tableColumnSize}
             align="center"
           />
           <Column
@@ -110,7 +86,7 @@ class ItemCube extends React.Component {
                 { this.state.filteredDataList[rowIndex].ItemName }
               </Cell>
             )}
-            width={fixDataTableColumnWidth}
+            width={tableColumnSize}
             align="center"
           />
           <Column
@@ -120,7 +96,7 @@ class ItemCube extends React.Component {
                 { this.state.filteredDataList[rowIndex].ItemName }
               </Cell>
               )}
-            width={fixDataTableColumnWidth}
+            width={tableColumnSize}
             align="center"
           />
           <Column
@@ -130,7 +106,7 @@ class ItemCube extends React.Component {
                 { this.state.filteredDataList[rowIndex].ItemCount }
               </Cell>
               )}
-            width={fixDataTableColumnWidth}
+            width={tableColumnSize}
             align="center"
           />
           <Column
@@ -140,7 +116,7 @@ class ItemCube extends React.Component {
                 {null}
               </Cell>
             )}
-            width={fixDataTableColumnWidth}
+            width={tableColumnSize}
             align="center"
           />
         </Table>

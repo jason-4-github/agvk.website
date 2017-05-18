@@ -3,18 +3,10 @@ import { Table, Column, Cell } from 'fixed-data-table-2';
 import _ from 'lodash';
 import { connect } from 'react-redux';
 
-import { doHighlightLocations } from '../actions';
-import { TableResizefunc } from '../utils/tableSize';
+import { doHighlightLocations, tableProperty } from '../actions';
 
 class RackLocationTableCard extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      fixDataTableHeight: 0,
-      fixDataTableWidth: 0,
-      fixDataTableColumnWidth: 0,
-    };
-  }
+
   componentDidMount() {
     window.addEventListener('resize', this.handleResize.bind(this));
     this.handleResize();
@@ -23,29 +15,25 @@ class RackLocationTableCard extends React.Component {
     window.removeEventListener('resize', this.handleResize.bind(this));
   }
   handleResize() {
-    const sizeArrs = TableResizefunc({
+    const { tableProperty } = this.props;
+    tableProperty({
       columnCount: 2,
       sizeModel: 'ModelB',
     });
-    this.setState({
-      fixDataTableHeight: sizeArrs[0],
-      fixDataTableWidth: sizeArrs[1],
-      fixDataTableColumnWidth: sizeArrs[2],
-    });
   }
   render() {
-    const { data } = this.props;
-    const { fixDataTableHeight,
-            fixDataTableWidth,
-            fixDataTableColumnWidth } = this.state;
+    const { data,
+            tableHeightSize,
+            tableWidthSize,
+            tableColumnSize } = this.props;
     return (
       <div>
         {data
             ? <Table
               rowHeight={50}
               rowsCount={data.length}
-              width={fixDataTableWidth}
-              height={fixDataTableHeight}
+              width={tableWidthSize}
+              height={tableHeightSize}
               headerHeight={50}
               onRowMouseEnter={(i, j) => {
                 const { doHighlightLocations } = this.props;
@@ -62,7 +50,7 @@ class RackLocationTableCard extends React.Component {
                     { data[rowIndex].rackName }
                   </Cell>
                     )}
-                width={fixDataTableColumnWidth}
+                width={tableColumnSize}
                 align="center"
               />
               <Column
@@ -72,7 +60,7 @@ class RackLocationTableCard extends React.Component {
                   { data[rowIndex].rackLocation }
                 </Cell>
                 )}
-                width={fixDataTableColumnWidth}
+                width={tableColumnSize}
                 align="center"
               />
             </Table>
@@ -97,5 +85,6 @@ export default connect(
   mapStateToProps,
   {
     doHighlightLocations,
+    tableProperty,
   },
 )(RackLocationTableCard);
