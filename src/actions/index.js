@@ -321,6 +321,13 @@ export const tableProperty = (passProps) => (dispatch, getState) => {
           tableWidthSize: (window.innerWidth - 256) * 0.8,
           tableColumnSize: ((window.innerWidth - 256) * 0.8) / columnCount,
         });
+      } else {
+        dispatch({
+          type: types.LISTENING_CHANGED_SIZE,
+          tableHeightSize: tableHeight,
+          tableWidthSize: window.innerWidth * 0.8,
+          tableColumnSize: (window.innerWidth * 0.8) / columnCount,
+        });
       }
       break;
     case 'ModelB':
@@ -337,6 +344,13 @@ export const tableProperty = (passProps) => (dispatch, getState) => {
           tableHeightSize: tableHeight,
           tableWidthSize: (window.innerWidth - 256) * 0.8,
           tableColumnSize: ((window.innerWidth - 256) * 0.8) / columnCount,
+        });
+      } else {
+        dispatch({
+          type: types.LISTENING_CHANGED_SIZE,
+          tableHeightSize: tableHeight,
+          tableWidthSize: window.innerWidth * 0.8,
+          tableColumnSize: (window.innerWidth * 0.8) / columnCount,
         });
       }
       break;
