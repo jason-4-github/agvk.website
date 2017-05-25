@@ -92,13 +92,13 @@ class PieChartModel extends React.Component {
       <ResponsiveContainer width="100%" >
         <PieChart onMouseEnter={this.onPieEnter}>
           {container === 'InOutBound'
-          ? <Legend layout="horizontal" align="center" verticalAlign="bottom" height={50} />
+          ? <Legend layout="horizontal" align="center" verticalAlign="bottom" />
           : ''}
           <Pie
             activeIndex={this.state.activeIndex}
             activeShape={renderActiveShape}
             data={data}
-            cy={142}
+            cy={120}
             outerRadius={80}
             fill="#8884d8"
           >

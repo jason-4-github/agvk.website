@@ -7,43 +7,13 @@ import Checkbox from 'material-ui/Checkbox';
 import { styles } from '../styles';
 
 class ItemGreneralInfo extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      circleHeightwidth: 0,
-    };
-  }
-  componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this));
-    this.handleResize();
-  }
-  handleResize() {
-    if (window.innerWidth < 768) {
-      this.setState({
-        circleHeightwidth: window.innerWidth * 0.4,
-      });
-    } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
-      this.setState({
-        circleHeightwidth: window.innerWidth * 0.35,
-      });
-    } else if (window.innerWidth >= 992 && window.innerWidth < 1200) {
-      this.setState({
-        circleHeightwidth: window.innerWidth * 0.28,
-      });
-    } else {
-      this.setState({
-        circleHeightwidth: window.innerWidth * 0.25,
-      });
-    }
-  }
   render() {
-    const { circleHeightwidth } = this.state;
     return (
       <Card>
         <CardText>
           <Row style={styles.ItemGreneralInfo.rowStyle}>
             <Col xs={12} sm={6} md={6} lg={6}>
-              <Avatar src="images/uxceo-128.jpg" size={circleHeightwidth} style={styles.ItemGreneralInfo.circlePosition} />
+              <Avatar src="images/uxceo-128.jpg" size={window.innerWidth * 0.25} style={styles.ItemGreneralInfo.circlePosition} />
               <br />
             </Col>
             <Col xs={12} sm={6} md={6} lg={6}>

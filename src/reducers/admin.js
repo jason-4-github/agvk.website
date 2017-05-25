@@ -25,6 +25,7 @@ import {
   LIST_INOUTBOUND_SUCCESS,
   LIST_INOUTBOUND_FAILURE,
   LISTENING_CHANGED_OPTIONS,
+  LISTENING_CHANGED_SIZE,
 } from '../constants/ActionTypes';
 
 const initialState = {
@@ -99,6 +100,11 @@ const admin = (state = initialState, action) => {
         ...action,
       };
     case LISTENING_CHANGED_OPTIONS:
+      return {
+        ...state,
+        ...action,
+      };
+    case LISTENING_CHANGED_SIZE:
       return {
         ...state,
         ...action,

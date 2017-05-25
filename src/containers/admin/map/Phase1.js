@@ -49,14 +49,7 @@ class Phase1 extends React.Component {
     this.state = {
       isDialogOpen: false,
       queryStr: '',
-      fixDataTableHeight: 0,
-      fixDataTableWidth: 0,
-      fixDataTableColumnWidth: 0,
     };
-  }
-  componentDidMount() {
-    window.addEventListener('resize', this.handleResize.bind(this));
-    this.handleResize();
   }
   componentWillUpdate() {
     if (!tmp.highlightLocations) { return; }
@@ -122,17 +115,7 @@ class Phase1 extends React.Component {
       queryStr: '',
     });
   }
-  handleResize() {
-    this.setState({
-      fixDataTableHeight: window.innerHeight * 0.6,
-      fixDataTableWidth: window.innerWidth * 0.8,
-      fixDataTableColumnWidth: ((window.innerWidth * 0.8) / 8),
-    });
-  }
   showTableDialog(str, type) {
-    const { fixDataTableHeight,
-            fixDataTableWidth,
-            fixDataTableColumnWidth } = this.state;
     const actions = [
       <FlatButton
         label="OK"
@@ -187,8 +170,8 @@ class Phase1 extends React.Component {
             ? <Table
               rowHeight={50}
               rowsCount={rackDetailData.length}
-              width={fixDataTableWidth}
-              height={fixDataTableHeight}
+              width={window.innerWidth * 0.8}
+              height={window.innerHeight * 0.6}
               headerHeight={50}
             >
               <Column
@@ -198,7 +181,7 @@ class Phase1 extends React.Component {
                     {rackDetailData[rowIndex].RackBlockNO}
                   </Cell>
                     )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
               <Column
@@ -208,7 +191,7 @@ class Phase1 extends React.Component {
                     { rackDetailData[rowIndex].picture }
                   </Cell>
                     )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
               <Column
@@ -218,7 +201,7 @@ class Phase1 extends React.Component {
                     { rackDetailData[rowIndex].ItemName }
                   </Cell>
                     )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
               <Column
@@ -228,7 +211,7 @@ class Phase1 extends React.Component {
                     { rackDetailData[rowIndex].ItemExternalID }
                   </Cell>
                     )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
               <Column
@@ -238,7 +221,7 @@ class Phase1 extends React.Component {
                     { rackDetailData[rowIndex].Vendor }
                   </Cell>
                     )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
               <Column
@@ -248,7 +231,7 @@ class Phase1 extends React.Component {
                     { rackDetailData[rowIndex].ItemCount }
                   </Cell>
                     )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
               <Column
@@ -258,7 +241,7 @@ class Phase1 extends React.Component {
                   { rackDetailData[rowIndex].DateCode }
                 </Cell>
                 )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
               <Column
@@ -268,7 +251,7 @@ class Phase1 extends React.Component {
                   { rackDetailData[rowIndex].status }
                 </Cell>
                 )}
-                width={fixDataTableColumnWidth}
+                width={(window.innerWidth * 0.8) / 8}
                 align="center"
               />
             </Table>

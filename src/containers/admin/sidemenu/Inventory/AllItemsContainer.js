@@ -6,12 +6,21 @@ import CircularProgress from 'material-ui/CircularProgress';
 import { styles } from '../../../../styles';
 import PageNavigator from '../../../../components/PageNavigator';
 import ItemCube from '../../../../components/ItemCube';
-import { doListAllItems } from '../../../../actions';
+import { doListAllItems, tableProperty } from '../../../../actions';
 
 class AllItemsContainer extends React.Component {
   componentDidMount() {
     const { doListAllItems } = this.props;
+    window.addEventListener('resize', this.handleResize.bind(this));
+    this.handleResize();
     doListAllItems();
+  }
+  handleResize() {
+    const { tableProperty } = this.props;
+    tableProperty({
+      columnCount: 5,
+      sizeModel: 'ModelA',
+    });
   }
   render() {
     const {
@@ -25,7 +34,9 @@ class AllItemsContainer extends React.Component {
       <div style={toggleStyle}>
         <PageNavigator pages={['Inventory', 'All Items']} />
         {(listAllItemData !== undefined) && (listAllItemData.length !== 0)
-          ? <ItemCube data={listAllItemData} />
+          ? <ItemCube
+            data={listAllItemData}
+          />
           : <CircularProgress
             style={styles.AllItemsContainer.circularProgressStyles}
           />}
@@ -55,5 +66,6 @@ export default connect(
   mapStateToProps,
   {
     doListAllItems,
+    tableProperty,
   },
 )(AllItemsContainer);

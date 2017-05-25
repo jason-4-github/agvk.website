@@ -9,9 +9,11 @@ import { searchBarOptions } from '../actions';
 class SearchBar extends React.Component {
   constructor(props) {
     super(props);
-    const { searchBarOptions, searchBarQueryStr } = this.props;
     this.handleQueryStrChange = this.handleQueryStrChange.bind(this);
     this.handleFilterChange = this.handleFilterChange.bind(this);
+  }
+  componentDidMount() {
+    const { searchBarOptions, searchBarQueryStr } = this.props;
     searchBarOptions({
       filterStr: 'options',
       filterCurrectOption: '',

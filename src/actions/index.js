@@ -307,6 +307,64 @@ export const doListInOutboundData = (passProps) => (dispatch, getState) => {
     });
 };
 
+export const tableProperty = (passProps) => (dispatch, getState) => {
+  const columnCount = passProps.columnCount;
+  const sizeModel = passProps.sizeModel;
+  const tableHeight = (window.innerHeight - 200);
+
+  switch (sizeModel) {
+    case 'ModelA':
+      if (window.innerWidth >= 992) {
+        dispatch({
+          type: types.LISTENING_CHANGED_SIZE,
+          tableHeightSize: tableHeight,
+          tableWidthSize: (window.innerWidth - 256) * 0.8,
+          tableColumnSize: ((window.innerWidth - 256) * 0.8) / columnCount,
+        });
+      } else {
+        dispatch({
+          type: types.LISTENING_CHANGED_SIZE,
+          tableHeightSize: tableHeight,
+          tableWidthSize: window.innerWidth * 0.8,
+          tableColumnSize: (window.innerWidth * 0.8) / columnCount,
+        });
+      }
+      break;
+    case 'ModelB':
+      if (window.innerWidth >= 992) {
+        dispatch({
+          type: types.LISTENING_CHANGED_SIZE,
+          tableHeightSize: tableHeight,
+          tableWidthSize: (window.innerWidth - 512) * 0.8,
+          tableColumnSize: ((window.innerWidth - 512) * 0.8) / columnCount,
+        });
+      } else if (window.innerWidth >= 768 && window.innerWidth < 992) {
+        dispatch({
+          type: types.LISTENING_CHANGED_SIZE,
+          tableHeightSize: tableHeight,
+          tableWidthSize: (window.innerWidth - 256) * 0.8,
+          tableColumnSize: ((window.innerWidth - 256) * 0.8) / columnCount,
+        });
+      } else {
+        dispatch({
+          type: types.LISTENING_CHANGED_SIZE,
+          tableHeightSize: tableHeight,
+          tableWidthSize: window.innerWidth * 0.8,
+          tableColumnSize: (window.innerWidth * 0.8) / columnCount,
+        });
+      }
+      break;
+    default:
+      dispatch({
+        type: types.LISTENING_CHANGED_SIZE,
+        tableHeightSize: tableHeight,
+        tableWidthSize: window.innerWidth * 0.8,
+        tableColumnSize: (window.innerWidth * 0.8) / columnCount,
+      });
+  }
+};
+
+
 export const listeningChangedOptions = (passProps) => (dispatch, getState) => {
   dispatch({
     type: types.LISTENING_CHANGED_OPTIONS,
